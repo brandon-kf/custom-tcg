@@ -46,6 +46,7 @@ class Game:
             self.add_player(player=player)
 
     def add_player(self: Game, player: IPlayer) -> None:
+        """Add a player to this game. Do minimal setup."""
         self.players.append(player)
 
         for card_, action_ in (
@@ -59,6 +60,7 @@ class Game:
             action_.state = ActionStateDef.queued
 
     def setup(self: Game) -> None:
+        """Perform game-wide setup for players."""
         for player in self.players:
             player.main_cards = util.list_randomize(ordered=player.main_cards)
         random_first_index: int = randbelow(
@@ -149,9 +151,9 @@ class Game:
 
 
 if __name__ == "__main__":
-    from src.main import setup
     from custom_tcg.common.player import p1, p2
     from custom_tcg.game import Game
+    from custom_tcg.main import setup
 
     setup()
 
