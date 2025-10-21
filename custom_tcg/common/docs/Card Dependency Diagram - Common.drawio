@@ -1,0 +1,463 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="28.2.7">
+  <diagram name="Page-1" id="soMkyoPG13DyfXOzOmXN">
+    <mxGraphModel dx="1831" dy="1311" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-37" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;align=left;verticalAlign=top;spacingLeft=24;spacingTop=12;" parent="1" vertex="1">
+          <mxGeometry x="3920" y="520" width="680" height="2040" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-36" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 3 Interaction&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Requires tier 3 or less beings and objects.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;align=left;verticalAlign=top;spacingLeft=24;spacingTop=12;" parent="1" vertex="1">
+          <mxGeometry x="260" y="520" width="3890" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-35" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;align=left;verticalAlign=top;spacingLeft=24;spacingTop=12;" parent="1" vertex="1">
+          <mxGeometry x="2280" y="980" width="1580" height="1610" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-34" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 2 Interaction&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Requires 2 or less beings and objects.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;align=left;verticalAlign=top;spacingLeft=24;spacingTop=12;" parent="1" vertex="1">
+          <mxGeometry x="260" y="980" width="2060" height="880" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-30" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 1 Interaction&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Requires only tier 1 beings and objects.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;align=left;verticalAlign=top;spacingLeft=24;spacingTop=12;" parent="1" vertex="1">
+          <mxGeometry x="260" y="1920" width="1960" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-1" target="qr8aA7d-a02LXcOWH9pC-17" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="680" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="4160" y="1095" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-1" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Early Architect&lt;/font&gt;&lt;div&gt;Builds stone paths, requiring a pile of rocks.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1080" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-2" value="&lt;span style=&quot;font-size: 16px;&quot;&gt;Last Survivor&lt;/span&gt;&lt;br&gt;&lt;div&gt;Unplayable, helps players re-enter the game.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#FFFF00);" parent="1" vertex="1">
+          <mxGeometry x="240" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-3" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 1 - Low skill&lt;/span&gt;&lt;/div&gt;&lt;div&gt;No cost activations, 1+ stats.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1920" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-4" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 2 - Guilds&lt;/span&gt;&lt;/div&gt;&lt;div&gt;1 cost activations,&lt;br&gt;2+ stats.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="40" y="980" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-5" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier N&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Variable cost activations and stats.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="40" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-6" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Peasant&lt;/font&gt;&lt;div&gt;Optional activate to draw a card.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00CC00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2020" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-7" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Processes&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-8" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Let&#39;s Play&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Allows Draws, Plays, and Activations.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00CC00);" parent="1" vertex="1">
+          <mxGeometry x="240" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-9" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Let&#39;s Rest&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Removes activated effect from being types.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00CC00);" parent="1" vertex="1">
+          <mxGeometry x="420" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-11" target="qr8aA7d-a02LXcOWH9pC-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="1140" as="sourcePoint" />
+            <mxPoint x="1280.6" y="1139.1200000000001" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1220" y="2130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-11" target="-0Zli8veUdUN0UV2vTNJ-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="2130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-11" target="-0Zli8veUdUN0UV2vTNJ-52" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1560" y="2130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-11" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;That Pebble Girl&lt;/font&gt;&lt;div&gt;Optional create a pile of rocks and/or give pebbles.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.883;exitY=0.078;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-13" target="qr8aA7d-a02LXcOWH9pC-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1291" y="1125" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-52" target="qr8aA7d-a02LXcOWH9pC-18" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1640" y="2370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.596;exitY=-0.011;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-51" target="-0Zli8veUdUN0UV2vTNJ-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1435" y="905" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-13" target="-0Zli8veUdUN0UV2vTNJ-57" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1290" y="1365" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-13" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Pile of Rocks&lt;/font&gt;&lt;div&gt;Can be equipped. Used to build things.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00CC00);" parent="1" vertex="1">
+          <mxGeometry x="1150" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-17" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Stone Path&lt;/font&gt;&lt;div&gt;Allows travel (x3) in a pre-defined direction.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#FFFF00);" parent="1" vertex="1">
+          <mxGeometry x="4080" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qr8aA7d-a02LXcOWH9pC-18" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Aged Prophet&lt;/font&gt;&lt;div&gt;Permanently gains wisdom, must hold a pebble.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2340" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-1" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 1 Objects&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Basic items created in the game.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="260" y="2620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-2" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 2 Objects&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Processed items created in the game.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="2280" y="2620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="201" y="1290" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="540" y="1290" />
+              <mxPoint x="201" y="1290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-49" target="-0Zli8veUdUN0UV2vTNJ-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="905" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-4" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Pile of Wood&lt;/font&gt;&lt;div&gt;Used to build things.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="420" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-5" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Trail&lt;/font&gt;&lt;div&gt;Allows travel (x1) in a pre-defined direction.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#FFFF00);" parent="1" vertex="1">
+          <mxGeometry x="790" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-7" target="-0Zli8veUdUN0UV2vTNJ-18" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="1291" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1090" y="1290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-7" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Flint&lt;br&gt;&lt;/span&gt;Helps create fire.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="970" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-9" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 3 - Heroes&lt;/span&gt;&lt;/div&gt;&lt;div&gt;2 cost activations,&lt;br&gt;3+ stats.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="40" y="520" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-10" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Jones, Renowned Archer&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Strong in combat, makes bows and arrows.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="40" y="860" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-11" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Bow &amp;amp; Arrow&lt;/font&gt;&lt;div&gt;Can be equipped. Excellent combat weapon.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="4440" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-12" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Tier 3 Objects&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Items created in the game.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#007FFF);" parent="1" vertex="1">
+          <mxGeometry x="3920" y="2620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-42" target="-0Zli8veUdUN0UV2vTNJ-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="1400" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="830" y="2530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-42" target="-0Zli8veUdUN0UV2vTNJ-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="1400" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="460" y="2530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-10" target="-0Zli8veUdUN0UV2vTNJ-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="4440" y="2630" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="4520" y="875" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-18" target="-0Zli8veUdUN0UV2vTNJ-19" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3020" y="1270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-18" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Destructive Darryl&lt;/font&gt;&lt;div&gt;Strong in combat, makes fires.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1240" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-19" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Fire&lt;/font&gt;&lt;div&gt;Damages everything if left unattended.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CCCC00);" parent="1" vertex="1">
+          <mxGeometry x="2980" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-23" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Sociable Alchemist&lt;/font&gt;&lt;div&gt;Can create/give any tier 1 material, requires help.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="420" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-25" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Travel&lt;/font&gt;&lt;div&gt;Move beings and objects along paths.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="600" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-26" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Combat&lt;/font&gt;&lt;div&gt;Beings harm each other. Survivors gain bonuses.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="960" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-69" target="-0Zli8veUdUN0UV2vTNJ-44" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2000" y="1205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-39" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Bundle of Wool&lt;br&gt;&lt;/span&gt;Used by a seamstress.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="1700" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-41" target="-0Zli8veUdUN0UV2vTNJ-39" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="2200" />
+              <mxPoint x="1760" y="2200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.009;entryY=0.344;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-41" target="-0Zli8veUdUN0UV2vTNJ-46" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1200" y="2550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="300" y="2225" />
+              <mxPoint x="300" y="2281" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-41" target="-0Zli8veUdUN0UV2vTNJ-69" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1930" y="2090" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1920" y="2200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-41" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;&amp;nbsp;Desperate Shepherd&lt;/font&gt;&lt;div&gt;Raises sheep. Collects and/or gives wool.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2180" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-77" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-42" target="-0Zli8veUdUN0UV2vTNJ-49" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-42" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Aimless Wanderer&lt;/font&gt;&lt;div&gt;Creates trails. Collects piles of sticks and/or gives sticks.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2500" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-43" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Worldly Warehouser&lt;/font&gt;&lt;div&gt;Can move items to traveled beings if fed food.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1400" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-44" target="-0Zli8veUdUN0UV2vTNJ-84" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-44" target="-0Zli8veUdUN0UV2vTNJ-85" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-44" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Seamstress&lt;/font&gt;&lt;div&gt;Creates rope and clothing using wool&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1160" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1.007;exitY=0.35;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-46" target="-0Zli8veUdUN0UV2vTNJ-41" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="1980" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="201" y="2280" />
+              <mxPoint x="300" y="2280" />
+              <mxPoint x="300" y="2225" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-46" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Sheep&lt;br&gt;&lt;/span&gt;Found and sheared by a Shepard.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2260" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-49" target="-0Zli8veUdUN0UV2vTNJ-72" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-49" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Stick&lt;/font&gt;&lt;div&gt;Can be equipped.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="610" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-51" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Rock&lt;br&gt;&lt;/span&gt;Can be equipped.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="1340" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-52" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Pebble&lt;br&gt;&lt;/span&gt;Can be equipped.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="1520" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.354;entryY=0.056;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="qr8aA7d-a02LXcOWH9pC-11" target="-0Zli8veUdUN0UV2vTNJ-51" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1397" y="2130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-96" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-57" target="-0Zli8veUdUN0UV2vTNJ-83" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-57" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Apprentice Smith&lt;/font&gt;&lt;div&gt;Can make and shape metal.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1320" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-58" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Anderson, Experienced Craftsman&lt;/font&gt;&lt;div&gt;Can create equipment.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="40" y="780" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-90" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-59" target="-0Zli8veUdUN0UV2vTNJ-75" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2180" y="1845" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-100" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-59" target="-0Zli8veUdUN0UV2vTNJ-76" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2180" y="745" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-59" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Extra rations&lt;br&gt;&lt;/span&gt;Food items that can be consumed.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="2060" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-60" target="-0Zli8veUdUN0UV2vTNJ-59" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-60" target="-0Zli8veUdUN0UV2vTNJ-82" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-60" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Questionable Butcher&lt;/font&gt;&lt;div&gt;Turns beings into extra rations and hides.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1480" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-62" target="-0Zli8veUdUN0UV2vTNJ-59" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-62" target="-0Zli8veUdUN0UV2vTNJ-82" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-62" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Skilled Hunter&lt;/font&gt;&lt;div&gt;Creates an extra ration and a hide.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="2420" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-65" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Wizard of the Distant Lands&lt;/font&gt;&lt;div&gt;Wisdom powerhouse in combat.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="600" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-66" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Commune&lt;/font&gt;&lt;div&gt;Beings feed each other. everyone benefits.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="1140" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-67" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Protect&lt;/font&gt;&lt;div&gt;Prevent visitors with lesser combat stats.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="780" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-68" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Entertain&lt;/font&gt;&lt;div&gt;Beings entertain each other. everyone benefits.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="1320" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-69" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Ball of Wool&lt;br&gt;&lt;/span&gt;Used by a seamstress.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="1880" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-71" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Tightrope Walker&lt;/font&gt;&lt;div&gt;Performs.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="40" y="620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-72" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Fire Dancer&lt;/font&gt;&lt;div&gt;Performs.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1640" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-73" value="&lt;span style=&quot;font-size: 16px;&quot;&gt;Resourceful Preacher&lt;/span&gt;&lt;br&gt;&lt;div&gt;Draw a card, consume any two materials.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1560" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-74" target="-0Zli8veUdUN0UV2vTNJ-80" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-74" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Apprentice Carpenter&lt;/font&gt;&lt;div&gt;Can make wood structures.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1720" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-91" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-75" target="-0Zli8veUdUN0UV2vTNJ-79" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-75" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;The Stewmaker&lt;/font&gt;&lt;div&gt;Can make meals.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="40" y="1800" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-101" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-76" target="-0Zli8veUdUN0UV2vTNJ-86" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-76" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Gourmond, Professional Chef&lt;/font&gt;&lt;div&gt;Can make smorgasbords.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="40" y="700" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-79" value="&lt;span style=&quot;font-size: 16px;&quot;&gt;Meal&lt;/span&gt;&lt;br&gt;&lt;div&gt;Advanced food with greater benefits&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="2620" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-80" target="-0Zli8veUdUN0UV2vTNJ-71" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2910" y="665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-80" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Wood Structure&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Damages everything if left unattended.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="2800" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-81" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Firepit&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Damages everything if left unattended.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="3160" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-82" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Pelt&lt;br&gt;&lt;/span&gt;Food items that can be consumed.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="2440" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-83" target="-0Zli8veUdUN0UV2vTNJ-58" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-83" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Metal&lt;br&gt;&lt;/span&gt;Food items that can be consumed.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="3340" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-94" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-84" target="-0Zli8veUdUN0UV2vTNJ-71" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3640" y="665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-84" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Cord&lt;br&gt;&lt;/span&gt;Food items that can be consumed.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="3520" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-105" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="-0Zli8veUdUN0UV2vTNJ-85" target="-0Zli8veUdUN0UV2vTNJ-58" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3820" y="825" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-85" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Cloth&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Food items that can be consumed.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#00FF00);" parent="1" vertex="1">
+          <mxGeometry x="3700" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-86" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Smorgasbord&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Food items that can be consumed.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="4260" y="2620" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-102" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Armor&lt;/font&gt;&lt;div&gt;Can be equipped. Excellent combat defense.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="4080" y="2720" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-103" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Sword&lt;/font&gt;&lt;div&gt;Can be equipped. Excellent combat defense.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="4260" y="2720" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-0Zli8veUdUN0UV2vTNJ-107" value="&lt;div&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Vault&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Store items here.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#808080);" parent="1" vertex="1">
+          <mxGeometry x="2800" y="2720" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WIAMi2YPByPUs_L4V9d2-1" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Teamwork&lt;/font&gt;&lt;div&gt;Activate other beings to duplicate actions of one.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="1500" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WIAMi2YPByPUs_L4V9d2-2" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Trade&lt;/font&gt;&lt;div&gt;Exchange beings and items, with benefits.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" parent="1" vertex="1">
+          <mxGeometry x="1140" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L4V1x19GMoNm_OX4Abc4-1" value="&lt;span style=&quot;font-size: 16px;&quot;&gt;Spring Cleaning&lt;/span&gt;&lt;br&gt;&lt;div&gt;Dropped items create disadvantages. Items duplicate.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" vertex="1" parent="1">
+          <mxGeometry x="960" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L4V1x19GMoNm_OX4Abc4-2" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Tourism&lt;/font&gt;&lt;div&gt;All beings with draw abilities rest and can activate.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=light-dark(#000000,#CC6600);" vertex="1" parent="1">
+          <mxGeometry x="1320" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
