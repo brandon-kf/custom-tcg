@@ -1,0 +1,7 @@
+**/__pycache__/*
+**/.ruff_cache/*
+**/.conda/*
+**/logs/*
+**/.env
+**/node_modules/
+**/dist/
