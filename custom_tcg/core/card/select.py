@@ -66,15 +66,14 @@ class Select(Action):
             else (lambda context: list(options))  # noqa: ARG005
         )
 
-        self._init_state()
-
-    def _init_state(self: Select) -> None:
-        self.reset_state()
+        self.options = []
+        self.selected = []
 
     @override
     def reset_state(self: Select) -> None:
         """Get this selector ready for its next use."""
         super().reset_state()
+
         self.options = []
         self.selected = []
 
@@ -87,8 +86,7 @@ class Select(Action):
         if not self.speculate():
             logger.info("Select '%s' speculatively cancelled", self.name)
             logger.info(
-                "Select required n of %d failed with options [%s]",
-                self.n,
+                "Select required n failed with options [%s]",
                 ",".join(option.name for option in self.options),
             )
             self.state = ActionStateDef.cancelled

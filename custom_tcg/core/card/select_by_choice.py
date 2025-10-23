@@ -71,10 +71,9 @@ class SelectByChoice(Select):
             enter=lambda context: None,  # noqa: ARG005
         )
 
-        self._init_state()
-
-    def _init_state(self: SelectByChoice) -> None:
-        self.reset_state()
+        self.confirm_action.state = ActionStateDef.not_started
+        self.cancel_action.state = ActionStateDef.not_started
+        self.choice_actions = []
 
     @override
     def reset_state(self: SelectByChoice) -> None:
@@ -87,9 +86,7 @@ class SelectByChoice(Select):
 
     @override
     def speculate(self: SelectByChoice) -> bool:
-        return len(self.options) >= min(self.accept_n) and len(
-            self.options,
-        ) <= max(self.accept_n)
+        return len(self.options) >= min(self.accept_n)
 
     @override
     def enter(self: SelectByChoice, context: IExecutionContext) -> None:
