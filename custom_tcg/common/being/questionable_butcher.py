@@ -10,8 +10,8 @@ from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.extra_rations import ExtraRations
 from custom_tcg.common.item.pelt import Pelt
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.cost_evaluator import CostEvaluator
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.discard import Discard
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -55,22 +55,21 @@ class QuestionableButcher(Card):
                     ),
                 ],
                 costs=[
-                    CostEvaluator(
+                    Discard(
                         name="Select a being to butcher",
-                        require_cards=Selector(
+                        cards_to_discard=SelectByChoice(
                             name="Select a being to butcher?",
-                            accept_n=lambda n: n == 1,
-                            require_n=False,
+                            accept_n=1,
+                            require_n=True,
                             options=lambda context: [
                                 card
                                 for card in context.player.played
                                 if CardTypeDef.being in card.types
+                                and card != butcher
                             ],
                             card=butcher,
                             player=player,
                         ),
-                        require_n=1,
-                        consume=True,
                         card=butcher,
                         player=player,
                     ),

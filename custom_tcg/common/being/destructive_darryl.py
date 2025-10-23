@@ -12,8 +12,8 @@ from custom_tcg.common.item.fire import Fire
 from custom_tcg.common.item.flint import Flint
 from custom_tcg.common.item.pile_of_wood import PileOfWood
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.cost_evaluator import CostEvaluator
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.discard import Discard
+from custom_tcg.core.card.select import Select
 from custom_tcg.core.dimension import CardClassDef, CardTypeDef
 from custom_tcg.core.effect.effect import Activated
 from custom_tcg.core.execution.activate import Activate
@@ -52,7 +52,10 @@ class DestructiveDarryl(Card):
             Activate(
                 actions=[
                     Find(
-                        name=f"Start a '{Fire.name}'",
+                        name=(
+                            f"Start a '{Fire.name}' "
+                            f"using '{Flint.name}' and a '{PileOfWood.name}'"
+                        ),
                         finder=darryl,
                         cards_to_find=[Fire],
                         card=darryl,
@@ -70,11 +73,11 @@ class DestructiveDarryl(Card):
                     )
                 ),
                 costs=[
-                    CostEvaluator(
-                        name=f"Spark a {Flint.name}",
-                        require_cards=Selector(
+                    Discard(
+                        name=f"Verify an unheld {Flint.name} is found",
+                        cards_to_discard=Select(
                             name=f"Select a {Flint.name}",
-                            accept_n=lambda n: n == 1,
+                            n=1,
                             require_n=True,
                             options=lambda context: [
                                 card
@@ -93,16 +96,14 @@ class DestructiveDarryl(Card):
                             card=darryl,
                             player=player,
                         ),
-                        require_n=1,
-                        consume=True,
                         card=darryl,
                         player=player,
                     ),
-                    CostEvaluator(
-                        name=f"Burn a {PileOfWood.name}",
-                        require_cards=Selector(
-                            name=f"Select a {PileOfWood.name}",
-                            accept_n=lambda n: n == 1,
+                    Discard(
+                        name=f"Verify an unheld {PileOfWood.name} is found",
+                        cards_to_discard=Select(
+                            name=f"Burn a {PileOfWood.name}",
+                            n=1,
                             require_n=True,
                             options=lambda context: [
                                 card
@@ -121,8 +122,6 @@ class DestructiveDarryl(Card):
                             card=darryl,
                             player=player,
                         ),
-                        require_n=1,
-                        consume=True,
                         card=darryl,
                         player=player,
                     ),

@@ -5,13 +5,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from custom_tcg.common.action.find import Find
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.effect.interface import IHeld
 from custom_tcg.common.item.stew import Stew
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.discard import Discard
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -49,21 +49,21 @@ class TheStewmaker(Card):
                     Find(
                         name=f"Cook a '{Stew.name}'",
                         finder=stew,
-                        cards_to_find=Selector(
+                        cards_to_find=SelectByChoice(
                             name=f"Cook a '{Stew.name}'?",
-                            accept_n=lambda n: n == 1,
+                            accept_n=1,
                             require_n=False,
                             options=[Stew],
                             card=stew,
                             player=player,
                         ),
                         costs=[
-                            HeldEvaluator(
+                            Discard(
                                 name="Discard two food items",
-                                require_cards=Selector(
+                                cards_to_discard=SelectByChoice(
                                     name="Cook two food items",
-                                    accept_n=lambda n: n == 2,  # noqa: PLR2004
-                                    require_n=False,
+                                    accept_n=2,
+                                    require_n=True,
                                     options=lambda context: [
                                         card
                                         for card in context.player.played
@@ -81,8 +81,6 @@ class TheStewmaker(Card):
                                     card=stew,
                                     player=player,
                                 ),
-                                require_n=2,
-                                consume=True,
                                 card=stew,
                                 player=player,
                             ),

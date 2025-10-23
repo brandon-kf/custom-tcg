@@ -78,7 +78,7 @@ class ExecutionContext(IExecutionContext):
         # Consider dependent selector and cost actions, then queue and provide
         # the next action for execution (which will be the passed action if
         # no outstanding dependents remain.)
-        self.check_for_dependent_cancellations(action=next_action)
+        self.speculate(action=next_action)
 
         if next_action.state != ActionStateDef.cancelled:
             next_action: IAction = self.next_dependent(action=next_action)
@@ -140,7 +140,7 @@ class ExecutionContext(IExecutionContext):
         ):
             self.ready[0].request_input(context=self)
 
-    def check_for_dependent_cancellations(
+    def speculate(
         self: ExecutionContext,
         action: IAction,
     ) -> None:

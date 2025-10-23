@@ -6,14 +6,17 @@ from typing import TYPE_CHECKING
 
 from custom_tcg.common.action.deliver import Deliver
 from custom_tcg.common.action.find import Find
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
+from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
+from custom_tcg.common.effect.interface import IHeld
 from custom_tcg.common.item.pile_of_wood import PileOfWood
 from custom_tcg.common.item.stick import Stick
 from custom_tcg.common.item.trail import Trail
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.discard import Discard
+from custom_tcg.core.card.select import Select
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -57,19 +60,58 @@ class AimlessWanderer(Card):
         separate_a_base_material: IAction = Find(
             name=f"Separate a '{Stick.name}' from '{PileOfWood.name}'",
             finder=aimless_wanderer,
-            cards_to_find=Selector(
+            cards_to_find=SelectByChoice(
                 name=f"Separate a '{Stick.name}' from '{PileOfWood.name}'",
-                accept_n=lambda n: n == 1,
+                accept_n=1,
                 require_n=False,
                 options=[Stick],
                 card=aimless_wanderer,
                 player=player,
             ),
             costs=[
-                HeldEvaluator(
-                    require_cards=PileOfWood,
-                    require_n=1,
-                    consume=False,
+                Select(
+                    name=f"Verify '{PileOfWood.name}' is held",
+                    options=lambda context: [
+                        card
+                        for card in context.player.played
+                        for effect in card.effects
+                        if isinstance(card, PileOfWood)
+                        and isinstance(effect, IHeld)
+                        and effect.card_held_by == aimless_wanderer
+                    ],
+                    n=1,
+                    require_n=True,
+                    card=aimless_wanderer,
+                    player=player,
+                ),
+            ],
+            card=aimless_wanderer,
+            player=player,
+        )
+
+        # Can discover a trail.
+        discover_a_trail: IAction = Find(
+            name=f"Discover a '{Trail.name}'",
+            finder=aimless_wanderer,
+            cards_to_find=SelectByChoice(
+                name=f"Create a '{Trail.name}'?",
+                accept_n=1,
+                require_n=False,
+                options=[Trail],
+                card=aimless_wanderer,
+                player=player,
+            ),
+            costs=[
+                Discard(
+                    name=f"Mark the trailhead with a '{Stick.name}'",
+                    cards_to_discard=SelectByHeld(
+                        name=f"Verify '{Stick.name}' is held",
+                        held_type=Stick,
+                        accept_n=1,
+                        require_n=True,
+                        card=aimless_wanderer,
+                        player=player,
+                    ),
                     card=aimless_wanderer,
                     player=player,
                 ),
@@ -84,39 +126,13 @@ class AimlessWanderer(Card):
             player=player,
         )
 
-        # Can discover a trail.
-        discover_a_trail: IAction = Find(
-            name=f"Discover a '{Trail.name}'",
-            finder=aimless_wanderer,
-            cards_to_find=Selector(
-                name=f"Create a '{Trail.name}'?",
-                accept_n=lambda n: n == 1,
-                require_n=False,
-                options=[Trail],
-                card=aimless_wanderer,
-                player=player,
-            ),
-            costs=[
-                HeldEvaluator(
-                    name=f"Discard a {Stick.name}",
-                    require_cards=Stick,
-                    require_n=1,
-                    consume=True,
-                    card=aimless_wanderer,
-                    player=player,
-                ),
-            ],
-            card=aimless_wanderer,
-            player=player,
-        )
-
         aimless_wanderer.actions.append(
             Activate(
                 actions=[
                     find_pile_of_wood,
                     separate_a_base_material,
-                    deliver,
                     discover_a_trail,
+                    deliver,
                 ],
                 card=aimless_wanderer,
                 player=player,

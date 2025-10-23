@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, cast, override
 from custom_tcg.common.action.hold import Hold
 from custom_tcg.common.card_type_def import CardTypeDef
 from custom_tcg.core.action import Action
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.select import Select
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -24,14 +24,14 @@ class Find(Action):
     """Find cards by creating from factories."""
 
     finder: ICard
-    cards_to_find: list[type[ICard]] | Selector
+    cards_to_find: list[type[ICard]] | Select
     n: int | None
     bind_n: Callable[[IExecutionContext, type[ICard]], int]
 
     def __init__(  # noqa: PLR0913
         self: Find,
         finder: ICard,
-        cards_to_find: list[type[ICard]] | Selector,
+        cards_to_find: list[type[ICard]] | Select,
         card: ICard,
         player: IPlayer,
         n: int | None = None,
@@ -53,14 +53,14 @@ class Find(Action):
         self.n = n
         self.bind_n = bind_n or (lambda context, card_factory: n or 1)  # noqa: ARG005
 
-        if isinstance(cards_to_find, Selector):
+        if isinstance(cards_to_find, Select):
             self.selectors.append(cards_to_find)
 
     @override
     def reset_state(self: Find) -> None:
         super().reset_state()
 
-        if isinstance(self.cards_to_find, Selector):
+        if isinstance(self.cards_to_find, Select):
             self.cards_to_find.reset_state()
 
     @override
@@ -70,7 +70,7 @@ class Find(Action):
         card_factories: list[type[ICard]] = (
             self.cards_to_find
             if isinstance(self.cards_to_find, list)
-            else cast("Selector", self.cards_to_find).selected
+            else cast("Select", self.cards_to_find).selected
         )  # pyright: ignore[reportAssignmentType]
 
         for card_factory in card_factories:

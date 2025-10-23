@@ -3,19 +3,21 @@
 from __future__ import annotations
 
 from secrets import randbelow
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from custom_tcg.common.action.deliver import Deliver
 from custom_tcg.common.action.find import Find
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
 from custom_tcg.common.action.search import Search
+from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.being.sheep import Sheep
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.ball_of_wool import BallOfWool
 from custom_tcg.common.item.bundle_of_wool import BundleOfWool
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.select import Select
+from custom_tcg.core.card.select_by_choice import SelectByChoice
+from custom_tcg.core.card.tap import Tap
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -57,16 +59,34 @@ class DesperateShepherd(Card):
             player=player,
         )
 
+        shearing_tap_cost = Tap(
+            cards_to_activate=Select(
+                name=f"Tap sheared '{Sheep.name}'",
+                options=lambda context: [
+                    card
+                    for card in context.player.played
+                    if isinstance(card, Sheep)
+                ],
+                card=desperate_shepherd,
+                player=player,
+            ),
+            card=desperate_shepherd,
+            player=player,
+        )
+
         find_bundle_of_wool: IAction = Find(
-            name=f"Collect a '{BundleOfWool.name}' from each sheep in play",
+            name=f"Shear a '{BundleOfWool.name}' from each sheep in play",
             finder=desperate_shepherd,
             cards_to_find=[BundleOfWool],
             bind_n=lambda context, card_factory: (  # noqa: ARG005
-                sum(
-                    1 if card.name == Sheep.name else 0
-                    for card in context.player.played
+                len(
+                    cast(
+                        "Select",
+                        shearing_tap_cost.cards_to_activate,
+                    ).selected,
                 )
             ),
+            costs=[shearing_tap_cost],
             card=desperate_shepherd,
             player=player,
         )
@@ -74,21 +94,22 @@ class DesperateShepherd(Card):
         separate_a_base_material: IAction = Find(
             name=f"Separate a '{BallOfWool.name}' from '{BundleOfWool.name}'",
             finder=desperate_shepherd,
-            cards_to_find=Selector(
+            cards_to_find=SelectByChoice(
                 name=(
                     f"Separate a '{BallOfWool.name}' from '{BundleOfWool.name}'"
                 ),
-                accept_n=lambda n: n == 1,
+                accept_n=1,
                 require_n=False,
                 options=[BallOfWool],
                 card=desperate_shepherd,
                 player=player,
             ),
             costs=[
-                HeldEvaluator(
-                    require_cards=BundleOfWool,
-                    require_n=1,
-                    consume=False,
+                SelectByHeld(
+                    name=f"Verify '{BundleOfWool.name}' held",
+                    held_type=BundleOfWool,
+                    accept_n=1,
+                    require_n=True,
                     card=desperate_shepherd,
                     player=player,
                 ),

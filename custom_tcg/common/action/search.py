@@ -11,7 +11,7 @@ from custom_tcg.game import ActionStateDef
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from custom_tcg.core.card.selector import Selector
+    from custom_tcg.core.card.select import Select
     from custom_tcg.core.interface import (
         IAction,
         ICard,
@@ -29,7 +29,7 @@ class Search(Action):
     def __init__(  # noqa: PLR0913
         self: Search,
         searcher: ICard,
-        cards_to_search_for: list[type[ICard]] | Selector,
+        cards_to_search_for: list[type[ICard]] | Select,
         bind_success: Callable[[IExecutionContext], bool],
         card: ICard,
         player: IPlayer,

@@ -9,11 +9,11 @@ from custom_tcg.common.card_type_def import CardTypeDef as CommonCardTypeDef
 from custom_tcg.common.effect.held import Held
 from custom_tcg.common.effect.interface import IHeld
 from custom_tcg.core.action import Action
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.select import Select
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.effect.remove_effect import RemoveEffect
 from custom_tcg.core.interface import (
-    ICard,
     IExecutionContext,
 )
 
@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 
     from custom_tcg.core.interface import (
         IAction,
+        ICard,
         IExecutionContext,
         IPlayer,
     )
@@ -30,15 +31,15 @@ if TYPE_CHECKING:
 class Deliver(Action):
     """Deliver an item to another card."""
 
-    receiver: ICard | Selector
-    items: list[ICard] | Selector
+    receiver: ICard | Select
+    items: list[ICard] | Select
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self: Deliver,
         card: ICard,
         player: IPlayer,
-        receiver: ICard | Selector | None = None,
-        items: list[ICard] | Selector | None = None,
+        receiver: ICard | Select | None = None,
+        items: list[ICard] | Select | None = None,
         bind: Callable[[IAction, ICard, IPlayer], bool] | None = None,
     ) -> None:
         """Create a Deliver action."""
@@ -50,9 +51,9 @@ class Deliver(Action):
             costs=None,  # Explicit, for a reason.
         )
 
-        self.receiver = receiver or Selector(
+        self.receiver = receiver or SelectByChoice(
             name="Select a being to deliver to",
-            accept_n=lambda n: n == 1,
+            accept_n=1,
             require_n=False,
             options=(
                 lambda context: [
@@ -65,9 +66,9 @@ class Deliver(Action):
             player=player,
         )
 
-        self.items = items or Selector(
+        self.items = items or SelectByChoice(
             name="Select a material to deliver",
-            accept_n=lambda n: n == 1,
+            accept_n=1,
             require_n=False,
             options=(
                 lambda context: [
@@ -84,17 +85,17 @@ class Deliver(Action):
         )
 
         for dependency in (self.receiver, self.items):
-            if isinstance(dependency, Selector):
+            if isinstance(dependency, Select):
                 self.selectors.append(dependency)
 
     @override
     def reset_state(self: Deliver) -> None:
         super().reset_state()
 
-        if isinstance(self.receiver, Selector):
+        if isinstance(self.receiver, Select):
             self.receiver.reset_state()
 
-        if isinstance(self.items, Selector):
+        if isinstance(self.items, Select):
             self.items.reset_state()
 
     @override
@@ -102,14 +103,14 @@ class Deliver(Action):
         super().enter(context=context)
 
         receiver_card: ICard | None = (
-            cast(ICard | None, next(iter(self.receiver.selected), None))
-            if isinstance(self.receiver, Selector)
+            cast("ICard | None", next(iter(self.receiver.selected), None))
+            if isinstance(self.receiver, Select)
             else self.receiver
         )
 
         item_cards: list[ICard] = (
-            cast(list[ICard], self.items.selected)
-            if isinstance(self.items, Selector)
+            cast("list[ICard]", self.items.selected)
+            if isinstance(self.items, Select)
             else self.items
         )
 
