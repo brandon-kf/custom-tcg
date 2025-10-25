@@ -9,13 +9,11 @@ from custom_tcg.common.action.find import Find
 from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
-from custom_tcg.common.effect.interface import IHeld
 from custom_tcg.common.item.pile_of_wood import PileOfWood
 from custom_tcg.common.item.stick import Stick
 from custom_tcg.common.item.trail import Trail
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.card.discard import Discard
-from custom_tcg.core.card.select import Select
 from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
@@ -69,18 +67,11 @@ class AimlessWanderer(Card):
                 player=player,
             ),
             costs=[
-                Select(
+                SelectByHeld(
                     name=f"Verify '{PileOfWood.name}' is held",
-                    options=lambda context: [
-                        card
-                        for card in context.player.played
-                        for effect in card.effects
-                        if isinstance(card, PileOfWood)
-                        and isinstance(effect, IHeld)
-                        and effect.card_held_by == aimless_wanderer
-                    ],
-                    n=1,
-                    require_n=True,
+                    held_type=PileOfWood,
+                    accept_n=1,
+                    require_n=False,
                     card=aimless_wanderer,
                     player=player,
                 ),
@@ -108,7 +99,7 @@ class AimlessWanderer(Card):
                         name=f"Verify '{Stick.name}' is held",
                         held_type=Stick,
                         accept_n=1,
-                        require_n=True,
+                        require_n=False,
                         card=aimless_wanderer,
                         player=player,
                     ),

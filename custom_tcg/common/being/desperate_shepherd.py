@@ -19,6 +19,7 @@ from custom_tcg.core.card.select import Select
 from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.card.tap import Tap
 from custom_tcg.core.dimension import CardTypeDef
+from custom_tcg.core.effect.effect import Activated
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
 
@@ -66,6 +67,15 @@ class DesperateShepherd(Card):
                     card
                     for card in context.player.played
                     if isinstance(card, Sheep)
+                    and next(
+                        (
+                            effect
+                            for effect in card.effects
+                            if isinstance(effect, Activated)
+                        ),
+                        None,
+                    )
+                    is None
                 ],
                 card=desperate_shepherd,
                 player=player,
@@ -109,7 +119,7 @@ class DesperateShepherd(Card):
                     name=f"Verify '{BundleOfWool.name}' held",
                     held_type=BundleOfWool,
                     accept_n=1,
-                    require_n=True,
+                    require_n=False,
                     card=desperate_shepherd,
                     player=player,
                 ),

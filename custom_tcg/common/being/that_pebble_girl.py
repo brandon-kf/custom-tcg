@@ -82,7 +82,7 @@ class ThatPebbleGirl(Card):
                     name=f"Verify {PileOfRocks.name} is held",
                     held_type=PileOfRocks,
                     accept_n=1,
-                    require_n=True,
+                    require_n=False,
                     card=that_pebble_girl,
                     player=player,
                 ),

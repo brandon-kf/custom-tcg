@@ -63,7 +63,7 @@ class TheStewmaker(Card):
                                 cards_to_discard=SelectByChoice(
                                     name="Cook two food items",
                                     accept_n=2,
-                                    require_n=True,
+                                    require_n=False,
                                     options=lambda context: [
                                         card
                                         for card in context.player.played

@@ -61,7 +61,7 @@ class ApprenticeCarpenter(Card):
                         name=f"Verify 2 copies of '{PileOfWood.name}' held",
                         held_type=PileOfWood,
                         accept_n=2,
-                        require_n=True,
+                        require_n=False,
                         card=carp,
                         player=player,
                     ),

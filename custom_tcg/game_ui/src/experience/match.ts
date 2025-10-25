@@ -192,7 +192,7 @@ export default class Match extends Experience {
             eventLog.push(actionExecuted)
 
             const actionData = actionExecuted.actionContext!.action
-            console.log(`Action '%s' from '%s' executed.`, actionData.type, actionData.card!.name)
+            console.log(`Action '%s' of type '%s' from '%s' executed.`, actionData.name, actionData.type, actionData.card!.name)
         }
 
         const choiceRequested = new ChoiceRequestedEvent()

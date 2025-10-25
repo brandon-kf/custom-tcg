@@ -53,7 +53,7 @@ class EarlyArchitect(Card):
                                 name=f"Verify 2 {PileOfRocks.name} held",
                                 held_type=PileOfRocks,
                                 accept_n=2,
-                                require_n=True,
+                                require_n=False,
                                 card=early_architect,
                                 player=player,
                             ),

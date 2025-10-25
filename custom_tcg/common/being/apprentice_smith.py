@@ -58,7 +58,7 @@ class ApprenticeSmith(Card):
                         name=f"Verify 2 copies of '{PileOfRocks.name}' is held",
                         held_type=PileOfRocks,
                         accept_n=2,
-                        require_n=True,
+                        require_n=False,
                         card=smith,
                         player=player,
                     ),

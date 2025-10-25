@@ -60,12 +60,12 @@ class QuestionableButcher(Card):
                         cards_to_discard=SelectByChoice(
                             name="Select a being to butcher?",
                             accept_n=1,
-                            require_n=True,
+                            require_n=False,
                             options=lambda context: [
                                 card
                                 for card in context.player.played
                                 if CardTypeDef.being in card.types
-                                and card != butcher
+                                and card is not butcher
                             ],
                             card=butcher,
                             player=player,

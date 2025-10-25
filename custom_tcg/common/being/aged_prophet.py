@@ -70,7 +70,7 @@ class AgedProphet(Card):
                         name=f"Verify a '{Pebble.name}' is held",
                         held_type=Pebble,
                         accept_n=1,
-                        require_n=True,
+                        require_n=False,
                         card=aged_prophet,
                         player=player,
                     ),
