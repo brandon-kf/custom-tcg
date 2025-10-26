@@ -1,1 +1,1 @@
-"""Tests for common actions and effects."""
+"""Test package for `custom_tcg.common` components."""
