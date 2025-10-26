@@ -4,6 +4,7 @@ from unittest.mock import Mock
 
 from custom_tcg.common.action.drop import Drop
 from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.core.effect.remove_effect import RemoveEffect
 
 
 def test_drop_removes_held_effect() -> None:
@@ -17,7 +18,10 @@ def test_drop_removes_held_effect() -> None:
 
     target = Mock(name="TargetCard")
     target.name = "Target"
-    target.effects = [Mock(spec=IHeld)]
+
+    effect = Mock(spec=IHeld)
+    effect.name = "HeldEffect"
+    target.effects = [effect]
 
     context = Mock(name="ExecutionContext")
 
@@ -27,9 +31,6 @@ def test_drop_removes_held_effect() -> None:
     # It should call execute once with a RemoveEffect action
     assert context.execute.call_count == 1
     remove = context.execute.call_args.kwargs["action"]
-    from custom_tcg.core.effect.remove_effect import (
-        RemoveEffect,
-    )
 
     assert isinstance(remove, RemoveEffect)
     assert remove.card_to_remove_from is target
