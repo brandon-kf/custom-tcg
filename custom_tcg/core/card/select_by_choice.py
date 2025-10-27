@@ -83,6 +83,7 @@ class SelectByChoice(Select):
         self.confirm_action.state = ActionStateDef.not_started
         self.cancel_action.state = ActionStateDef.not_started
         self.choice_actions = []
+        self.n = 0
 
     @override
     def speculate(self: SelectByChoice) -> bool:
@@ -91,7 +92,9 @@ class SelectByChoice(Select):
     @override
     def enter(self: SelectByChoice, context: IExecutionContext) -> None:
         """Create selector choices."""
-        super().enter(context=context)
+        # Explicitly DO NOT call the super class.
+
+        self.options = self.create_options(context)
 
         self.choice_actions = [
             *(
@@ -129,6 +132,11 @@ class SelectByChoice(Select):
         elif self.confirm_action.state == ActionStateDef.completed:
             self.confirm_action.state = ActionStateDef.not_started
 
+            for action in self.choice_actions:
+                action.state = ActionStateDef.not_started
+
+            self.selected = []
+            self.n = 0
             context.choices = list(self.choice_actions)
 
             self.state = ActionStateDef.input_requested

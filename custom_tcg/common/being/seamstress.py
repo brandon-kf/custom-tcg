@@ -115,7 +115,7 @@ class Seamstress(Card):
                 card=seamstress,
                 strength=2,
                 dexterity=3,
-                constitution=3,
+                constitution=4,
                 intelligence=2,
                 wisdom=3,
                 charisma=3,

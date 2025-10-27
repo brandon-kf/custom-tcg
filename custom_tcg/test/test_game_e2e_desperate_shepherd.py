@@ -186,28 +186,13 @@ def _choose_option_then_confirm(
         )
         if option is not None:
             g.choose(option)
-            confirm = next(
-                (c for c in g.context.choices if c.name == "Confirm"),
-                None,
-            )
-            if confirm is not None:
-                g.choose(confirm)
-                return True
-
-        cancel = next(
-            (c for c in g.context.choices if c.name == "Cancel"),
+        confirm = next(
+            (c for c in g.context.choices if c.name == "Confirm"),
             None,
         )
-        if cancel is not None:
-            g.choose(cancel)
-        else:
-            other = next(
-                (c for c in g.context.choices if c.name != "End Process"),
-                None,
-            )
-            if other is None:
-                return False
-            g.choose(other)
+        if confirm is not None:
+            g.choose(confirm)
+            return True
 
         steps += 1
 
@@ -233,8 +218,7 @@ def _choose_option_n_then_confirm(
         if option is not None and chosen < count:
             g.choose(option)
             chosen += 1
-            # loop to select again before confirming
-        else:
+        if chosen == count:
             confirm = next(
                 (c for c in g.context.choices if c.name == "Confirm"),
                 None,
@@ -245,22 +229,6 @@ def _choose_option_n_then_confirm(
                 # choices restored
                 if chosen >= count:
                     return True
-
-        cancel = next(
-            (c for c in g.context.choices if c.name == "Cancel"),
-            None,
-        )
-        if cancel is not None and chosen < count:
-            # continue exploring; typically we won't need cancel here
-            g.choose(cancel)
-        else:
-            other = next(
-                (c for c in g.context.choices if c.name != "End Process"),
-                None,
-            )
-            if other is None:
-                return chosen >= count
-            g.choose(other)
 
         steps += 1
 
@@ -336,18 +304,18 @@ def _activate_seamstress(
     _choose_by_name_contains(g, "Activate from card 'Seamstress'")
 
     if find_cord:
-        # Discard Ball of Wool (cost)
-        assert _choose_option_then_confirm(
-            g,
-            "Select 'Ball of Wool'",
-            max_steps=60,
-        ), "Expected to select Ball of Wool to discard"
         # Choose to create Cord
         assert _choose_option_then_confirm(
             g,
             "Select 'Cord'",
             max_steps=60,
         ), "Expected to select 'Cord' and confirm"
+        # Discard Ball of Wool (cost)
+        assert _choose_option_then_confirm(
+            g,
+            "Select 'Ball of Wool'",
+            max_steps=60,
+        ), "Expected to select Ball of Wool to discard"
 
         cords = [c for c in g.context.player.played if isinstance(c, Cord)]
         assert cords, "Expected a Cord to be created"
@@ -355,22 +323,44 @@ def _activate_seamstress(
         assert held is not None
         assert held.card_held_by.name == "Seamstress"
     else:
-        _step_until_available(g, "Select 'Cord'", max_steps=60)
+        assert _choose_option_then_confirm(
+            g,
+            "Cancel",
+            max_steps=60,
+        ), "Attempt to cancel Cord creation"
 
     if find_cloth:
-        # Discard 2 Cords (cost requires accept_n=2)
-        assert _choose_option_n_then_confirm(
-            g,
-            "Select 'Cord'",
-            2,
-            max_steps=80,
-        ), "Expected to select two 'Cord' cards and confirm"
-        # Choose to create Cloth
+        # Choose to create Cloth first (selector before cost per engine order)
+        # Select 'Cloth' (some flows may re-prompt; try once more if needed)
         assert _choose_option_then_confirm(
             g,
             "Select 'Cloth'",
             max_steps=60,
         ), "Expected to select 'Cloth' and confirm"
+        success = _choose_option_n_then_confirm(
+            g,
+            "Select 'Cord'",
+            2,
+            max_steps=80,
+        )
+        if not success:
+            available = [c.name for c in g.context.choices]
+            cords_all = [
+                c for c in g.context.player.played if isinstance(c, Cord)
+            ]
+            held_cords = [
+                c
+                for c in cords_all
+                for e in c.effects
+                if isinstance(e, Held) and e.card_held_by.name == "Seamstress"
+            ]
+            msg = (
+                "Expected to select two 'Cord' cards and confirm. "
+                f"Choices: {available}; "
+                f"cords_in_play={len(cords_all)}, "
+                f"held_by_seamstress={len(held_cords)}"
+            )
+            raise AssertionError(msg)
 
         cloths = [c for c in g.context.player.played if isinstance(c, Cloth)]
         assert cloths, "Expected a Cloth to be created"
@@ -394,7 +384,6 @@ def test_shepherd_to_seamstress_crafting(game: Game) -> None:
         "Activate from card 'Peasant' action(s): 'Draw 1 card'",
     )
     _play_card(g, "Desperate Shepherd")
-    _activate_desperate_shepherd(g, True)
     _end_current_process(g)  # End Play
     _end_current_process(g)  # End Rest
 
@@ -408,11 +397,12 @@ def test_shepherd_to_seamstress_crafting(game: Game) -> None:
         "Activate from card 'Peasant' action(s): 'Draw 1 card'",
     )
     _play_card(g, "Seamstress")
-    _ds_search_for_sheep(g)
-    _ds_separate_ball_and_deliver_to_seamstress(g)
-    _step_until_available(g, max_steps=60)
-    _seamstress_find_cord(g)
-    _step_until_available(g, max_steps=60)
+    _activate_desperate_shepherd(
+        g,
+        separate=True,
+        deliver=("Seamstress", "Ball of Wool"),
+    )
+    _activate_seamstress(g, find_cord=True)
     _end_current_process(g)
     _end_current_process(g)
 
@@ -420,12 +410,13 @@ def test_shepherd_to_seamstress_crafting(game: Game) -> None:
     _end_current_process(g)
     _end_current_process(g)
 
-    # Turn 5 (P1): Shear a sheep, deliver, find cord
-    _ds_search_for_sheep(g)
-    _ds_separate_ball_and_deliver_to_seamstress(g)
-    _step_until_available(g, max_steps=60)
-    _seamstress_find_cord(g)
-    _step_until_available(g, max_steps=60)
+    # Turn 5 (P1): Shear a sheep, deliver, find cord (second copy)
+    _activate_desperate_shepherd(
+        g,
+        separate=True,
+        deliver=("Seamstress", "Ball of Wool"),
+    )
+    _activate_seamstress(g, find_cord=True, find_cloth=False)
     _end_current_process(g)
     _end_current_process(g)
 
@@ -433,8 +424,7 @@ def test_shepherd_to_seamstress_crafting(game: Game) -> None:
     _end_current_process(g)
     _end_current_process(g)
 
-    # Turn 7 (P1 / Seamstress): Find cloth
-    _seamstress_find_cloth_from_two_cords(g)
-    _step_until_available(g, max_steps=60)
+    # Turn 7 (P1): Weave cords into cloth using two held cords
+    _activate_seamstress(g, find_cloth=True)
     _end_current_process(g)
     _end_current_process(g)
