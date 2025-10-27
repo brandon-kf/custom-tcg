@@ -330,54 +330,55 @@ def _activate_desperate_shepherd(
 
 def _activate_seamstress(
     g: Game,
-    find_cord: bool = False,
-    find_cloth: bool = False,
+    find_cord: bool = False,  # noqa: FBT001, FBT002
+    find_cloth: bool = False,  # noqa: FBT001, FBT002
 ) -> None:
     _choose_by_name_contains(g, "Activate from card 'Seamstress'")
 
+    if find_cord:
+        # Discard Ball of Wool (cost)
+        assert _choose_option_then_confirm(
+            g,
+            "Select 'Ball of Wool'",
+            max_steps=60,
+        ), "Expected to select Ball of Wool to discard"
+        # Choose to create Cord
+        assert _choose_option_then_confirm(
+            g,
+            "Select 'Cord'",
+            max_steps=60,
+        ), "Expected to select 'Cord' and confirm"
 
-def _seamstress_find_cord(g: Game) -> None:
-    # Discard Ball of Wool (cost)
-    assert _choose_option_then_confirm(
-        g,
-        "Select 'Ball of Wool'",
-        max_steps=60,
-    ), "Expected to select Ball of Wool to discard"
-    # Choose to create Cord
-    assert _choose_option_then_confirm(
-        g,
-        "Select 'Cord'",
-        max_steps=60,
-    ), "Expected to select 'Cord' and confirm"
+        cords = [c for c in g.context.player.played if isinstance(c, Cord)]
+        assert cords, "Expected a Cord to be created"
+        held = next((e for e in cords[0].effects if isinstance(e, Held)), None)
+        assert held is not None
+        assert held.card_held_by.name == "Seamstress"
+    else:
+        _step_until_available(g, "Select 'Cord'", max_steps=60)
 
-    cords = [c for c in g.context.player.played if isinstance(c, Cord)]
-    assert cords, "Expected a Cord to be created"
-    held = next((e for e in cords[0].effects if isinstance(e, Held)), None)
-    assert held is not None
-    assert held.card_held_by.name == "Seamstress"
+    if find_cloth:
+        # Discard 2 Cords (cost requires accept_n=2)
+        assert _choose_option_n_then_confirm(
+            g,
+            "Select 'Cord'",
+            2,
+            max_steps=80,
+        ), "Expected to select two 'Cord' cards and confirm"
+        # Choose to create Cloth
+        assert _choose_option_then_confirm(
+            g,
+            "Select 'Cloth'",
+            max_steps=60,
+        ), "Expected to select 'Cloth' and confirm"
 
+        cloths = [c for c in g.context.player.played if isinstance(c, Cloth)]
+        assert cloths, "Expected a Cloth to be created"
+        held = next((e for e in cloths[0].effects if isinstance(e, Held)), None)
+        assert held is not None
+        assert held.card_held_by.name == "Seamstress"
 
-def _seamstress_find_cloth_from_two_cords(g: Game) -> None:
-    _choose_by_name_contains(g, "Activate from card 'Seamstress'")
-    # Discard 2 Cords (cost requires accept_n=2)
-    assert _choose_option_n_then_confirm(
-        g,
-        "Select 'Cord'",
-        2,
-        max_steps=80,
-    ), "Expected to select two 'Cord' cards and confirm"
-    # Choose to create Cloth
-    assert _choose_option_then_confirm(
-        g,
-        "Select 'Cloth'",
-        max_steps=60,
-    ), "Expected to select 'Cloth' and confirm"
-
-    cloths = [c for c in g.context.player.played if isinstance(c, Cloth)]
-    assert cloths, "Expected a Cloth to be created"
-    held = next((e for e in cloths[0].effects if isinstance(e, Held)), None)
-    assert held is not None
-    assert held.card_held_by.name == "Seamstress"
+    _step_until_available(g, max_steps=60)
 
 
 def test_shepherd_to_seamstress_crafting(game: Game) -> None:
@@ -393,8 +394,7 @@ def test_shepherd_to_seamstress_crafting(game: Game) -> None:
         "Activate from card 'Peasant' action(s): 'Draw 1 card'",
     )
     _play_card(g, "Desperate Shepherd")
-    _ds_search_for_sheep(g)
-    _step_until_available(g, max_steps=60)
+    _activate_desperate_shepherd(g, True)
     _end_current_process(g)  # End Play
     _end_current_process(g)  # End Rest
 
