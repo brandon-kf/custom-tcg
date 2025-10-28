@@ -5,13 +5,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from custom_tcg.common.action.find import Find
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.effect.interface import IHeld
 from custom_tcg.common.item.stew import Stew
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.discard import Discard
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -42,47 +42,39 @@ class TheStewmaker(Card):
             Play(card=stew, player=player),
         )
 
-        # Find Cord and Cloth, at a cost.
+        # Cook Stew, at a cost (require foods held by The Stewmaker).
         stew.actions.append(
             Activate(
                 actions=[
                     Find(
                         name=f"Cook a '{Stew.name}'",
                         finder=stew,
-                        cards_to_find=Selector(
+                        cards_to_find=SelectByChoice(
                             name=f"Cook a '{Stew.name}'?",
-                            accept_n=lambda n: n == 1,
+                            accept_n=1,
                             require_n=False,
                             options=[Stew],
                             card=stew,
                             player=player,
                         ),
                         costs=[
-                            HeldEvaluator(
+                            Discard(
                                 name="Discard two food items",
-                                require_cards=Selector(
+                                cards_to_discard=SelectByChoice(
                                     name="Cook two food items",
-                                    accept_n=lambda n: n == 2,  # noqa: PLR2004
+                                    accept_n=2,
                                     require_n=False,
                                     options=lambda context: [
-                                        card
-                                        for card in context.player.played
-                                        if CardClassDef.food in card.classes
-                                        and next(
-                                            (
-                                                effect
-                                                for effect in card.effects
-                                                if isinstance(effect, IHeld)
-                                            ),
-                                            None,
-                                        )
-                                        is None
+                                        item
+                                        for item in context.player.played
+                                        for effect in item.effects
+                                        if CardClassDef.food in item.classes
+                                        and isinstance(effect, IHeld)
+                                        and effect.card_held_by is stew
                                     ],
                                     card=stew,
                                     player=player,
                                 ),
-                                require_n=2,
-                                consume=True,
                                 card=stew,
                                 player=player,
                             ),

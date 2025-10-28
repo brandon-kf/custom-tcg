@@ -4,14 +4,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from custom_tcg.common.action.deliver import Deliver
 from custom_tcg.common.action.find import Find
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.extra_rations import ExtraRations
 from custom_tcg.common.item.pelt import Pelt
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.cost_evaluator import CostEvaluator
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.discard import Discard
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -50,30 +51,31 @@ class QuestionableButcher(Card):
                         name="Chop chop",
                         finder=butcher,
                         cards_to_find=[ExtraRations, Pelt],
+                        costs=[
+                            Discard(
+                                name="Select a being to butcher",
+                                cards_to_discard=SelectByChoice(
+                                    name="Select a being to butcher?",
+                                    accept_n=1,
+                                    require_n=False,
+                                    options=lambda context: [
+                                        card
+                                        for card in context.player.played
+                                        if CardTypeDef.being in card.types
+                                        and card is not butcher
+                                    ],
+                                    card=butcher,
+                                    player=player,
+                                ),
+                                card=butcher,
+                                player=player,
+                            ),
+                        ],
                         card=butcher,
                         player=player,
                     ),
-                ],
-                costs=[
-                    CostEvaluator(
-                        name="Select a being to butcher",
-                        require_cards=Selector(
-                            name="Select a being to butcher?",
-                            accept_n=lambda n: n == 1,
-                            require_n=False,
-                            options=lambda context: [
-                                card
-                                for card in context.player.played
-                                if CardTypeDef.being in card.types
-                            ],
-                            card=butcher,
-                            player=player,
-                        ),
-                        require_n=1,
-                        consume=True,
-                        card=butcher,
-                        player=player,
-                    ),
+                    # Allow delivering items the butcher holds to other beings
+                    Deliver(card=butcher, player=player),
                 ],
                 card=butcher,
                 player=player,

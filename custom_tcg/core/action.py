@@ -30,13 +30,15 @@ class Action(IAction):
         """Create an action."""
         self.session_object_id = uuid4().hex
         self.name = name or "Action"
-        self.card = card.register(action=self)
+        self.card = card
         self.player = player
         self.state = state or ActionStateDef.not_started
         self.bind = bind
         self.notify = []
         self.selectors = []
         self.costs = costs or []
+
+        self.card.register(action=self)
 
         if self.state not in (
             ActionStateDef.not_started,
@@ -58,6 +60,9 @@ class Action(IAction):
     def reset_state(self: Action) -> None:
         """Reset any stored information that is stateful."""
         self.change_state(state=ActionStateDef.not_started)
+
+        for action in (*self.selectors, *self.costs):
+            action.reset_state()
 
     @override
     def queue(self: Action, context: IExecutionContext) -> None:

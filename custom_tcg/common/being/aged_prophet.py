@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
+from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.pebble import Pebble
@@ -44,12 +44,23 @@ class AgedProphet(Card):
             Activate(
                 actions=[
                     AddEffect(
+                        name=f"Admire a {Pebble.name}",
                         effect_to_add=BeingStats(
                             name="Wisdom of Admiration",
                             card=aged_prophet,
                             wisdom=1,
                         ),
                         card_to_add_to=aged_prophet,
+                        costs=[
+                            SelectByHeld(
+                                name=f"Verify a '{Pebble.name}' is held",
+                                held_type=Pebble,
+                                accept_n=1,
+                                require_n=False,
+                                card=aged_prophet,
+                                player=player,
+                            ),
+                        ],
                         card=aged_prophet,
                         player=player,
                     ),
@@ -64,16 +75,6 @@ class AgedProphet(Card):
                         isinstance(effect, Activated) for effect in card.effects
                     )
                 ),
-                costs=[
-                    HeldEvaluator(
-                        name="Admire a pebble",
-                        require_cards=Pebble,
-                        require_n=1,
-                        consume=False,
-                        card=aged_prophet,
-                        player=player,
-                    ),
-                ],
             ),
         )
 

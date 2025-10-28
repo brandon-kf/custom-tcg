@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 
 from custom_tcg.common.action.deliver import Deliver
 from custom_tcg.common.action.find import Find
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
 from custom_tcg.common.action.search import Search
+from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.flint import Flint
@@ -15,7 +15,7 @@ from custom_tcg.common.item.pebble import Pebble
 from custom_tcg.common.item.pile_of_rocks import PileOfRocks
 from custom_tcg.common.item.stone import Stone
 from custom_tcg.core.card.card import Card
-from custom_tcg.core.card.selector import Selector
+from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
@@ -69,19 +69,20 @@ class ThatPebbleGirl(Card):
         separate_a_base_material: IAction = Find(
             name="Separate a 'Stone' or 'Pebble' from 'Pile of Rocks'",
             finder=that_pebble_girl,
-            cards_to_find=Selector(
+            cards_to_find=SelectByChoice(
                 name="Select 'Stone' or 'Pebble'",
-                accept_n=lambda n: n == 1,
+                accept_n=1,
                 require_n=False,
                 options=[Stone, Pebble],
                 card=that_pebble_girl,
                 player=player,
             ),
             costs=[
-                HeldEvaluator(
-                    require_cards=PileOfRocks,
-                    require_n=1,
-                    consume=False,
+                SelectByHeld(
+                    name=f"Verify {PileOfRocks.name} is held",
+                    held_type=PileOfRocks,
+                    accept_n=1,
+                    require_n=False,
                     card=that_pebble_girl,
                     player=player,
                 ),

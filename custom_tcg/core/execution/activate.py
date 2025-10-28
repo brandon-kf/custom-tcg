@@ -1,13 +1,12 @@
-"""Activate an action."""
+"""Activate a card for effect."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
 from custom_tcg.core.action import Action
+from custom_tcg.core.card.tap import Tap
 from custom_tcg.core.dimension import ActionStateDef, CardTypeDef
-from custom_tcg.core.effect.add_effect import AddEffect
-from custom_tcg.core.effect.effect import Activated
 from custom_tcg.core.execution.resolve import Resolve
 from custom_tcg.core.interface import IAction
 
@@ -23,15 +22,15 @@ if TYPE_CHECKING:
 
 
 class Activate(Action):
-    """Activate an action."""
+    """Activate a card for effect."""
 
     actions: list[IAction]
 
     def __init__(
         self: Activate,
-        actions: list[IAction],
         card: ICard,
         player: IPlayer,
+        actions: list[IAction],
         bind: Callable[[IAction, ICard, IPlayer], bool] | None = None,
         costs: list[IAction] | None = None,
     ) -> None:
@@ -66,9 +65,8 @@ class Activate(Action):
             append_queue = context.ready
 
         activated_actions: list[IAction] = [
-            AddEffect(
-                effect_to_add=Activated(card=self.card),
-                card_to_add_to=self.card,
+            Tap(
+                cards_to_activate=[self.card],
                 card=self.card,
                 player=self.player,
             ),

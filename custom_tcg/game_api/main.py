@@ -11,16 +11,16 @@ import socketio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from custom_tcg.main import setup
+from custom_tcg.common.player import p1, p2
+from custom_tcg.core.game import ActionStateDef
+from custom_tcg.core.game import Game as CoreGame
+from custom_tcg.core.interface import IAction, IActionContext, IPlayer
 from custom_tcg.game_api.response.action_context import ActionContext
 from custom_tcg.game_api.response.choice import Choice
 from custom_tcg.game_api.response.game import Game
 from custom_tcg.game_api.response.player import Player
 from custom_tcg.game_api.socket_action_queue import SocketActionQueue
-from custom_tcg.common.player import p1, p2
-from custom_tcg.core.interface import IAction, IActionContext, IPlayer
-from custom_tcg.game import ActionStateDef
-from custom_tcg.game import Game as CoreGame
+from custom_tcg.main import setup
 
 setup()
 
@@ -158,7 +158,7 @@ async def send_new_action_executions(
     logger.info("Searching for events.")
 
     new_actions: list[IActionContext] = cast(
-        list[IActionContext],
+        "list[IActionContext]",
         session_context.game.context.completed,
     )[session_context.completed_queue_index + 1 :]
 

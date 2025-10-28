@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from custom_tcg.common.action.find import Find
-from custom_tcg.common.action.held_evaluator import HeldEvaluator
+from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.pile_of_rocks import PileOfRocks
@@ -49,10 +49,11 @@ class EarlyArchitect(Card):
                         card=early_architect,
                         player=player,
                         costs=[
-                            HeldEvaluator(
-                                require_cards=PileOfRocks,
-                                require_n=2,
-                                consume=True,
+                            SelectByHeld(
+                                name=f"Verify 2 {PileOfRocks.name} held",
+                                held_type=PileOfRocks,
+                                accept_n=2,
+                                require_n=False,
                                 card=early_architect,
                                 player=player,
                             ),

@@ -32,7 +32,7 @@ class Hold(Action):
     card_to_hold: ICard
     card_holding: ICard
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self: Hold,
         card_to_hold: ICard,
         card_holding: ICard,

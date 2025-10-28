@@ -1,3 +1,15 @@
+[project]
+name = "custom-tcg"
+version = "0.1.0"
+description = "A custom trading card game."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.120.0",
+    "python-dotenv>=1.1.1",
+    "python-socketio>=5.14.2",
+]
+
 [tool.ruff]
 line-length = 80
 
@@ -7,3 +19,9 @@ ignore = ["S101"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["I001", "F401"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "ruff>=0.14.2",
+]
