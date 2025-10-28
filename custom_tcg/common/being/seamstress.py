@@ -19,7 +19,7 @@ from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
 
 if TYPE_CHECKING:
-    from custom_tcg.core.interface import IPlayer
+    from custom_tcg.core.interface import IAction, IPlayer
 
 
 class Seamstress(Card):
@@ -41,69 +41,72 @@ class Seamstress(Card):
             Play(card=seamstress, player=player),
         )
 
+        # Can craft Cord from a ball of wool.
+        find_cord: IAction = Find(
+            name=f"Wind fibers into '{Cord.name}'",
+            finder=seamstress,
+            cards_to_find=SelectByChoice(
+                name=f"Wind fibers into '{Cord.name}'?",
+                accept_n=1,
+                require_n=False,
+                options=[Cord],
+                card=seamstress,
+                player=player,
+            ),
+            costs=[
+                Discard(
+                    name=f"Discard a {BallOfWool.name}",
+                    cards_to_discard=SelectByHeld(
+                        name=f"Verify {BallOfWool.name} is held",
+                        held_type=BallOfWool,
+                        accept_n=1,
+                        require_n=False,
+                        card=seamstress,
+                        player=player,
+                    ),
+                    card=seamstress,
+                    player=player,
+                ),
+            ],
+            card=seamstress,
+            player=player,
+        )
+
+        # Can craft Cloth from two cords.
+        find_cloth: IAction = Find(
+            name=f"Weave cords into '{Cloth.name}'",
+            finder=seamstress,
+            cards_to_find=SelectByChoice(
+                name=f"Weave cords into '{Cloth.name}'?",
+                accept_n=1,
+                require_n=False,
+                options=[Cloth],
+                card=seamstress,
+                player=player,
+            ),
+            costs=[
+                Discard(
+                    name=f"Discard 2 copies of '{Cord.name}'",
+                    cards_to_discard=SelectByHeld(
+                        name=f"Verify 2 copies of {Cord.name} held",
+                        held_type=Cord,
+                        accept_n=2,
+                        require_n=False,
+                        card=seamstress,
+                        player=player,
+                    ),
+                    card=seamstress,
+                    player=player,
+                ),
+            ],
+            card=seamstress,
+            player=player,
+        )
+
         # Find Cord and Cloth, at a cost.
         seamstress.actions.append(
             Activate(
-                actions=[
-                    Find(
-                        name=f"Wind fibers into '{Cord.name}'",
-                        finder=seamstress,
-                        cards_to_find=SelectByChoice(
-                            name=f"Wind fibers into '{Cord.name}'?",
-                            accept_n=1,
-                            require_n=False,
-                            options=[Cord],
-                            card=seamstress,
-                            player=player,
-                        ),
-                        costs=[
-                            Discard(
-                                name=f"Discard a {BallOfWool.name}",
-                                cards_to_discard=SelectByHeld(
-                                    name=f"Verify {BallOfWool.name} is held",
-                                    held_type=BallOfWool,
-                                    accept_n=1,
-                                    require_n=False,
-                                    card=seamstress,
-                                    player=player,
-                                ),
-                                card=seamstress,
-                                player=player,
-                            ),
-                        ],
-                        card=seamstress,
-                        player=player,
-                    ),
-                    Find(
-                        name=f"Weave cords into '{Cloth.name}'",
-                        finder=seamstress,
-                        cards_to_find=SelectByChoice(
-                            name=f"Weave cords into '{Cloth.name}'?",
-                            accept_n=1,
-                            require_n=False,
-                            options=[Cloth],
-                            card=seamstress,
-                            player=player,
-                        ),
-                        costs=[
-                            Discard(
-                                name=f"Discard 2 copies of '{Cord.name}'",
-                                cards_to_discard=SelectByHeld(
-                                    name=f"Verify 2 copies of {Cord.name} held",
-                                    held_type=Cord,
-                                    accept_n=2,
-                                    require_n=False,
-                                    card=seamstress,
-                                    player=player,
-                                ),
-                                card=seamstress,
-                                player=player,
-                            ),
-                        ],
-                        card=seamstress,
-                        player=player,
-                    ),
-                ],
+                actions=[find_cord, find_cloth],
                 card=seamstress,
                 player=player,
             ),

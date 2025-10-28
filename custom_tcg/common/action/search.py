@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, override
 
 from custom_tcg.common.action.find import Find
 from custom_tcg.core.action import Action
-from custom_tcg.game import ActionStateDef
+from custom_tcg.core.dimension import ActionStateDef
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     )
 
 
+# TODO: Composition isn't necessarily needed here, could inherit from Find directly.  # noqa: E501, FIX002, TD002, TD003
 class Search(Action):
     """Search for an item card and find on success."""
 

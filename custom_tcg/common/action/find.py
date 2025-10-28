@@ -57,13 +57,6 @@ class Find(Action):
             self.selectors.append(cards_to_find)
 
     @override
-    def reset_state(self: Find) -> None:
-        super().reset_state()
-
-        if isinstance(self.cards_to_find, Select):
-            self.cards_to_find.reset_state()
-
-    @override
     def enter(self: Find, context: IExecutionContext) -> None:
         super().enter(context=context)
 

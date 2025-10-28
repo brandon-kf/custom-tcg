@@ -19,7 +19,9 @@ from custom_tcg.common.being.the_stewmaker import TheStewmaker
 from custom_tcg.core.anon import Deck, Player
 from custom_tcg.core.process.lets_play import LetsPlay
 from custom_tcg.core.process.lets_rest import LetsRest
-from custom_tcg.feast_or_famine.card.compulsive_gatherer import CompulsiveGatherer
+from custom_tcg.feast_or_famine.card.compulsive_gatherer import (
+    CompulsiveGatherer,
+)
 
 
 def p1() -> Player:

@@ -89,16 +89,6 @@ class Deliver(Action):
                 self.selectors.append(dependency)
 
     @override
-    def reset_state(self: Deliver) -> None:
-        super().reset_state()
-
-        if isinstance(self.receiver, Select):
-            self.receiver.reset_state()
-
-        if isinstance(self.items, Select):
-            self.items.reset_state()
-
-    @override
     def enter(self: Deliver, context: IExecutionContext) -> None:
         super().enter(context=context)
 

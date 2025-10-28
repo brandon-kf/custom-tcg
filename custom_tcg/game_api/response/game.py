@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 from custom_tcg.game_api.response.player import Player
 
 if TYPE_CHECKING:
-    from custom_tcg.game import Game as CoreGame
+    from custom_tcg.core.game import Game as CoreGame
 
 
 class Game:

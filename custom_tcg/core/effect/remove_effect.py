@@ -21,7 +21,7 @@ class RemoveEffect(Action):
     effect_to_remove: IEffect
     card_to_remove_from: ICard
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self: RemoveEffect,
         effect_to_remove: IEffect,
         card_to_remove_from: ICard,

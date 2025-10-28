@@ -7,13 +7,13 @@ from secrets import randbelow
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
-from custom_tcg.core import util
 from custom_tcg.core.dimension import ActionStateDef
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.execution import ExecutionContext
 from custom_tcg.core.execution.play import Play
 from custom_tcg.core.execution.resolve import Resolve
 from custom_tcg.core.interface import IAction, IPlayer
+from custom_tcg.core.util import random
 
 if TYPE_CHECKING:
     from custom_tcg.core.interface import (
@@ -32,7 +32,7 @@ class Game:
     session_id: str
     players: list[IPlayer]
     context: IExecutionContext
-    prev_action: IAction
+    prev_action: IAction | None
     prev_count: int = 0
 
     def __init__(self: Game, players: list[IPlayer]) -> None:
@@ -40,7 +40,7 @@ class Game:
         self.session_id = uuid4().hex
         self.players = []
         self.context = ExecutionContext(players=players)
-        self.prev_action = self.context.player.main_cards[0].actions[0]
+        self.prev_action = None
 
         for player in players:
             self.add_player(player=player)
@@ -62,7 +62,7 @@ class Game:
     def setup(self: Game) -> None:
         """Perform game-wide setup for players."""
         for player in self.players:
-            player.main_cards = util.list_randomize(ordered=player.main_cards)
+            player.main_cards = random.list_randomize(ordered=player.main_cards)
         random_first_index: int = randbelow(
             exclusive_upper_bound=len(self.players),
         )
@@ -140,6 +140,7 @@ class Game:
 
             if (
                 len(self.context.ready) == 0
+                or self.prev_action is None
                 or self.context.ready[0] != self.prev_action
             ):
                 self.prev_count = 0
@@ -152,7 +153,7 @@ class Game:
 
 if __name__ == "__main__":
     from custom_tcg.common.player import p1, p2
-    from custom_tcg.game import Game
+    from custom_tcg.core.game import Game
     from custom_tcg.main import setup
 
     setup()

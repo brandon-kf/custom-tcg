@@ -44,12 +44,6 @@ class Discard(Action):
         self.selectors.append(cards_to_discard)
 
     @override
-    def reset_state(self: Discard) -> None:
-        super().reset_state()
-
-        self.cards_to_discard.reset_state()
-
-    @override
     def enter(self: Discard, context: IExecutionContext) -> None:
         super().enter(context=context)
 

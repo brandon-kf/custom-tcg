@@ -7,21 +7,21 @@ player turn order over three full turns (Play then Rest for a player).
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pytest
 
-from custom_tcg import game as game_mod
 from custom_tcg.common.being.aimless_wanderer import AimlessWanderer
 from custom_tcg.common.being.that_pebble_girl import ThatPebbleGirl
-from custom_tcg.core import util as util_mod
+from custom_tcg.core import game as game_mod
 from custom_tcg.core.anon import Deck, Player
+from custom_tcg.core.game import Game
 from custom_tcg.core.process.lets_play import LetsPlay
 from custom_tcg.core.process.lets_rest import LetsRest
-from custom_tcg.game import Game
-
-if TYPE_CHECKING:
-    from custom_tcg.core.interface import IAction
+from custom_tcg.core.util import random as util_mod
+from custom_tcg.core.util.e2e_test import (
+    choose_by_name_contains,
+    end_current_process,
+    step_until_available,
+)
 
 
 @pytest.fixture
@@ -100,62 +100,6 @@ def game(monkeypatch: pytest.MonkeyPatch) -> Game:
     return g
 
 
-def _end_current_process(g: Game) -> list[IAction]:
-    """Choose End Process for the current process and return next choices."""
-    choices = g.context.choices
-    end = next(c for c in choices if c.name == "End Process")
-    return g.choose(end)
-
-
-def _choose_by_name_contains(g: Game, text: str) -> list[IAction]:
-    """Choose the first action whose name contains the given text."""
-    action = next(c for c in g.context.choices if text in c.name)
-    return g.choose(action)
-
-
-def _step_until_end_available(g: Game, *, max_steps: int) -> None:
-    """Advance through dynamic choices until End Process is available again.
-
-    Prefer selecting Cancel when available. Asserts that choice lists change
-    at least once if End Process wasn't initially present.
-    """
-    initial_choices = [c.name for c in g.context.choices]
-    end_initially_present = any(n == "End Process" for n in initial_choices)
-    changed_observed = False
-
-    steps = 0
-    while True:
-        names = [c.name for c in g.context.choices]
-        if any(n == "End Process" for n in names):
-            break
-
-        # Prefer a cancel if available to move selectors along.
-        cancel = next(
-            (c for c in g.context.choices if c.name == "Cancel"),
-            None,
-        )
-        if cancel is not None:
-            g.choose(cancel)
-        else:
-            other = next(
-                (c for c in g.context.choices if c.name != "End Process"),
-                None,
-            )
-            if other is None:
-                break
-            g.choose(other)
-
-        new_names = [c.name for c in g.context.choices]
-        if new_names != names:
-            changed_observed = True
-
-        steps += 1
-        assert steps <= max_steps, "Exceeded dynamic choice step safety limit"
-
-    if not end_initially_present:
-        assert changed_observed, "Expected choices to change at least once"
-
-
 def test_three_full_turns_via_game_api(game: Game) -> None:
     """Drive three full turns: Play->Rest per turn, rotating players.
 
@@ -180,27 +124,27 @@ def test_three_full_turns_via_game_api(game: Game) -> None:
         # Execute specific non-End actions during Play
         if g.context.player.name == "Person 1":
             # Activate Aimless Wanderer (was auto-played during start)
-            _choose_by_name_contains(
+            choose_by_name_contains(
                 g,
                 "Activate from card 'Aimless Wanderer'",
             )
-            _step_until_end_available(g, max_steps=20)
+            step_until_available(g, max_steps=20)
         else:
             # Activate That Pebble Girl (was auto-played during start)
-            _choose_by_name_contains(
+            choose_by_name_contains(
                 g,
                 "Activate from card 'That Pebble Girl'",
             )
-            _step_until_end_available(g, max_steps=20)
+            step_until_available(g, max_steps=20)
 
         # End Let's Play for current player
-        choices = _end_current_process(g)
+        choices = end_current_process(g)
         assert choices, "Expected choices after ending Play process"
 
         # No additional Rest choices are expected; proceed to end Rest
 
         # End Let's Rest for current player
-        choices = _end_current_process(g)
+        choices = end_current_process(g)
         assert choices, "Expected choices after ending Rest process"
 
     # With deterministic randomness, the order should be p1 -> p2 -> p1

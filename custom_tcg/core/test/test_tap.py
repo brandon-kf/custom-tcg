@@ -83,7 +83,9 @@ def test_tap_constructor_single_card(
     :param mock_target_card: The mocked target card.
     :type mock_target_card: Mock
     """
+    card_name = Mock()
     action = Tap(
+        name=card_name,
         cards_to_activate=mock_target_card,
         card=mock_card,
         player=mock_player,
@@ -91,7 +93,7 @@ def test_tap_constructor_single_card(
     assert action.cards_to_activate is mock_target_card
     assert action.card is mock_card
     assert action.player is mock_player
-    assert action.name == "Discard cards"
+    assert action.name is card_name
     assert len(action.selectors) == 0
 
 

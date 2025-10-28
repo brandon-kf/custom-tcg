@@ -7,17 +7,13 @@ player turn order over three full turns (Play then Rest for a player).
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pytest
 
-from custom_tcg import game as game_mod
 from custom_tcg.common.player import p1, p2
-from custom_tcg.core import util as util_mod
-from custom_tcg.game import Game
-
-if TYPE_CHECKING:
-    from custom_tcg.core.interface import IAction
+from custom_tcg.core import game as game_mod
+from custom_tcg.core.game import Game
+from custom_tcg.core.util import random as util_mod
+from custom_tcg.core.util.e2e_test import end_current_process
 
 
 @pytest.fixture
@@ -39,13 +35,6 @@ def game(monkeypatch: pytest.MonkeyPatch) -> Game:
     g = Game(players=[p1(), p2()])
     g.setup()
     return g
-
-
-def _end_current_process(g: Game) -> list[IAction]:
-    """Choose End Process for the current process and return next choices."""
-    choices = g.context.choices
-    end = next(c for c in choices if c.name == "End Process")
-    return g.choose(end)
 
 
 def test_three_full_turns_via_game_api(game: Game) -> None:
@@ -70,11 +59,11 @@ def test_three_full_turns_via_game_api(game: Game) -> None:
         observed_turn_players.append(g.context.player.name)
 
         # End Let's Play for current player
-        choices = _end_current_process(g)
+        choices = end_current_process(g)
         assert choices, "Expected choices after ending Play process"
 
         # End Let's Rest for current player
-        choices = _end_current_process(g)
+        choices = end_current_process(g)
         assert choices, "Expected choices after ending Rest process"
 
     # With deterministic randomness, the order should be p1 -> p2 -> p1

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from custom_tcg.common.action.deliver import Deliver
 from custom_tcg.common.action.find import Find
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
@@ -50,29 +51,31 @@ class QuestionableButcher(Card):
                         name="Chop chop",
                         finder=butcher,
                         cards_to_find=[ExtraRations, Pelt],
+                        costs=[
+                            Discard(
+                                name="Select a being to butcher",
+                                cards_to_discard=SelectByChoice(
+                                    name="Select a being to butcher?",
+                                    accept_n=1,
+                                    require_n=False,
+                                    options=lambda context: [
+                                        card
+                                        for card in context.player.played
+                                        if CardTypeDef.being in card.types
+                                        and card is not butcher
+                                    ],
+                                    card=butcher,
+                                    player=player,
+                                ),
+                                card=butcher,
+                                player=player,
+                            ),
+                        ],
                         card=butcher,
                         player=player,
                     ),
-                ],
-                costs=[
-                    Discard(
-                        name="Select a being to butcher",
-                        cards_to_discard=SelectByChoice(
-                            name="Select a being to butcher?",
-                            accept_n=1,
-                            require_n=False,
-                            options=lambda context: [
-                                card
-                                for card in context.player.played
-                                if CardTypeDef.being in card.types
-                                and card is not butcher
-                            ],
-                            card=butcher,
-                            player=player,
-                        ),
-                        card=butcher,
-                        player=player,
-                    ),
+                    # Allow delivering items the butcher holds to other beings
+                    Deliver(card=butcher, player=player),
                 ],
                 card=butcher,
                 player=player,

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, override
 from custom_tcg.core.action import Action
 from custom_tcg.core.dimension import ActionStateDef
 from custom_tcg.core.interface import IExecutionContext
-from custom_tcg.core.util import list_randomize
+from custom_tcg.core.util.random import list_randomize
 
 if TYPE_CHECKING:
     from custom_tcg.core.interface import (
@@ -106,5 +106,5 @@ class Select(Action):
     def speculate(self: Select) -> bool:
         """Decide if this selection is even possible."""
         return (
-            self.require_n and len(self.options) > self.n
+            self.require_n and len(self.options) >= self.n
         ) or not self.require_n

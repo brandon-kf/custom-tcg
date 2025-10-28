@@ -61,6 +61,9 @@ class Action(IAction):
         """Reset any stored information that is stateful."""
         self.change_state(state=ActionStateDef.not_started)
 
+        for action in (*self.selectors, *self.costs):
+            action.reset_state()
+
     @override
     def queue(self: Action, context: IExecutionContext) -> None:
         """Change state to `ActionStateDef.queued`."""

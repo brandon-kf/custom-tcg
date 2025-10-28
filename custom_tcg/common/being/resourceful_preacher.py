@@ -41,10 +41,12 @@ class ResourcefulPreacher(Card):
             Play(card=preacher, player=player),
         )
 
+        # TODO: Transfer ownership of items? Make them holy by adding an effect to them?  # noqa: E501, FIX002, TD002, TD003
         preacher.actions.append(
             Activate(
                 actions=[
                     Draw(
+                        name="Become a fisher of people",
                         n=1,
                         card=preacher,
                         player=player,
@@ -52,7 +54,7 @@ class ResourcefulPreacher(Card):
                             Discard(
                                 name="Discard two items",
                                 cards_to_discard=SelectByChoice(
-                                    name="Select two items?",
+                                    name="Gift two holy symbols to a stranger?",
                                     accept_n=2,
                                     require_n=False,
                                     options=lambda context: [
@@ -83,9 +85,9 @@ class ResourcefulPreacher(Card):
                 strength=2,
                 dexterity=2,
                 constitution=2,
-                intelligence=2,
+                intelligence=3,
                 wisdom=2,
-                charisma=2,
+                charisma=4,
             ),
         )
 

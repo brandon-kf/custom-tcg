@@ -35,9 +35,9 @@ class Tap(Action):
         name: str | None = None,
         bind: Callable[[IAction, ICard, IPlayer], bool] | None = None,
     ) -> None:
-        """Create a discard cards action."""
+        """Create a tap cards action."""
         super().__init__(
-            name=name or "Discard cards",
+            name=name or "Tap card(s)",
             card=card,
             player=player,
             bind=bind,
@@ -47,13 +47,6 @@ class Tap(Action):
 
         if isinstance(cards_to_activate, Select):
             self.selectors.append(cards_to_activate)
-
-    @override
-    def reset_state(self: Tap) -> None:
-        super().reset_state()
-
-        if isinstance(self.cards_to_activate, Select):
-            self.cards_to_activate.reset_state()
 
     @override
     def enter(self: Tap, context: IExecutionContext) -> None:

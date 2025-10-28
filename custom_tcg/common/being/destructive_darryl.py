@@ -21,7 +21,7 @@ from custom_tcg.core.execution.play import Play
 from custom_tcg.core.interface import IPlayer
 
 if TYPE_CHECKING:
-    from custom_tcg.core.interface import IPlayer
+    from custom_tcg.core.interface import IAction, IPlayer
 
 
 class DestructiveDarryl(Card):
@@ -48,6 +48,61 @@ class DestructiveDarryl(Card):
 
         this_player: IPlayer = player
 
+        find_flint_and_wood_unheld: list[IAction] = [
+            Discard(
+                name=f"Verify an unheld {Flint.name} is found",
+                cards_to_discard=Select(
+                    name=f"Strike a {Flint.name}",
+                    n=1,
+                    require_n=True,
+                    options=lambda context: [
+                        card
+                        for card in context.player.played
+                        if isinstance(card, Flint)
+                        and next(
+                            (
+                                effect
+                                for effect in card.effects
+                                if isinstance(effect, IHeld)
+                            ),
+                            None,
+                        )
+                        is None
+                    ],
+                    card=darryl,
+                    player=player,
+                ),
+                card=darryl,
+                player=player,
+            ),
+            Discard(
+                name=f"Verify an unheld {PileOfWood.name} is found",
+                cards_to_discard=Select(
+                    name=f"Burn a {PileOfWood.name}",
+                    n=1,
+                    require_n=True,
+                    options=lambda context: [
+                        card
+                        for card in context.player.played
+                        if isinstance(card, PileOfWood)
+                        and next(
+                            (
+                                effect
+                                for effect in card.effects
+                                if isinstance(effect, IHeld)
+                            ),
+                            None,
+                        )
+                        is None
+                    ],
+                    card=darryl,
+                    player=player,
+                ),
+                card=darryl,
+                player=player,
+            ),
+        ]
+
         darryl.actions.append(
             Activate(
                 actions=[
@@ -58,6 +113,7 @@ class DestructiveDarryl(Card):
                         ),
                         finder=darryl,
                         cards_to_find=[Fire],
+                        costs=find_flint_and_wood_unheld,
                         card=darryl,
                         player=player,
                     ),
@@ -69,63 +125,10 @@ class DestructiveDarryl(Card):
                     and CardClassDef.play in card.classes
                     and player is this_player
                     and not any(
-                        isinstance(effect, Activated) for effect in card.effects
+                        isinstance(effect, Activated)
+                        for effect in darryl.effects
                     )
                 ),
-                costs=[
-                    Discard(
-                        name=f"Verify an unheld {Flint.name} is found",
-                        cards_to_discard=Select(
-                            name=f"Select a {Flint.name}",
-                            n=1,
-                            require_n=True,
-                            options=lambda context: [
-                                card
-                                for card in context.player.played
-                                if isinstance(card, Flint)
-                                and next(
-                                    (
-                                        effect
-                                        for effect in card.effects
-                                        if isinstance(effect, IHeld)
-                                    ),
-                                    None,
-                                )
-                                is None
-                            ],
-                            card=darryl,
-                            player=player,
-                        ),
-                        card=darryl,
-                        player=player,
-                    ),
-                    Discard(
-                        name=f"Verify an unheld {PileOfWood.name} is found",
-                        cards_to_discard=Select(
-                            name=f"Burn a {PileOfWood.name}",
-                            n=1,
-                            require_n=True,
-                            options=lambda context: [
-                                card
-                                for card in context.player.played
-                                if isinstance(card, PileOfWood)
-                                and next(
-                                    (
-                                        effect
-                                        for effect in card.effects
-                                        if isinstance(effect, IHeld)
-                                    ),
-                                    None,
-                                )
-                                is None
-                            ],
-                            card=darryl,
-                            player=player,
-                        ),
-                        card=darryl,
-                        player=player,
-                    ),
-                ],
             ),
         )
 

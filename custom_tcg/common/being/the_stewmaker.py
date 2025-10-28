@@ -42,7 +42,7 @@ class TheStewmaker(Card):
             Play(card=stew, player=player),
         )
 
-        # Find Cord and Cloth, at a cost.
+        # Cook Stew, at a cost (require foods held by The Stewmaker).
         stew.actions.append(
             Activate(
                 actions=[
@@ -65,18 +65,12 @@ class TheStewmaker(Card):
                                     accept_n=2,
                                     require_n=False,
                                     options=lambda context: [
-                                        card
-                                        for card in context.player.played
-                                        if CardClassDef.food in card.classes
-                                        and next(
-                                            (
-                                                effect
-                                                for effect in card.effects
-                                                if isinstance(effect, IHeld)
-                                            ),
-                                            None,
-                                        )
-                                        is None
+                                        item
+                                        for item in context.player.played
+                                        for effect in item.effects
+                                        if CardClassDef.food in item.classes
+                                        and isinstance(effect, IHeld)
+                                        and effect.card_held_by is stew
                                     ],
                                     card=stew,
                                     player=player,
