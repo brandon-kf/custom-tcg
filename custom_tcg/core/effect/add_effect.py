@@ -73,5 +73,4 @@ class AddEffect(Action):
                 if isinstance(self.effect_to_add, type)
                 else self.effect_to_add.copy(card=card)
             )
-            card.effects.append(created_effect)
             created_effect.activate(context=context)

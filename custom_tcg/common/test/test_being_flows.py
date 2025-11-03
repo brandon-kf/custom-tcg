@@ -97,11 +97,11 @@ def test_play_and_activate_finds_item_and_holds(player: Player) -> None:
         None,
     )
     assert held is not None
-    assert held.card_held is aw
+    assert held.card_holding is aw
 
     holding = next((e for e in aw.effects if isinstance(e, Holding)), None)
     assert holding is not None
-    assert holding.card_holding is pow_card
+    assert holding.card_held is pow_card
 
 
 def test_deliver_transfers_held_item(player: Player) -> None:
@@ -134,7 +134,7 @@ def test_deliver_transfers_held_item(player: Player) -> None:
         None,
     )
     assert held is not None
-    assert held.card_held is ea
+    assert held.card_holding is ea
     aw_holding = next(
         (e for e in aw.effects if isinstance(e, Holding)),
         None,
@@ -143,7 +143,7 @@ def test_deliver_transfers_held_item(player: Player) -> None:
 
     ea_holding = next((e for e in ea.effects if isinstance(e, Holding)), None)
     assert ea_holding is not None
-    assert ea_holding.card_holding is pow_card
+    assert ea_holding.card_held is pow_card
 
 
 def test_peasant_activate_draws_from_deck(player: Player) -> None:

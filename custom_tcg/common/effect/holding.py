@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-from custom_tcg.common.action.drop import Drop
-from custom_tcg.core.dimension import EffectStateDef
 from custom_tcg.core.effect.effect import Effect
 
 if TYPE_CHECKING:
@@ -17,7 +15,6 @@ class Holding(Effect):
 
     card_holding: ICard
     card_held: ICard
-    drop: Drop
 
     def __init__(
         self: Holding,
@@ -32,12 +29,6 @@ class Holding(Effect):
         )
         self.card_holding = card_holding
         self.card_held = card_held
-        self.drop = Drop(
-            card_to_drop=card_holding,
-            card=card,
-            player=card.player,
-        )
-        self.actions.append(self.drop)
 
     @classmethod
     def create(cls: type[Holding], card: ICard) -> Holding:
@@ -56,13 +47,18 @@ class Holding(Effect):
     def activate(self: Holding, context: IExecutionContext) -> None:
         super().activate(context=context)
 
-        self.card_holding.actions.append(self.drop)
+        if self not in self.card_holding.effects:
+            self.card_holding.effects.append(self)
+
+        if self not in self.card_held.effects:
+            self.card_held.effects.append(self)
 
     @override
     def deactivate(self: Holding, context: IExecutionContext) -> None:
-        # This will get called twice, once for holder and once for held.
-        # Only evaluate the deactivation once.
-        if self.state is EffectStateDef.active:
-            super().deactivate(context=context)
+        super().deactivate(context=context)
 
-            self.card_holding.actions.remove(self.drop)
+        if self in self.card_holding.effects:
+            self.card_holding.effects.remove(self)
+
+        if self in self.card_held.effects:
+            self.card_held.effects.remove(self)

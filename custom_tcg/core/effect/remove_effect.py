@@ -47,4 +47,3 @@ class RemoveEffect(Action):
         super().enter(context=context)
 
         self.effect_to_remove.deactivate(context=context)
-        self.card_to_remove_from.effects.remove(self.effect_to_remove)

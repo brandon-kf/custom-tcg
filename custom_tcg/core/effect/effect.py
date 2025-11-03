@@ -53,7 +53,11 @@ class Effect(IEffect):
             self.state.name,
             EffectStateDef.active.name,
         )
+
         self.state = EffectStateDef.active
+
+        if self not in self.card.effects:
+            self.card.effects.append(self)
 
     @override
     def deactivate(self: Effect, context: IExecutionContext) -> None:
@@ -63,7 +67,11 @@ class Effect(IEffect):
             self.state.name,
             EffectStateDef.inactive.name,
         )
+
         self.state = EffectStateDef.inactive
+
+        if self in self.card.effects:
+            self.card.effects.remove(self)
 
     @override
     def bind_deactivation(self: Effect, context: IExecutionContext) -> bool:

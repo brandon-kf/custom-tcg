@@ -100,7 +100,7 @@ def test_hold_target_activation_creates_bidirectional_holding_effects(
     holding_effect = holder_holdings[0]
     held_effect = item_hold_targets[0]
 
-    assert held_effect.card_holding is item
+    assert held_effect.card_holding is holder
     assert holding_effect.card_held is item
     assert holding_effect is held_effect
 
@@ -146,6 +146,7 @@ def test_deliver_moves_held_items_to_receiver(player: Player) -> None:
     remove_count = sum(isinstance(a, RemoveEffect) for a in calls)
     hold_count = sum(isinstance(a, Hold) for a in calls)
 
-    expected_per_type = 2
-    assert remove_count == expected_per_type
-    assert hold_count == expected_per_type
+    expected_removals = 4  # For two items, remove effect from holder and item.
+    expected_holds = 2  # One Hold per item to receiver.
+    assert remove_count == expected_removals
+    assert hold_count == expected_holds

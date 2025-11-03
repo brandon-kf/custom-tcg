@@ -1,7 +1,7 @@
 """Provide end-to-end test helpers for being activations."""
 
 from custom_tcg.common.being.sheep import Sheep
-from custom_tcg.common.effect.interface import IHoldTarget
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.item.bundle_of_wool import BundleOfWool
 from custom_tcg.common.item.cloth import Cloth
 from custom_tcg.common.item.cord import Cord
@@ -43,11 +43,11 @@ def activate_desperate_shepherd(
     ]
     assert bundles, "Expected a Bundle of Wool to be created"
     held = next(
-        (e for e in bundles[0].effects if isinstance(e, IHoldTarget)),
+        (e for e in bundles[0].effects if isinstance(e, Holding)),
         None,
     )
     assert held is not None
-    assert held.card_held_by.name == "Desperate Shepherd"
+    assert held.card_holding.name == "Desperate Shepherd"
 
     # If desired, Separate Ball of Wool (selector then cost), both via choices
     if separate:
@@ -230,10 +230,11 @@ def activate_questionable_butcher(
 
     def held_by(card_name: str) -> str | None:
         card = next(c for c in g.context.player.played if c.name == card_name)
-        for e in card.effects:
-            if hasattr(e, "card_held_by"):
-                return e.card_held_by.name  # type: ignore[attr-defined]
-        return None
+        return next(
+            effect.card_holding.name
+            for effect in card.effects
+            if isinstance(effect, Holding)
+        )
 
     assert held_by("Extra Rations") == "Questionable Butcher", (
         "Extra Rations should be held by Questionable Butcher"
@@ -269,11 +270,11 @@ def activate_apprentice_smith(
         metals = [c for c in g.context.player.played if isinstance(c, Metal)]
         assert metals, "Expected a Metal to be created"
         held = next(
-            (e for e in metals[0].effects if isinstance(e, IHoldTarget)),
+            (e for e in metals[0].effects if isinstance(e, Holding)),
             None,
         )
         assert held is not None
-        assert held.card_held_by.name == "Apprentice Smith"
+        assert held.card_holding.name == "Apprentice Smith"
 
     step_until_available(g, max_steps=60)
 
@@ -303,11 +304,11 @@ def activate_seamstress(
         cords = [c for c in g.context.player.played if isinstance(c, Cord)]
         assert cords, "Expected a Cord to be created"
         held = next(
-            (e for e in cords[0].effects if isinstance(e, IHoldTarget)),
+            (e for e in cords[0].effects if isinstance(e, Holding)),
             None,
         )
         assert held is not None
-        assert held.card_held_by.name == "Seamstress"
+        assert held.card_holding.name == "Seamstress"
     elif "Select 'Cord'" in [c.name for c in g.context.choices]:
         assert choose_option_then_confirm(
             g,
@@ -338,8 +339,8 @@ def activate_seamstress(
                 c
                 for c in cords_all
                 for e in c.effects
-                if isinstance(e, IHoldTarget)
-                and e.card_held_by.name == "Seamstress"
+                if isinstance(e, Holding)
+                and e.card_holding.name == "Seamstress"
             ]
             msg = (
                 "Expected to select two 'Cord' cards and confirm. "
@@ -352,11 +353,11 @@ def activate_seamstress(
         cloths = [c for c in g.context.player.played if isinstance(c, Cloth)]
         assert cloths, "Expected a Cloth to be created"
         held = next(
-            (e for e in cloths[0].effects if isinstance(e, IHoldTarget)),
+            (e for e in cloths[0].effects if isinstance(e, Holding)),
             None,
         )
         assert held is not None
-        assert held.card_held_by.name == "Seamstress"
+        assert held.card_holding.name == "Seamstress"
 
     step_until_available(g, max_steps=60)
 
@@ -387,11 +388,11 @@ def activate_aimless_wanderer(
         sticks = [c for c in g.context.player.played if c.name == "Stick"]
         assert sticks, "Expected a Stick to be created"
         held = next(
-            (e for e in sticks[0].effects if isinstance(e, IHoldTarget)),
+            (e for e in sticks[0].effects if isinstance(e, Holding)),
             None,
         )
         assert held is not None
-        assert held.card_held_by.name == "Aimless Wanderer"
+        assert held.card_holding.name == "Aimless Wanderer"
     elif "Select 'Stick'" in [c.name for c in g.context.choices]:
         assert choose_option_then_confirm(
             g,
@@ -416,7 +417,7 @@ def activate_aimless_wanderer(
         trails = [c for c in g.context.player.played if c.name == "Trail"]
         assert trails, "Expected a Trail to be created"
         held = next(
-            (e for e in trails[0].effects if isinstance(e, IHoldTarget)),
+            (e for e in trails[0].effects if isinstance(e, Holding)),
             None,
         )
         assert held is None, "Trail should not be held after creation"

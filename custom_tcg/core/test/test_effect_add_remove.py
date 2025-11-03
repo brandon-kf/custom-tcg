@@ -8,6 +8,7 @@ from custom_tcg.core.dimension import EffectStateDef
 from custom_tcg.core.effect.add_effect import AddEffect
 from custom_tcg.core.effect.effect import Effect
 from custom_tcg.core.effect.remove_effect import RemoveEffect
+from custom_tcg.core.interface import ICard
 
 
 @pytest.fixture
@@ -19,7 +20,8 @@ def mock_player() -> Mock:
 @pytest.fixture
 def source_card() -> Mock:
     """Return a card mock used as the action's card (must support register)."""
-    card = Mock(name="SourceCardMock")
+    card = Mock(name="SourceCardMock", spec=ICard)
+    card.effects = []
     card.register = Mock()
     return card
 
@@ -27,7 +29,7 @@ def source_card() -> Mock:
 @pytest.fixture
 def target_card(mock_player: Mock) -> Mock:
     """Return a card mock to receive an effect (with an effects list)."""
-    card = Mock(name="TargetCardMock")
+    card = Mock(name="TargetCardMock", spec=ICard)
     card.name = "Target"
     card.player = mock_player
     card.effects = []
@@ -46,7 +48,7 @@ def test_add_effect_appends_and_activates(
     target_card: Mock,
     mock_context: Mock,
 ) -> None:
-    """AddEffect should append the effect and activate it."""
+    """AddEffect should append a copy of the effect and activate it."""
     effect = Effect(name="Shiny", card=target_card)
 
     action = AddEffect(
@@ -58,8 +60,12 @@ def test_add_effect_appends_and_activates(
 
     action.enter(context=mock_context)
 
-    assert effect in target_card.effects
-    assert effect.state == EffectStateDef.active
+    # Check that an Effect with the same name was added to target_card
+    added_effects = [e for e in target_card.effects if isinstance(e, Effect)]
+    assert len(added_effects) == 1
+    added_effect = added_effects[0]
+    assert added_effect.name == "Shiny"
+    assert added_effect.state == EffectStateDef.active
 
 
 def test_remove_effect_deactivates_and_removes(

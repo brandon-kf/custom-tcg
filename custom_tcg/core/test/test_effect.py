@@ -19,6 +19,7 @@ def mock_card(mock_player: Mock) -> Mock:
     """Provide a simple card mock with a player attribute."""
     card = Mock(name="CardMock")
     card.player = mock_player
+    card.effects = []
     return card
 
 

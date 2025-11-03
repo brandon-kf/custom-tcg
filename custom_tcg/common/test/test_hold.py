@@ -37,8 +37,8 @@ def test_hold_executes_add_effect_when_not_overencumbered() -> None:
     item = _make_item(player, heft=2)
 
     action = Hold(
-        card_to_hold=item,
         card_holding=holder,
+        card_held=item,
         card=holder,
         player=player,
     )
@@ -51,7 +51,7 @@ def test_hold_executes_add_effect_when_not_overencumbered() -> None:
     assert context.execute.call_count == 1
     add = context.execute.call_args.kwargs["action"]
     assert isinstance(add, AddEffect)
-    assert add.cards_affected is holder
+    assert add.cards_affected is item
 
 
 def test_hold_does_not_execute_when_overencumbered() -> None:
@@ -67,8 +67,8 @@ def test_hold_does_not_execute_when_overencumbered() -> None:
     item = _make_item(player, heft=5)
 
     action = Hold(
-        card_to_hold=item,
         card_holding=holder,
+        card_held=item,
         card=holder,
         player=player,
     )

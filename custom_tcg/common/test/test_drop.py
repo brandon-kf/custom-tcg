@@ -21,6 +21,8 @@ def test_drop_removes_held_effect() -> None:
 
     effect = Mock(spec=Holding)
     effect.name = "HeldEffect"
+    effect.card_holding = Mock()
+    effect.card_held = target
     target.effects = [effect]
 
     context = Mock(name="ExecutionContext")
@@ -28,8 +30,8 @@ def test_drop_removes_held_effect() -> None:
     action = Drop(card_to_drop=target, card=card, player=player)
     action.enter(context=context)
 
-    # It should call execute once with a RemoveEffect action
-    assert context.execute.call_count == 1
+    # Two RemoveEffect actions should execute for holder and held.
+    assert context.execute.call_count == 2  # noqa: PLR2004
     remove = context.execute.call_args.kwargs["action"]
 
     assert isinstance(remove, RemoveEffect)

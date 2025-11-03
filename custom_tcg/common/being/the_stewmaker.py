@@ -70,7 +70,7 @@ class TheStewmaker(Card):
                                         for effect in item.effects
                                         if CardClassDef.food in item.classes
                                         and isinstance(effect, Holding)
-                                        and effect.card_held is stew
+                                        and effect.card_holding is stew
                                     ],
                                     card=stew,
                                     player=player,

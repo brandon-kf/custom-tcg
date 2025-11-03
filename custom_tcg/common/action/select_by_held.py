@@ -37,7 +37,7 @@ class SelectByHeld(SelectByChoice):
                 for effect in card.effects
                 if isinstance(card, held_type)
                 and isinstance(effect, Holding)
-                and effect.card_held is self.card
+                and effect.card_holding is self.card
             ],
             require_n=require_n,
             accept_n=accept_n,

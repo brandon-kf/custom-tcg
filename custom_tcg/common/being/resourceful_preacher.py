@@ -62,7 +62,7 @@ class ResourcefulPreacher(Card):
                                         for card in context.player.played
                                         for effect in card.effects
                                         if isinstance(effect, Holding)
-                                        and effect.card_held is preacher
+                                        and effect.card_holding is preacher
                                     ],
                                     card=preacher,
                                     player=player,
