@@ -51,7 +51,7 @@ def test_hold_executes_add_effect_when_not_overencumbered() -> None:
     assert context.execute.call_count == 1
     add = context.execute.call_args.kwargs["action"]
     assert isinstance(add, AddEffect)
-    assert add.card_to_add_to is holder
+    assert add.cards_affected is holder
 
 
 def test_hold_does_not_execute_when_overencumbered() -> None:

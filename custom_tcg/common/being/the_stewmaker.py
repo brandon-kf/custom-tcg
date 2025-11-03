@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from custom_tcg.common.action.find import Find
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.item.stew import Stew
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.card.discard import Discard
@@ -69,8 +69,8 @@ class TheStewmaker(Card):
                                         for item in context.player.played
                                         for effect in item.effects
                                         if CardClassDef.food in item.classes
-                                        and isinstance(effect, IHeld)
-                                        and effect.card_held_by is stew
+                                        and isinstance(effect, Holding)
+                                        and effect.card_held is stew
                                     ],
                                     card=stew,
                                     player=player,

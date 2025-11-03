@@ -75,8 +75,8 @@ class Find(Action):
                 if CardTypeDef.item in card.types:
                     context.execute(
                         action=Hold(
-                            card_to_hold=card,
                             card_holding=self.finder,
+                            card_held=card,
                             card=self.card,
                             player=self.player,
                         ),

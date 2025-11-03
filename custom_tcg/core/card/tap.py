@@ -73,7 +73,7 @@ class Tap(Action):
             context.execute(
                 action=AddEffect(
                     effect_to_add=Activated(card=card),
-                    card_to_add_to=card,
+                    cards_affected=card,
                     card=self.card,
                     player=self.player,
                 ),

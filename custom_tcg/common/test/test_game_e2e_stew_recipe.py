@@ -22,7 +22,7 @@ from custom_tcg.common.being.aimless_wanderer import AimlessWanderer
 from custom_tcg.common.being.questionable_butcher import QuestionableButcher
 from custom_tcg.common.being.seamstress import Seamstress
 from custom_tcg.common.being.the_stewmaker import TheStewmaker
-from custom_tcg.common.util.e2e_test_beings import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.util.e2e_test import (
     choose_by_name_contains,
     choose_option_n_then_confirm,
@@ -161,11 +161,11 @@ def test_stew_recipe(game: Game) -> None:
     stew_cards = [c for c in g.context.player.played if c.name == "Stew"]
     assert stew_cards, "Expected a Stew to be created by The Stewmaker"
     held = next(
-        (e for e in stew_cards[0].effects if isinstance(e, IHeld)),
+        (e for e in stew_cards[0].effects if isinstance(e, Holding)),
         None,
     )
     assert held is not None
-    assert held.card_held_by.name == "The Stewmaker"
+    assert held.card_holding.name == "The Stewmaker"
 
     end_current_process(g)
     end_current_process(g)

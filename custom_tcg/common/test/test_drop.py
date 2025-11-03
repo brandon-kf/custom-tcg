@@ -3,7 +3,7 @@
 from unittest.mock import Mock
 
 from custom_tcg.common.action.drop import Drop
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.effect.remove_effect import RemoveEffect
 
 
@@ -19,7 +19,7 @@ def test_drop_removes_held_effect() -> None:
     target = Mock(name="TargetCard")
     target.name = "Target"
 
-    effect = Mock(spec=IHeld)
+    effect = Mock(spec=Holding)
     effect.name = "HeldEffect"
     target.effects = [effect]
 

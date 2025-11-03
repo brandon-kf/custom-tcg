@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from custom_tcg.common.action.find import Find
 from custom_tcg.common.card_class_def import CardClassDef as CardClassCommonDef
 from custom_tcg.common.effect.being_stats import BeingStats
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.item.fire import Fire
 from custom_tcg.common.item.flint import Flint
 from custom_tcg.common.item.pile_of_wood import PileOfWood
@@ -63,7 +63,7 @@ class DestructiveDarryl(Card):
                             (
                                 effect
                                 for effect in card.effects
-                                if isinstance(effect, IHeld)
+                                if isinstance(effect, Holding)
                             ),
                             None,
                         )
@@ -89,7 +89,7 @@ class DestructiveDarryl(Card):
                             (
                                 effect
                                 for effect in card.effects
-                                if isinstance(effect, IHeld)
+                                if isinstance(effect, Holding)
                             ),
                             None,
                         )

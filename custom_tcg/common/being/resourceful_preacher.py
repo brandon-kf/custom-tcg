@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.card.discard import Discard
 from custom_tcg.core.card.draw import Draw
@@ -61,8 +61,8 @@ class ResourcefulPreacher(Card):
                                         card
                                         for card in context.player.played
                                         for effect in card.effects
-                                        if isinstance(effect, IHeld)
-                                        and effect.card_held_by == preacher
+                                        if isinstance(effect, Holding)
+                                        and effect.card_held is preacher
                                     ],
                                     card=preacher,
                                     player=player,

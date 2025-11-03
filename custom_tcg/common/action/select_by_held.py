@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.card.select_by_choice import SelectByChoice
 
 if TYPE_CHECKING:
@@ -36,8 +36,8 @@ class SelectByHeld(SelectByChoice):
                 for card in context.player.played
                 for effect in card.effects
                 if isinstance(card, held_type)
-                and isinstance(effect, IHeld)
-                and effect.card_held_by == self.card
+                and isinstance(effect, Holding)
+                and effect.card_held is self.card
             ],
             require_n=require_n,
             accept_n=accept_n,

@@ -34,6 +34,18 @@ class Effect(IEffect):
         self.actions = actions or []
 
     @override
+    def copy(
+        self: Effect,
+        card: ICard,
+    ) -> Effect:
+        """Create an instance of this effect."""
+        return self.__class__(
+            name=self.name,
+            card=card,
+            actions=self.actions,
+        )
+
+    @override
     def activate(self: Effect, context: IExecutionContext) -> None:
         logger.info(
             "Effect '%s' changed state (%s -> %s)",
@@ -70,3 +82,12 @@ class Activated(Effect):
             name="Activated",
             card=card,
         )
+
+    @classmethod
+    def create(cls: type[Activated], card: ICard) -> Activated:
+        """Create an instance of this effect."""
+        return cls(card=card)
+
+    def copy(self: Activated, card: ICard) -> Activated:
+        """Create an instance of this effect."""
+        return self.__class__(card=card)

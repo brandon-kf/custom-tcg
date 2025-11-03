@@ -17,7 +17,6 @@ from custom_tcg.common.action.deliver import Deliver
 from custom_tcg.common.being.aimless_wanderer import AimlessWanderer
 from custom_tcg.common.being.early_architect import EarlyArchitect
 from custom_tcg.common.being.peasant import Peasant
-from custom_tcg.common.effect.held import Held
 from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.item.pile_of_wood import PileOfWood
 from custom_tcg.core.anon import Player
@@ -93,9 +92,12 @@ def test_play_and_activate_finds_item_and_holds(player: Player) -> None:
     assert pow_cards, "Expected a Pile of Wood to be created"
     pow_card = pow_cards[0]
 
-    held = next((e for e in pow_card.effects if isinstance(e, Held)), None)
+    held = next(
+        (e for e in pow_card.effects if isinstance(e, Holding)),
+        None,
+    )
     assert held is not None
-    assert held.card_held_by is aw
+    assert held.card_held is aw
 
     holding = next((e for e in aw.effects if isinstance(e, Holding)), None)
     assert holding is not None
@@ -116,7 +118,10 @@ def test_deliver_transfers_held_item(player: Player) -> None:
     # Ensure AW holds a Pile of Wood
     _activate_card(ctx, aw)
     pow_card = next(c for c in player.played if isinstance(c, PileOfWood))
-    assert next((e for e in pow_card.effects if isinstance(e, Held)), None)
+    assert next(
+        (e for e in pow_card.effects if isinstance(e, Holding)),
+        None,
+    )
 
     # Deliver wood from AW to EA using explicit receiver/items to avoid
     # selectors
@@ -124,12 +129,17 @@ def test_deliver_transfers_held_item(player: Player) -> None:
     ctx.execute(deliver)
 
     # Item should now be held by EA, and no longer held by AW
-    held = next((e for e in pow_card.effects if isinstance(e, Held)), None)
+    held = next(
+        (e for e in pow_card.effects if isinstance(e, Holding)),
+        None,
+    )
     assert held is not None
-    assert held.card_held_by is ea
-
-    aw_holding = [e for e in aw.effects if isinstance(e, Holding)]
-    assert all(e.card_holding is not pow_card for e in aw_holding)
+    assert held.card_held is ea
+    aw_holding = next(
+        (e for e in aw.effects if isinstance(e, Holding)),
+        None,
+    )
+    assert aw_holding is None
 
     ea_holding = next((e for e in ea.effects if isinstance(e, Holding)), None)
     assert ea_holding is not None

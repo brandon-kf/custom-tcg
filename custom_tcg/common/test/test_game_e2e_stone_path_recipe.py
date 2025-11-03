@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING
 
 from custom_tcg.common.being.early_architect import EarlyArchitect
 from custom_tcg.common.being.that_pebble_girl import ThatPebbleGirl
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.util.e2e_test_beings import (
     activate_early_architect,
     activate_that_pebble_girl,
@@ -83,7 +83,7 @@ def test_stone_path_recipe(game: Game) -> None:
         for c in g.context.player.played
         if c.name == "Pile of Rocks"
         for e in c.effects
-        if isinstance(e, IHeld) and e.card_held_by.name == "Early Architect"
+        if isinstance(e, Holding) and e.card_holding.name == "Early Architect"
     ]
     required_piles = 2
     assert len(piles_held_by_ea) >= required_piles, (

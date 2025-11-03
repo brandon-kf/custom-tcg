@@ -29,26 +29,26 @@ logger: logging.Logger = logging.getLogger(name=__name__)
 class Hold(Action):
     """Allow a card to hold another card."""
 
-    card_to_hold: ICard
     card_holding: ICard
+    card_held: ICard
 
     def __init__(
         self: Hold,
-        card_to_hold: ICard,
         card_holding: ICard,
+        card_held: ICard,
         card: ICard,
         player: IPlayer,
         bind: Callable[[IAction, ICard, IPlayer], bool] | None = None,
     ) -> None:
         """Create a hold action."""
         super().__init__(
-            name=f"'{card_holding.name}' holds '{card_to_hold.name}'",
+            name=f"'{card_holding.name}' holds '{card_held.name}'",
             card=card,
             player=player,
             bind=bind,
         )
-        self.card_to_hold = card_to_hold
         self.card_holding = card_holding
+        self.card_held = card_held
 
     @override
     def enter(self: Hold, context: IExecutionContext) -> None:
@@ -56,10 +56,10 @@ class Hold(Action):
 
         would_become_overencumbered: bool = False
 
-        if CardTypeDef.item in self.card_to_hold.types:
+        if CardTypeDef.item in self.card_held.types:
             item_stats: ItemStats = next(
                 effect
-                for effect in self.card_to_hold.effects
+                for effect in self.card_held.effects
                 if isinstance(effect, ItemStats)
             )
 
@@ -97,10 +97,11 @@ class Hold(Action):
             context.execute(
                 action=AddEffect(
                     effect_to_add=Holding(
-                        card=self.card_holding,
-                        card_holding=self.card_to_hold,
+                        card_holding=self.card_holding,
+                        card_held=self.card_held,
+                        card=self.card,
                     ),
-                    card_to_add_to=self.card_holding,
+                    cards_affected=self.card_held,
                     card=self.card,
                     player=self.player,
                 ),

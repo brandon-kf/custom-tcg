@@ -51,7 +51,7 @@ def test_add_effect_appends_and_activates(
 
     action = AddEffect(
         effect_to_add=effect,
-        card_to_add_to=target_card,
+        cards_affected=target_card,
         card=source_card,
         player=mock_player,
     )

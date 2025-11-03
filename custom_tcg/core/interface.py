@@ -153,6 +153,15 @@ class IEffect(INamed, ISessionTracked):
     actions: list[IAction]
     bind_removal: Callable[[IAction, ICard, IPlayer], bool]
 
+    @classmethod
+    def create(cls: type[IEffect], card: ICard) -> IEffect:
+        """Create an instance of this effect."""
+        raise NotImplementedError
+
+    def copy(self: IEffect, card: ICard) -> IEffect:
+        """Create an instance of this effect."""
+        raise NotImplementedError
+
     def activate(self: IEffect, context: IExecutionContext) -> None:
         """Make this effect active."""
         raise NotImplementedError

@@ -50,7 +50,7 @@ class AgedProphet(Card):
                             card=aged_prophet,
                             wisdom=1,
                         ),
-                        card_to_add_to=aged_prophet,
+                        cards_affected=aged_prophet,
                         costs=[
                             SelectByHeld(
                                 name=f"Verify a '{Pebble.name}' is held",

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.action import Action
 from custom_tcg.core.effect.remove_effect import RemoveEffect
 
@@ -44,16 +44,27 @@ class Drop(Action):
     def enter(self: Drop, context: IExecutionContext) -> None:
         super().enter(context=context)
 
-        held_effect: IHeld = next(
+        holding_effect: Holding = next(
             effect
             for effect in self.card_to_drop.effects
-            if isinstance(effect, IHeld)
+            if isinstance(effect, Holding)
         )
 
+        # Remove effect from holder.
         context.execute(
             action=RemoveEffect(
-                effect_to_remove=held_effect,
-                card_to_remove_from=self.card_to_drop,
+                effect_to_remove=holding_effect,
+                card_to_remove_from=holding_effect.card_holding,
+                card=self.card,
+                player=self.player,
+            ),
+        )
+
+        # Remove effect from held.
+        context.execute(
+            action=RemoveEffect(
+                effect_to_remove=holding_effect,
+                card_to_remove_from=holding_effect.card_held,
                 card=self.card,
                 player=self.player,
             ),

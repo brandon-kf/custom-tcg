@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING
 
 from custom_tcg.common.card_type_def import CardTypeDef
 from custom_tcg.common.effect.being_stats import BeingStats
-from custom_tcg.common.effect.interface import IHolding
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.effect.item_stats import ItemStats
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
+
     from custom_tcg.core.interface import ICard
 
 
@@ -50,7 +52,7 @@ class BeingStatsEvaluator:
                 if isinstance(effect, ItemStats)
             )
             for holding_effect in self.being.effects
-            if isinstance(holding_effect, IHolding)
+            if isinstance(holding_effect, Holding)
             and CardTypeDef.item in holding_effect.card_holding.types
         )
 

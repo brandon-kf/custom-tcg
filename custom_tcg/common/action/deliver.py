@@ -6,8 +6,7 @@ from typing import TYPE_CHECKING, cast, override
 
 from custom_tcg.common.action.hold import Hold
 from custom_tcg.common.card_type_def import CardTypeDef as CommonCardTypeDef
-from custom_tcg.common.effect.held import Held
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.action import Action
 from custom_tcg.core.card.select import Select
 from custom_tcg.core.card.select_by_choice import SelectByChoice
@@ -59,7 +58,7 @@ class Deliver(Action):
                 lambda context: [
                     card
                     for card in context.player.played
-                    if CardTypeDef.being in card.types and card != self.card
+                    if CardTypeDef.being in card.types and card is not self.card
                 ]
             ),
             card=card,
@@ -76,8 +75,8 @@ class Deliver(Action):
                     for card in context.player.played
                     for effect in card.effects
                     if CommonCardTypeDef.item in card.types
-                    and isinstance(effect, IHeld)
-                    and effect.card_held_by == self.card
+                    and isinstance(effect, Holding)
+                    and effect.card_holding is self.card
                 ]
             ),
             card=card,
@@ -92,13 +91,13 @@ class Deliver(Action):
     def enter(self: Deliver, context: IExecutionContext) -> None:
         super().enter(context=context)
 
-        receiver_card: ICard | None = (
+        new_holder: ICard | None = (
             cast("ICard | None", next(iter(self.receiver.selected), None))
             if isinstance(self.receiver, Select)
             else self.receiver
         )
 
-        item_cards: list[ICard] = (
+        new_held_cards: list[ICard] = (
             cast("list[ICard]", self.items.selected)
             if isinstance(self.items, Select)
             else self.items
@@ -107,28 +106,40 @@ class Deliver(Action):
         # If receiver card is not provided (checked below,) or items list is
         # empty (provided by default,) Deliver fails to iterate items and does
         # nothing (by design.)
-        if receiver_card is None:
-            item_cards = []
-            receiver_card = cast("ICard", receiver_card)
+        if new_holder is None:
+            new_held_cards = []
+            new_holder = cast("ICard", new_holder)
 
-        for item in item_cards:
-            held_effect: Held = next(
-                effect for effect in item.effects if isinstance(effect, Held)
+        for held in new_held_cards:
+            holding_effect: Holding = next(
+                effect for effect in held.effects if isinstance(effect, Holding)
             )
 
+            # Remove the effect from the holding card.
             context.execute(
                 action=RemoveEffect(
-                    effect_to_remove=held_effect,
-                    card_to_remove_from=item,
+                    effect_to_remove=holding_effect,
+                    card_to_remove_from=holding_effect.card_holding,
                     card=self.card,
                     player=self.player,
                 ),
             )
 
+            # Remove the effect from the held card.
+            context.execute(
+                action=RemoveEffect(
+                    effect_to_remove=holding_effect,
+                    card_to_remove_from=holding_effect.card_held,
+                    card=self.card,
+                    player=self.player,
+                ),
+            )
+
+            # Create a new holding effect on both holder and held.
             context.execute(
                 action=Hold(
-                    card_to_hold=item,
-                    card_holding=receiver_card,
+                    card_holding=new_holder,
+                    card_held=held,
                     card=self.card,
                     player=self.player,
                 ),

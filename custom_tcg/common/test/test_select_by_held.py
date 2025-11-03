@@ -3,7 +3,7 @@
 from unittest.mock import Mock
 
 from custom_tcg.common.action.select_by_held import SelectByHeld
-from custom_tcg.common.effect.held import Held
+from custom_tcg.common.effect.hold_target import HoldTarget
 from custom_tcg.core.card.card import Card
 
 
@@ -22,7 +22,7 @@ def test_select_by_held_filters_items_by_holder() -> None:
 
     # Attach Held effect to item2 indicating it's held by 'holder'
     item2.effects.append(
-        Held(
+        HoldTarget(
             card=item2,
             card_held_by=holder,
             card_holding_effect=fake_holding,

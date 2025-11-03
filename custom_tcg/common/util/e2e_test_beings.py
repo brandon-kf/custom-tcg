@@ -1,7 +1,7 @@
 """Provide end-to-end test helpers for being activations."""
 
 from custom_tcg.common.being.sheep import Sheep
-from custom_tcg.common.effect.interface import IHeld
+from custom_tcg.common.effect.interface import IHoldTarget
 from custom_tcg.common.item.bundle_of_wool import BundleOfWool
 from custom_tcg.common.item.cloth import Cloth
 from custom_tcg.common.item.cord import Cord
@@ -42,7 +42,10 @@ def activate_desperate_shepherd(
         c for c in g.context.player.played if isinstance(c, BundleOfWool)
     ]
     assert bundles, "Expected a Bundle of Wool to be created"
-    held = next((e for e in bundles[0].effects if isinstance(e, IHeld)), None)
+    held = next(
+        (e for e in bundles[0].effects if isinstance(e, IHoldTarget)),
+        None,
+    )
     assert held is not None
     assert held.card_held_by.name == "Desperate Shepherd"
 
@@ -266,7 +269,7 @@ def activate_apprentice_smith(
         metals = [c for c in g.context.player.played if isinstance(c, Metal)]
         assert metals, "Expected a Metal to be created"
         held = next(
-            (e for e in metals[0].effects if isinstance(e, IHeld)),
+            (e for e in metals[0].effects if isinstance(e, IHoldTarget)),
             None,
         )
         assert held is not None
@@ -299,7 +302,10 @@ def activate_seamstress(
 
         cords = [c for c in g.context.player.played if isinstance(c, Cord)]
         assert cords, "Expected a Cord to be created"
-        held = next((e for e in cords[0].effects if isinstance(e, IHeld)), None)
+        held = next(
+            (e for e in cords[0].effects if isinstance(e, IHoldTarget)),
+            None,
+        )
         assert held is not None
         assert held.card_held_by.name == "Seamstress"
     elif "Select 'Cord'" in [c.name for c in g.context.choices]:
@@ -332,7 +338,8 @@ def activate_seamstress(
                 c
                 for c in cords_all
                 for e in c.effects
-                if isinstance(e, IHeld) and e.card_held_by.name == "Seamstress"
+                if isinstance(e, IHoldTarget)
+                and e.card_held_by.name == "Seamstress"
             ]
             msg = (
                 "Expected to select two 'Cord' cards and confirm. "
@@ -345,7 +352,7 @@ def activate_seamstress(
         cloths = [c for c in g.context.player.played if isinstance(c, Cloth)]
         assert cloths, "Expected a Cloth to be created"
         held = next(
-            (e for e in cloths[0].effects if isinstance(e, IHeld)),
+            (e for e in cloths[0].effects if isinstance(e, IHoldTarget)),
             None,
         )
         assert held is not None
@@ -380,7 +387,7 @@ def activate_aimless_wanderer(
         sticks = [c for c in g.context.player.played if c.name == "Stick"]
         assert sticks, "Expected a Stick to be created"
         held = next(
-            (e for e in sticks[0].effects if isinstance(e, IHeld)),
+            (e for e in sticks[0].effects if isinstance(e, IHoldTarget)),
             None,
         )
         assert held is not None
@@ -409,7 +416,7 @@ def activate_aimless_wanderer(
         trails = [c for c in g.context.player.played if c.name == "Trail"]
         assert trails, "Expected a Trail to be created"
         held = next(
-            (e for e in trails[0].effects if isinstance(e, IHeld)),
+            (e for e in trails[0].effects if isinstance(e, IHoldTarget)),
             None,
         )
         assert held is None, "Trail should not be held after creation"

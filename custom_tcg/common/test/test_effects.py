@@ -18,7 +18,6 @@ from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.effect.being_stats_evaluator import (
     BeingStatsEvaluator,
 )
-from custom_tcg.common.effect.held import Held
 from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.effect.item_stats import ItemStats
 from custom_tcg.common.item.pile_of_wood import PileOfWood
@@ -90,9 +89,18 @@ def test_being_stats_evaluator_sums_base_and_held_item(player: Player) -> None:
     # Simulate both cards in play
     player.played.extend([being, item])
 
-    # Attach a Holding effect to the being so evaluator sees held item
-    holding = Holding(card=being, card_holding=item)
-    being.effects.append(holding)
+    # Create HoldTarget and activate it to establish holding relationship
+    hold_target = Holding(card_held=item, card_holding=being, card=being)
+    item.effects.append(hold_target)
+
+    # Create execution context and activate the hold target
+    ctx = ExecutionContext(players=[player])
+    hold_target.activate(context=ctx)
+
+    # Drain any pending actions from the execution context
+    while ctx.ready:
+        action = ctx.ready.pop(0)
+        action.enter(context=ctx)
 
     # Base stats from Peasant
     base = next(e for e in being.effects if isinstance(e, BeingStats))
@@ -111,66 +119,88 @@ def test_being_stats_evaluator_sums_base_and_held_item(player: Player) -> None:
     assert evaluated.encumberance == base.encumberance + 2
 
 
-def test_holding_activate_and_deactivate_wire_held_and_drop(
+def test_hold_target_activate_and_deactivate_creates_bidirectional_effects(
     ctx: ExecutionContext,
     player: Player,
 ) -> None:
-    """Holding.activate adds Held and drop; deactivation reverses both."""
+    """HoldTarget.activate creates Holding on holder; deactivation reverses."""
     holder = Peasant.create(player=player)
     item = PileOfWood.create(player=player)
 
     player.played.extend([holder, item])
 
-    holding = Holding(card=holder, card_holding=item)
+    # Create HoldTarget effect on the item (being held)
+    hold_target = Holding(card_held=item, card_holding=holder, card=holder)
+    item.effects.append(hold_target)
 
-    # Precondition: no Held on item, no drop action on holder
-    assert next((e for e in item.effects if isinstance(e, Held)), None) is None
-    assert holding.drop not in holder.actions
+    # Precondition: no Holding on holder yet
+    assert (
+        next((e for e in holder.effects if isinstance(e, Holding)), None)
+        is None
+    )
 
-    # Activate Holding: should add Held to item and add drop action to holder
-    holding.activate(context=ctx)
+    # Activate HoldTarget: should create Holding on holder with Drop action
+    hold_target.activate(context=ctx)
 
-    held = next((e for e in item.effects if isinstance(e, Held)), None)
-    assert held is not None
-    assert held.card_held_by is holder
+    # Drain any pending actions from the execution context
+    while ctx.ready:
+        action = ctx.ready.pop(0)
+        action.enter(context=ctx)
+
+    # Verify bidirectional relationship was created
+    holding = next((e for e in holder.effects if isinstance(e, Holding)), None)
+    assert holding is not None
+    assert holding.card_holding is item
     assert holding.drop in holder.actions
 
-    # Deactivate Holding: remove paired Held and remove drop from holder
-    holding.deactivate(context=ctx)
+    # Deactivate HoldTarget: should deactivate effects and remove Drop action
+    hold_target.deactivate(context=ctx)
 
-    assert next((e for e in item.effects if isinstance(e, Held)), None) is None
-    assert holding.drop not in holder.actions
+    # Drain any pending actions from the execution context
+    while ctx.ready:
+        action = ctx.ready.pop(0)
+        action.enter(context=ctx)
+
+        # Verify HoldTarget is deactivated and Drop action is removed
+        assert hold_target.state == EffectStateDef.inactive
+        # The Drop action should be removed from holder's actions
+        assert holding.drop not in holder.actions
 
 
-def test_held_deactivate_removes_holding_from_holder(
+def test_hold_target_deactivate_removes_holding_from_holder(
     ctx: ExecutionContext,
     player: Player,
 ) -> None:
-    """Held.deactivate removes its paired Holding effect from the holder."""
+    """HoldTarget.deactivate removes its paired Holding effect from holder."""
     holder = Peasant.create(player=player)
     item = PileOfWood.create(player=player)
 
     player.played.extend([holder, item])
 
-    holding = Holding(card=holder, card_holding=item)
-    # Ensure both effects are present as if Holding was added and activated
-    holder.effects.append(holding)
-    holding.state = EffectStateDef.active
-    # Simulate that Holding had been activated before by adding its drop
-    # action to the holder (so deactivate can remove it without error.)
-    holder.actions.append(holding.drop)
-    held = Held(
-        card=item,
-        card_held_by=holder,
-        card_holding_effect=holding,
-    )
-    item.effects.append(held)
+    # Create and activate Holding to establish bidirectional relationship
+    hold_target = Holding(card_held=item, card_holding=holder, card=holder)
+    item.effects.append(hold_target)
 
-    # Sanity: effects present
-    assert holding in holder.effects
-    assert held in item.effects
+    # Activate to create the paired Holding effect
+    hold_target.activate(context=ctx)
 
-    # Deactivate Held: should remove Holding from holder
-    held.deactivate(context=ctx)
+    # Drain any pending actions from the execution context
+    while ctx.ready:
+        action = ctx.ready.pop(0)
+        action.enter(context=ctx)
 
-    assert holding not in holder.effects
+    # Verify the paired Holding effect was created
+    holding = next((e for e in holder.effects if isinstance(e, Holding)), None)
+    assert holding is not None
+    assert hold_target in item.effects
+
+    # Deactivate HoldTarget: should deactivate effects
+    hold_target.deactivate(context=ctx)
+
+    # Drain any pending actions from the execution context
+    while ctx.ready:
+        action = ctx.ready.pop(0)
+        action.enter(context=ctx)
+
+        # Verify HoldTarget is deactivated
+        assert hold_target.state == EffectStateDef.inactive
