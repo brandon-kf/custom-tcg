@@ -94,11 +94,11 @@ export default class Card extends ObjectBase {
     }
 
     isHolding(): string[] {
-        return this.cardData.effects.filter((v) => v.type == "Holding").map((v) => v.held_id!)
+        return this.cardData.effects.filter((v) => v.type == "Holding" && v.holding_id == this.cardData.session_object_id).map((v) => v.held_id!)
     }
 
     isHeld(): string | undefined {
-        const heldEffect = this.cardData.effects.find((v) => v.type == "Held")
+        const heldEffect = this.cardData.effects.find((v) => v.type == "Holding" && v.held_id == this.cardData.session_object_id)
 
         return heldEffect?.holding_id
     }
