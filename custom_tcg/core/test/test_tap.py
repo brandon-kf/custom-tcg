@@ -7,7 +7,7 @@ import pytest
 from custom_tcg.core.card.select import Select
 from custom_tcg.core.card.tap import Tap
 from custom_tcg.core.dimension import ActionStateDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.interface import ICard, IPlayer
 
 
@@ -244,8 +244,7 @@ def test_enter_with_single_card(
     executed_action = call_args["action"]
     assert executed_action.card == mock_card
     assert executed_action.player == mock_player
-    assert isinstance(executed_action.effect_to_add, Activated)
-    assert executed_action.effect_to_add.card is mock_target_card
+    assert executed_action.effect_to_add is Activated
 
 
 def test_enter_with_list_of_cards(

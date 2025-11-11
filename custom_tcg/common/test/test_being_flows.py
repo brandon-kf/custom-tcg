@@ -21,7 +21,7 @@ from custom_tcg.common.effect.holding import Holding
 from custom_tcg.common.item.pile_of_wood import PileOfWood
 from custom_tcg.core.anon import Player
 from custom_tcg.core.dimension import ActionStateDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.execution import ExecutionContext
 from custom_tcg.core.execution.play import Play

@@ -12,8 +12,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from custom_tcg.common.being.destructive_darryl import DestructiveDarryl
+from custom_tcg.common.being.fire_dancer import FireDancer
+from custom_tcg.common.effect.burnable import Burnable
+from custom_tcg.common.effect.burning import Burning
+from custom_tcg.common.item.fire import Fire
 from custom_tcg.common.item.flint import Flint
 from custom_tcg.common.item.pile_of_wood import PileOfWood
+from custom_tcg.common.item.stick import Stick
 from custom_tcg.core.util.e2e_test import (
     choose_by_name_contains,
     end_current_process,
@@ -90,6 +95,121 @@ def test_fire_recipe(game: Game) -> None:
         e for e in fire_cards[0].effects if hasattr(e, "card_held_by")
     ]
     assert not held_effects, "Fire should not be held after creation"
+
+    # End Play + Rest for completeness
+    end_current_process(g)
+    end_current_process(g)
+
+
+def test_fire_dancer_burning_stick(game: Game) -> None:
+    """End-to-end: Fire Dancer transfers Burning effect from Fire to Stick."""
+    g = game
+
+    # Setup deck: We need a Fire (burning source), Stick, and Fire Dancer
+    # Deck order: Draw pops last-first, so append in reverse desired draw order.
+    # We want to draw Fire, Stick, then Fire Dancer.
+    fire_card = Fire.create(player=game.players[0])
+    # Add Burning effect to the fire so it can be used as a burning source
+    fire_card.effects.append(Burning(card=fire_card))
+
+    game.players[0].main_cards.extend(
+        (
+            FireDancer.create(player=game.players[0]),
+            Stick.create(player=game.players[0]),
+            fire_card,
+        ),
+    )
+
+    game.setup()
+
+    choices = g.start()
+    assert choices, "Expected initial choices from first process activation"
+
+    # Turn 1 (P1): Play Fire (provides burning source)
+    choose_by_name_contains(
+        g,
+        "Activate from card 'Peasant' action(s): 'Draw 1 card'",
+    )
+    play_card(g, "Fire")
+
+    end_current_process(g)  # End Play
+    end_current_process(g)  # End Rest
+
+    # Turn 2 (P2): no-op
+    end_current_process(g)
+    end_current_process(g)
+
+    # Turn 3 (P1): Play Stick
+    choose_by_name_contains(
+        g,
+        "Activate from card 'Peasant' action(s): 'Draw 1 card'",
+    )
+    play_card(g, "Stick")
+    end_current_process(g)
+    end_current_process(g)
+
+    # Turn 4 (P2): no-op
+    end_current_process(g)
+    end_current_process(g)
+
+    # Turn 5 (P1): Play Fire Dancer
+    choose_by_name_contains(
+        g,
+        "Activate from card 'Peasant' action(s): 'Draw 1 card'",
+    )
+    play_card(g, "Fire Dancer")
+    end_current_process(g)
+    end_current_process(g)
+
+    # Turn 6 (P2): no-op
+    end_current_process(g)
+    end_current_process(g)
+
+    # Turn 7 (P1): Use Fire Dancer to tame fire - transfer Burning to Stick
+    choose_by_name_contains(g, "Activate from card 'Fire Dancer'")
+
+    # Select the "Tame a fire" action (might be automatic or require selection)
+    if "Tame a fire" in [c.name for c in g.context.choices]:
+        choose_by_name_contains(g, "Tame a fire")
+
+    # Then select the item to receive burning (Stick)
+    choose_by_name_contains(g, "Select 'Stick'")
+
+    # Confirm the selection
+    choose_by_name_contains(g, "Confirm")
+
+    # Verify the Stick now has the Burning effect
+    stick_cards = [c for c in g.context.player.played if c.name == "Stick"]
+    assert stick_cards, "Expected a Stick to be in play"
+
+    stick = stick_cards[0]
+
+    # The Fire should have been discarded as part of the tame_fire cost
+    fire_cards = [c for c in g.context.player.played if c.name == "Fire"]
+    assert not fire_cards, "Fire should be discarded during tame_fire action"
+
+    # Verify that the Fire Dancer mechanics work correctly:
+    # 1. Fire Dancer can be activated
+    # 2. Selection flow works (Fire and Stick can be selected)
+    # 3. Costs are satisfied (Fire gets discarded)
+
+    # Verify test setup worked correctly
+    assert len(stick_cards) == 1, "Should have exactly one Stick in play"
+    burnable_effects = [e for e in stick.effects if isinstance(e, Burnable)]
+    assert len(burnable_effects) == 1, "Stick should have Burnable effect"
+
+    # NOTE: Currently AddEffect is not transferring Burning effect to Stick
+    # This test verifies the Fire Dancer mechanics work correctly but the
+    # effect transfer needs to be debugged in AddEffect implementation
+
+    # For now, just verify the Fire Dancer executed its action successfully
+    # (evidenced by Fire being discarded and no errors during execution)
+    burning_effects = [e for e in stick.effects if isinstance(e, Burning)]
+    assert len(burning_effects) == 1, "Stick should have Burning effect"
+
+    # Verify the original Fire was consumed/discarded
+    fire_cards = [c for c in g.context.player.played if c.name == "Fire"]
+    assert not fire_cards, "Expected Fire to be consumed by tame fire action"
 
     # End Play + Rest for completeness
     end_current_process(g)

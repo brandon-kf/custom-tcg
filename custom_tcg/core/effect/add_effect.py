@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 
     from custom_tcg.core.interface import (
         IAction,
-        IEffect,
         IExecutionContext,
         IPlayer,
     )
@@ -39,8 +38,13 @@ class AddEffect(Action):
         costs: list[IAction] | None = None,
     ) -> None:
         """Create an add effect action."""
+        calculated_name: str = name or (
+            effect_to_add.name
+            if isinstance(effect_to_add, IEffect)
+            else effect_to_add.__name__
+        )
         super().__init__(
-            name=name or f"Add effect '{effect_to_add.name}'",
+            name=calculated_name,
             card=card,
             player=player,
             bind=bind,
@@ -73,4 +77,6 @@ class AddEffect(Action):
                 if isinstance(self.effect_to_add, type)
                 else self.effect_to_add.copy(card=card)
             )
+            created_effect.card_affecting = self.card
+            created_effect.card_affected = card
             created_effect.activate(context=context)

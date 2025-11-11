@@ -8,6 +8,7 @@ from custom_tcg.common.action.find import Find
 from custom_tcg.common.action.select_by_held import SelectByHeld
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.effect.being_stats import BeingStats
+from custom_tcg.common.effect.burnable import Burnable
 from custom_tcg.common.effect.burning import Burning
 from custom_tcg.common.item.cloth import Cloth
 from custom_tcg.common.item.fire import Fire
@@ -96,6 +97,7 @@ class FireDancer(Card):
 
         # Tame fire.
         tame_fire: IAction = AddEffect(
+            name="Tame a fire",
             effect_to_add=Burning,
             cards_affected=SelectByChoice(
                 name="Select an item to hold fire",
@@ -105,7 +107,7 @@ class FireDancer(Card):
                     card
                     for card in context.player.played
                     for effect in card.effects
-                    if isinstance(effect, Burning)
+                    if isinstance(effect, Burnable)
                 ],
                 card=fire_dancer,
                 player=player,

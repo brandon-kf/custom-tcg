@@ -10,7 +10,7 @@ from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.card.draw import Draw
 from custom_tcg.core.dimension import CardClassDef, CardTypeDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
 from custom_tcg.feast_or_famine.card.dirty_blueberry import DirtyBlueberry

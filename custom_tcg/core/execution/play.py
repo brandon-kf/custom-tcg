@@ -45,3 +45,6 @@ class Play(Action):
 
         if CardTypeDef.process in self.card.types:
             context.player.processes.append(self.card)
+
+        for effect in self.card.effects:
+            effect.activate(context=context)

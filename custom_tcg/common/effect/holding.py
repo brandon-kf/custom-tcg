@@ -40,7 +40,7 @@ class Holding(Effect):
         return self.__class__(
             card=card,
             card_holding=self.card_holding,
-            card_held=self.card_held,
+            card_held=card,
         )
 
     @override

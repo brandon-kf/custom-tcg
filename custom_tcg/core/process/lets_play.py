@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, override
 
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.dimension import CardClassDef, CardTypeDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
 from custom_tcg.core.interface import IPlayer

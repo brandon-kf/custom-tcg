@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, override
 
 from custom_tcg.core.action import Action
 from custom_tcg.core.dimension import CardTypeDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -41,10 +41,10 @@ class Rest(Action):
         """Remove all activated effects."""
         super().enter(context=context)
 
-        for effect, affected_card in (
-            (effect, card)
+        for effect in (
+            effect
             for card in context.player.played
             for effect in card.effects
             if isinstance(effect, Activated) and CardTypeDef.being in card.types
         ):
-            affected_card.effects.remove(effect)
+            effect.deactivate(context=context)

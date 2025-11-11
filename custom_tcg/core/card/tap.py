@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING, cast, override
 
 from custom_tcg.core.action import Action
 from custom_tcg.core.card.select import Select
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.effect.add_effect import AddEffect
-from custom_tcg.core.effect.effect import Activated
 from custom_tcg.core.interface import (
     ICard,
 )
@@ -72,7 +72,7 @@ class Tap(Action):
         for card in cards:
             context.execute(
                 action=AddEffect(
-                    effect_to_add=Activated(card=card),
+                    effect_to_add=Activated,
                     cards_affected=card,
                     card=self.card,
                     player=self.player,

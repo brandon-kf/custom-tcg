@@ -21,17 +21,26 @@ class Effect(IEffect):
 
     def __init__(
         self: Effect,
-        name: str,
         card: ICard,
+        name: str | None = None,
         actions: list[IAction] | None = None,
+        card_affected: ICard | None = None,
+        card_affecting: ICard | None = None,
     ) -> None:
         """Create an effect."""
         self.session_object_id = uuid4().hex
-        self.name = name
+        self.name = name or self.__class__.__name__
         self.card = card
         self.player = card.player
         self.state = EffectStateDef.inactive
         self.actions = actions or []
+        self.card_affected = card_affected or card
+        self.card_affecting = card_affecting or card
+
+    @classmethod
+    def create(cls: type[Effect], card: ICard) -> IEffect:
+        """Create an instance of this effect."""
+        return cls(card=card)
 
     @override
     def copy(
@@ -43,6 +52,7 @@ class Effect(IEffect):
             name=self.name,
             card=card,
             actions=self.actions,
+            card_affected=self.card_affected,
         )
 
     @override
@@ -56,8 +66,8 @@ class Effect(IEffect):
 
         self.state = EffectStateDef.active
 
-        if self not in self.card.effects:
-            self.card.effects.append(self)
+        if self not in self.card_affected.effects:
+            self.card_affected.effects.append(self)
 
     @override
     def deactivate(self: Effect, context: IExecutionContext) -> None:
@@ -70,32 +80,9 @@ class Effect(IEffect):
 
         self.state = EffectStateDef.inactive
 
-        if self in self.card.effects:
-            self.card.effects.remove(self)
+        if self in self.card_affected.effects:
+            self.card_affected.effects.remove(self)
 
     @override
     def bind_deactivation(self: Effect, context: IExecutionContext) -> bool:
         return False
-
-
-class Activated(Effect):
-    """The card has been activated."""
-
-    def __init__(
-        self: Activated,
-        card: ICard,
-    ) -> None:
-        """Create an activated effect."""
-        super().__init__(
-            name="Activated",
-            card=card,
-        )
-
-    @classmethod
-    def create(cls: type[Activated], card: ICard) -> Activated:
-        """Create an instance of this effect."""
-        return cls(card=card)
-
-    def copy(self: Activated, card: ICard) -> Activated:
-        """Create an instance of this effect."""
-        return self.__class__(card=card)

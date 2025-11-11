@@ -10,8 +10,8 @@ from custom_tcg.common.effect.being_stats import BeingStats
 from custom_tcg.common.item.pebble import Pebble
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.dimension import CardTypeDef
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.effect.add_effect import AddEffect
-from custom_tcg.core.effect.effect import Activated
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
 

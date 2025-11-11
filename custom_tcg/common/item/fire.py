@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from custom_tcg.common.card_class_def import CardClassDef
 from custom_tcg.common.card_type_def import CardTypeDef
+from custom_tcg.common.effect.burning import Burning
 from custom_tcg.common.effect.item_stats import ItemStats
 from custom_tcg.core.card.card import Card
 from custom_tcg.core.execution.play import Play
@@ -40,6 +41,8 @@ class Fire(Card):
                 heft=1000,
             ),
         )
+
+        fire.effects.append(Burning(card=fire))
 
         # TODO: Make this spread unless controlled.  # noqa: TD002, FIX002, TD003, E501
 

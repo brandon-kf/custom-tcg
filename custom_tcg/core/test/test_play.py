@@ -16,6 +16,7 @@ def test_play_moves_card_and_adds_bindings() -> None:
     card = Mock(name="CardMock")
     card.name = "BasicCard"
     card.types = []
+    card.effects = []
     card.register = Mock()
     card.add_bindings = Mock()
 
@@ -43,6 +44,7 @@ def test_play_adds_to_processes_for_process_cards() -> None:
     card = Mock(name="ProcessCard")
     card.name = "ProcCard"
     card.types = [CardTypeDef.process]
+    card.effects = []
     card.register = Mock()
     card.add_bindings = Mock()
 

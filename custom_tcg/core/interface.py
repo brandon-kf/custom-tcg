@@ -151,6 +151,8 @@ class IEffect(INamed, ISessionTracked):
     player: IPlayer
     state: EffectState
     actions: list[IAction]
+    card_affected: ICard
+    card_affecting: ICard
     bind_removal: Callable[[IAction, ICard, IPlayer], bool]
 
     @classmethod

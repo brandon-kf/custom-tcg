@@ -5,7 +5,8 @@ from unittest.mock import Mock
 import pytest
 
 from custom_tcg.core.dimension import EffectStateDef
-from custom_tcg.core.effect.effect import Activated, Effect
+from custom_tcg.core.effect.activated import Activated
+from custom_tcg.core.effect.effect import Effect
 
 
 @pytest.fixture

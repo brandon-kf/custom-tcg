@@ -10,7 +10,7 @@ from custom_tcg.core.card.card import Card
 from custom_tcg.core.card.draw import Draw
 from custom_tcg.core.dimension import CardClassDef
 from custom_tcg.core.dimension import CardTypeDef as CardTypeCommonDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.execution.activate import Activate
 
 if TYPE_CHECKING:

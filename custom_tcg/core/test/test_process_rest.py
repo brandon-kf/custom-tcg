@@ -3,7 +3,7 @@
 from unittest.mock import Mock
 
 from custom_tcg.core.dimension import CardTypeDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.process.rest import Rest
 
 

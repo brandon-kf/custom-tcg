@@ -63,6 +63,8 @@ def activate_desperate_shepherd(
             max_steps=40,
         ), "Expected to select 'Bundle of Wool' and confirm"
     else:
+        # TODO: Remove reference to 'Peasant' to advance past separate,  # noqa: E501, FIX002, TD002, TD003
+        # this condition is not necessarily present in all test flows.
         step_until_available(g, "Select 'Peasant'", max_steps=60)
 
     # If desired, Deliver Ball of Wool  (deliver action auto-prompts)

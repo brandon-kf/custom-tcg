@@ -19,7 +19,7 @@ from custom_tcg.core.card.select import Select
 from custom_tcg.core.card.select_by_choice import SelectByChoice
 from custom_tcg.core.card.tap import Tap
 from custom_tcg.core.dimension import CardTypeDef
-from custom_tcg.core.effect.effect import Activated
+from custom_tcg.core.effect.activated import Activated
 from custom_tcg.core.execution.activate import Activate
 from custom_tcg.core.execution.play import Play
 

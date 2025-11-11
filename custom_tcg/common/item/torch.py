@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 
 
 class Torch(Card):
-    """Create Stone Path instances."""
+    """Create Torch instances."""
 
-    name: str = "Stone Path"
+    name: str = "Torch"
 
     @classmethod
     def create(cls: type[Torch], player: IPlayer) -> Torch:
