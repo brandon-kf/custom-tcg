@@ -57,14 +57,10 @@ class ResourcefulPreacher(Card):
                                     name="Gift two holy symbols to a stranger?",
                                     accept_n=2,
                                     require_n=False,
-                                    options=lambda context: [
-                                        card
-                                        for card in context.player.played
-                                        for effect in card.effects
-                                        if CardClassDef.base_material
-                                        in card.types
-                                        and isinstance(effect, Holding)
-                                        and effect.card_holding is preacher
+                                    options=lambda _: [
+                                        effect.card_held
+                                        for effect in preacher.effects
+                                        if isinstance(effect, Holding)
                                     ],
                                     card=preacher,
                                     player=player,
