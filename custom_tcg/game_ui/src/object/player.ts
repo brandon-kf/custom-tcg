@@ -32,25 +32,32 @@ export default class Player extends ObjectBase {
         this.playerData = playerData
 
         this.deck = new CardArea()
-        this.hand = (
-            new CardAreaHorizontal(Player.hand_spacing)
-                .translateY(1600).translateZ(450).rotateX(Math.PI / 4)
-        )
+        this.hand = new CardAreaHorizontal(Player.hand_spacing)
+            .translateY(1600)
+            .translateZ(450)
+            .rotateX(Math.PI / 4)
         this.playedRow1 = new CardAreaHorizontal(Player.played_spacing).translateZ(2000)
         this.playedRow2 = new CardAreaHorizontal(Player.played_spacing).translateZ(3000)
         this.playedRow3 = new CardAreaHorizontal(Player.played_spacing).translateZ(4000)
-        this.discard = new CardArea();
-
-        [this.playedRow1, this.playedRow2, this.playedRow3].forEach(
-            (area) => area.translateY(200).rotateX(Math.PI / 2)
+        this.discard = new CardArea()
+        ;[this.playedRow1, this.playedRow2, this.playedRow3].forEach((area) =>
+            area.translateY(200).rotateX(Math.PI / 2),
         )
 
         const blockGeometry = new THREE.BoxGeometry(500, 500, 500)
         const greyMaterial = new THREE.MeshBasicMaterial({ color: 0x555555 })
-        this.positionBlock = new THREE.Mesh(blockGeometry, greyMaterial).translateY(3000).translateZ(-1000)
+        this.positionBlock = new THREE.Mesh(blockGeometry, greyMaterial)
+            .translateY(3000)
+            .translateZ(-1000)
 
-        const playmatGeometry = new THREE.BoxGeometry(Player.dimension.x - 500, 100, Player.dimension.z - 500)
-        this.playmat = new THREE.Mesh(playmatGeometry, greyMaterial).translateY(100).translateZ(Player.dimension.z / 2)
+        const playmatGeometry = new THREE.BoxGeometry(
+            Player.dimension.x - 500,
+            100,
+            Player.dimension.z - 500,
+        )
+        this.playmat = new THREE.Mesh(playmatGeometry, greyMaterial)
+            .translateY(100)
+            .translateZ(Player.dimension.z / 2)
 
         this.updateAll = false
     }
@@ -66,25 +73,28 @@ export default class Player extends ObjectBase {
             this.playedRow3,
             this.discard,
             this.positionBlock,
-            this.playmat
+            this.playmat,
         )
     }
 
     update() {
         super.update()
 
-        if (this.updateAll || Math.abs(this.playerData.hand.length - this.hand.countCards()) > 0.1) {
+        if (
+            this.updateAll ||
+            Math.abs(this.playerData.hand.length - this.hand.countCards()) > 0.1
+        ) {
             console.log(`Update cards in hand for player '${this.playerData.name}'`)
             this.syncHand()
         }
 
         if (
-            this.updateAll
-            || Math.abs(
-                this.playerData.played.length
-                - this.playedRow1.countCards()
-                - this.playedRow2.countCards()
-                - this.playedRow3.countCards()
+            this.updateAll ||
+            Math.abs(
+                this.playerData.played.length -
+                    this.playedRow1.countCards() -
+                    this.playedRow2.countCards() -
+                    this.playedRow3.countCards(),
             ) > 0.1
         ) {
             console.log(`Update cards in play for player '${this.playerData.name}'`)
@@ -126,11 +136,10 @@ export default class Player extends ObjectBase {
         const playedIds: string[] = []
 
         for (const cardData of this.playerData.played) {
-            let card: Card | undefined = (
-                this.playedRow1.findCard(cardData.session_object_id)
-                || this.playedRow2.findCard(cardData.session_object_id)
-                || this.playedRow3.findCard(cardData.session_object_id)
-            )
+            let card: Card | undefined =
+                this.playedRow1.findCard(cardData.session_object_id) ||
+                this.playedRow2.findCard(cardData.session_object_id) ||
+                this.playedRow3.findCard(cardData.session_object_id)
             let newCard: boolean = card === undefined
 
             if (!card) {
@@ -139,13 +148,9 @@ export default class Player extends ObjectBase {
 
             if (newCard && card.isProcess()) {
                 this.playedRow3.addCard(card)
-            }
-
-            else if (newCard && card.isBeing()) {
+            } else if (newCard && card.isBeing()) {
                 this.playedRow2.addCard(card)
-            }
-
-            else if (newCard) {
+            } else if (newCard) {
                 this.playedRow1.addCard(card)
             }
 
@@ -174,20 +179,16 @@ export default class Player extends ObjectBase {
             if (isBeing && isHolding) {
                 console.log(`Restructure for being holding on card ${card.cardData.name}`)
                 this.restructureForBeingHolding(card)
-            }
-            else if (isBeing && !isHolding && !beingGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (isBeing && !isHolding && !beingGroups.hasOwnProperty(card.cardData.name)) {
                 console.log(`Restructure for being grouping includes card ${card.cardData.name}`)
                 beingGroups[card.cardData.name] = [card]
-            }
-            else if (isBeing && !isHolding && beingGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (isBeing && !isHolding && beingGroups.hasOwnProperty(card.cardData.name)) {
                 console.log(`Restructure for being grouping includes card ${card.cardData.name}`)
                 beingGroups[card.cardData.name].push(card)
-            }
-            else if (isItem && !isHeld && !itemGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (isItem && !isHeld && !itemGroups.hasOwnProperty(card.cardData.name)) {
                 console.log(`Restructure for item grouping includes card ${card.cardData.name}`)
                 itemGroups[card.cardData.name] = [card]
-            }
-            else if (isItem && !isHeld && itemGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (isItem && !isHeld && itemGroups.hasOwnProperty(card.cardData.name)) {
                 console.log(`Restructure for item grouping includes card ${card.cardData.name}`)
                 itemGroups[card.cardData.name].push(card)
             }
@@ -198,7 +199,7 @@ export default class Player extends ObjectBase {
     }
 
     restructureForBeingHolding(card: Card) {
-        let cardArea = (card.parent instanceof CardAreaOffset) ? card.parent : undefined
+        let cardArea = card.parent instanceof CardAreaOffset ? card.parent : undefined
         let beingCount = 0
 
         if (cardArea) {
@@ -223,7 +224,7 @@ export default class Player extends ObjectBase {
         for (const cardId of card.isHolding()) {
             const inRow2 = this.playedRow2.findCard(cardId)
             const inRow1 = this.playedRow1.findCard(cardId)
-            const held = (inRow2 || inRow1!)
+            const held = inRow2 || inRow1!
 
             // Handle the case where this item changed hands from a different being holding area.
             if (held && inRow2 && inRow2.parent !== cardArea) {
@@ -245,14 +246,12 @@ export default class Player extends ObjectBase {
 
     restructureForBeingGrouping(beingGroups: Record<string, Card[]>) {
         for (const cards of Object.values(beingGroups)) {
-
             let cardArea: CardArea | undefined
 
             for (const card of cards) {
                 if (card.parent instanceof CardAreaOffset && this.playedRow2.findCard(card)) {
                     cardArea = card.parent
-                }
-                else {
+                } else {
                     this.playedRow2.removeCard(card)
                 }
             }
@@ -272,14 +271,12 @@ export default class Player extends ObjectBase {
 
     restructureForItemGrouping(itemGroups: Record<string, Card[]>) {
         for (const cards of Object.values(itemGroups)) {
-
             let cardArea: CardArea | undefined
 
             for (const card of cards) {
                 if (card.parent instanceof CardAreaOffset && this.playedRow1.findCard(card)) {
                     cardArea = card.parent
-                }
-                else {
+                } else {
                     this.playedRow2.removeCard(card)
                     this.playedRow1.removeCard(card)
                 }

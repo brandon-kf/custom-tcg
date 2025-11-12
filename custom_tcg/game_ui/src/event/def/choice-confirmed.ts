@@ -1,5 +1,5 @@
-import { ClientEvent } from "../event";
-import type ClientEventMap from "../map/client";
+import { ClientEvent } from "../event"
+import type ClientEventMap from "../map/client"
 
 export default class ChoiceConfirmedEvent extends ClientEvent {
     name: keyof ClientEventMap = "choice_confirmed"
