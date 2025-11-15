@@ -1,12 +1,15 @@
 import * as THREE from "three"
 
-import PlayerData from "../data/player"
+import type PlayerData from "../data/player"
 import Card from "./card"
 import CardArea from "./card-area"
 import CardAreaHorizontal from "./card-area-horizontal"
 import CardAreaOffset from "./card-area-offset"
 import ObjectBase from "./object"
 
+/**
+ * Represents a player in the game.
+ */
 export default class Player extends ObjectBase {
     static dimension: THREE.Vector3 = new THREE.Vector3(6000, 1000, 5000)
     static hand_spacing = 100
@@ -26,6 +29,10 @@ export default class Player extends ObjectBase {
 
     updateAll: boolean
 
+    /**
+     * Creates a new Player instance.
+     * @param playerData
+     */
     constructor(playerData: PlayerData) {
         super()
 
@@ -62,6 +69,9 @@ export default class Player extends ObjectBase {
         this.updateAll = false
     }
 
+    /**
+     * Sets up the player object.
+     */
     setup() {
         super.setup()
 
@@ -77,6 +87,9 @@ export default class Player extends ObjectBase {
         )
     }
 
+    /**
+     * Updates the player object.
+     */
     update() {
         super.update()
 
@@ -110,16 +123,19 @@ export default class Player extends ObjectBase {
         this.updateAll = false
     }
 
+    /**
+     * Synchronizes the player's hand with the game data.
+     */
     syncHand() {
         const handIds: string[] = []
 
         for (const cardData of this.playerData.hand) {
-            const foundCard = this.hand.findCard(cardData.session_object_id)
+            const foundCard = this.hand.findCardOrArea(cardData.session_object_id)
 
             if (!foundCard) {
                 const cardObject = new Card(cardData)
 
-                this.hand.addCard(cardObject)
+                this.hand.addCardOrArea(cardObject)
             }
 
             handIds.push(cardData.session_object_id)
@@ -127,31 +143,32 @@ export default class Player extends ObjectBase {
 
         for (const card of this.hand.findCards()) {
             if (!handIds.includes(card.cardData.session_object_id)) {
-                this.hand.removeCard(card)
+                this.hand.removeCardOrArea(card)
             }
         }
     }
 
+    /**
+     * Synchronizes the player's played cards with the game data.
+     */
     syncPlayed() {
         const playedIds: string[] = []
 
         for (const cardData of this.playerData.played) {
-            let card: Card | undefined =
-                this.playedRow1.findCard(cardData.session_object_id) ||
-                this.playedRow2.findCard(cardData.session_object_id) ||
+            let card: Card | CardArea | undefined =
+                this.playedRow1.findCard(cardData.session_object_id) ??
+                this.playedRow2.findCard(cardData.session_object_id) ??
                 this.playedRow3.findCard(cardData.session_object_id)
-            let newCard: boolean = card === undefined
+            const newCard: boolean = card === undefined
 
-            if (!card) {
-                card = new Card(cardData)
-            }
+            card ??= new Card(cardData)
 
             if (newCard && card.isProcess()) {
-                this.playedRow3.addCard(card)
+                this.playedRow3.addCardOrArea(card)
             } else if (newCard && card.isBeing()) {
-                this.playedRow2.addCard(card)
+                this.playedRow2.addCardOrArea(card)
             } else if (newCard) {
-                this.playedRow1.addCard(card)
+                this.playedRow1.addCardOrArea(card)
             }
 
             playedIds.push(cardData.session_object_id)
@@ -160,12 +177,15 @@ export default class Player extends ObjectBase {
         for (const area of [this.playedRow1, this.playedRow2, this.playedRow3]) {
             for (const card of area.findCards()) {
                 if (!playedIds.includes(card.cardData.session_object_id)) {
-                    area.removeCard(card)
+                    area.removeCardOrArea(card)
                 }
             }
         }
     }
 
+    /**
+     * Restructures the played rows according to offset rules.
+     */
     restructureRowsAccordingToOffsetRules() {
         const beingGroups: Record<string, Card[]> = {}
         const itemGroups: Record<string, Card[]> = {}
@@ -179,16 +199,32 @@ export default class Player extends ObjectBase {
             if (isBeing && isHolding) {
                 console.log(`Restructure for being holding on card ${card.cardData.name}`)
                 this.restructureForBeingHolding(card)
-            } else if (isBeing && !isHolding && !beingGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (
+                isBeing &&
+                !isHolding &&
+                !Object.prototype.hasOwnProperty.call(beingGroups, card.cardData.name)
+            ) {
                 console.log(`Restructure for being grouping includes card ${card.cardData.name}`)
                 beingGroups[card.cardData.name] = [card]
-            } else if (isBeing && !isHolding && beingGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (
+                isBeing &&
+                !isHolding &&
+                Object.prototype.hasOwnProperty.call(beingGroups, card.cardData.name)
+            ) {
                 console.log(`Restructure for being grouping includes card ${card.cardData.name}`)
                 beingGroups[card.cardData.name].push(card)
-            } else if (isItem && !isHeld && !itemGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (
+                isItem &&
+                !isHeld &&
+                !Object.prototype.hasOwnProperty.call(itemGroups, card.cardData.name)
+            ) {
                 console.log(`Restructure for item grouping includes card ${card.cardData.name}`)
                 itemGroups[card.cardData.name] = [card]
-            } else if (isItem && !isHeld && itemGroups.hasOwnProperty(card.cardData.name)) {
+            } else if (
+                isItem &&
+                !isHeld &&
+                Object.prototype.hasOwnProperty.call(itemGroups, card.cardData.name)
+            ) {
                 console.log(`Restructure for item grouping includes card ${card.cardData.name}`)
                 itemGroups[card.cardData.name].push(card)
             }
@@ -196,8 +232,13 @@ export default class Player extends ObjectBase {
 
         this.restructureForBeingGrouping(beingGroups)
         this.restructureForItemGrouping(itemGroups)
+        this.restructureForEmptyAreas()
     }
 
+    /**
+     * Restructures the played rows for a being that is holding items.
+     * @param card The being card that is holding items.
+     */
     restructureForBeingHolding(card: Card) {
         let cardArea = card.parent instanceof CardAreaOffset ? card.parent : undefined
         let beingCount = 0
@@ -208,42 +249,44 @@ export default class Player extends ObjectBase {
                     beingCount += 1
                 }
             }
-        }
 
-        if (cardArea) {
-            cardArea.removeCard(card)
+            cardArea.removeCardOrArea(card)
         }
 
         if (!cardArea || beingCount > 1) {
             cardArea = new CardAreaOffset(150)
 
-            this.playedRow2.removeCard(card)
-            this.playedRow2.addCardArea(cardArea)
+            this.playedRow2.removeCardOrArea(card)
+            this.playedRow2.addCardOrArea(cardArea)
         }
 
         for (const cardId of card.isHolding()) {
             const inRow2 = this.playedRow2.findCard(cardId)
             const inRow1 = this.playedRow1.findCard(cardId)
-            const held = inRow2 || inRow1!
+            const held = inRow2 ?? inRow1!
 
             // Handle the case where this item changed hands from a different being holding area.
             if (held && inRow2 && inRow2.parent !== cardArea) {
-                this.playedRow2.removeCard(inRow2)
+                this.playedRow2.removeCardOrArea(inRow2)
             }
 
             // Handle the case where this item was in the item area.
             else if (held && inRow1) {
-                this.playedRow1.removeCard(inRow1)
+                this.playedRow1.removeCardOrArea(inRow1)
             }
 
             if (held && held.parent !== cardArea) {
-                cardArea.addCard(held)
+                cardArea.addCardOrArea(held)
             }
         }
 
-        cardArea.addCard(card)
+        cardArea.addCardOrArea(card)
     }
 
+    /**
+     * Restructures the played rows for being grouping.
+     * @param beingGroups The groups of being cards to restructure.
+     */
     restructureForBeingGrouping(beingGroups: Record<string, Card[]>) {
         for (const cards of Object.values(beingGroups)) {
             let cardArea: CardArea | undefined
@@ -252,23 +295,27 @@ export default class Player extends ObjectBase {
                 if (card.parent instanceof CardAreaOffset && this.playedRow2.findCard(card)) {
                     cardArea = card.parent
                 } else {
-                    this.playedRow2.removeCard(card)
+                    this.playedRow2.removeCardOrArea(card)
                 }
             }
 
             if (!cardArea) {
                 cardArea = new CardAreaOffset(150)
-                this.playedRow2.addCardArea(cardArea)
+                this.playedRow2.addCardOrArea(cardArea)
             }
 
             for (const card of cards) {
                 if (card.parent !== cardArea) {
-                    cardArea.addCard(card)
+                    cardArea.addCardOrArea(card)
                 }
             }
         }
     }
 
+    /**
+     * Restructures the played rows for item grouping.
+     * @param itemGroups The groups of item cards to restructure.
+     */
     restructureForItemGrouping(itemGroups: Record<string, Card[]>) {
         for (const cards of Object.values(itemGroups)) {
             let cardArea: CardArea | undefined
@@ -277,21 +324,34 @@ export default class Player extends ObjectBase {
                 if (card.parent instanceof CardAreaOffset && this.playedRow1.findCard(card)) {
                     cardArea = card.parent
                 } else {
-                    this.playedRow2.removeCard(card)
-                    this.playedRow1.removeCard(card)
+                    this.playedRow2.removeCardOrArea(card)
+                    this.playedRow1.removeCardOrArea(card)
                 }
             }
 
             if (!cardArea) {
                 cardArea = new CardAreaOffset(150)
-                this.playedRow1.addCardArea(cardArea)
+                this.playedRow1.addCardOrArea(cardArea)
             }
 
             for (const card of cards) {
                 if (card.parent !== cardArea) {
-                    cardArea.addCard(card)
+                    cardArea.addCardOrArea(card)
                 }
             }
+        }
+    }
+
+    /**
+     * Restructures the played rows to remove empty areas.
+     */
+    restructureForEmptyAreas() {
+        for (const cardArea of [this.playedRow3, this.playedRow2, this.playedRow1]) {
+            cardArea.traverse((parent, child) => {
+                if (child instanceof CardAreaOffset && child.countCards() === 0) {
+                    parent.removeCardOrArea(child)
+                }
+            })
         }
     }
 }

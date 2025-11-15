@@ -95,7 +95,7 @@ def p2() -> Player:
                 CompulsiveGatherer.create(player=p2),
             ],
             main=[
-                *(DesperateShepherd.create(player=p2) for _ in range(20)),
+                *(QuestionableButcher.create(player=p2) for _ in range(20)),
             ],
         ),
     )
