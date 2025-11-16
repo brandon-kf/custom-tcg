@@ -59,6 +59,7 @@ class ApprenticeSmith(Card):
                         held_type=PileOfRocks,
                         accept_n=2,
                         require_n=False,
+                        auto_n=True,
                         card=smith,
                         player=player,
                     ),

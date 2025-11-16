@@ -55,6 +55,7 @@ class ResourcefulPreacher(Card):
                                     name="Select two items?",
                                     accept_n=2,
                                     require_n=False,
+                                    auto_n=True,
                                     options=lambda context: [
                                         card
                                         for card in context.player.played
@@ -82,7 +83,7 @@ class ResourcefulPreacher(Card):
                 card=preacher,
                 strength=2,
                 dexterity=2,
-                constitution=2,
+                constitution=3,
                 intelligence=2,
                 wisdom=2,
                 charisma=2,

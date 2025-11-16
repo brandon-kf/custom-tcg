@@ -61,6 +61,7 @@ class QuestionableButcher(Card):
                             name="Select a being to butcher?",
                             accept_n=1,
                             require_n=False,
+                            auto_n=True,
                             options=lambda context: [
                                 card
                                 for card in context.player.played

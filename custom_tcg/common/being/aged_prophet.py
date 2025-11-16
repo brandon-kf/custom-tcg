@@ -71,6 +71,7 @@ class AgedProphet(Card):
                         held_type=Pebble,
                         accept_n=1,
                         require_n=False,
+                        auto_n=True,
                         card=aged_prophet,
                         player=player,
                     ),

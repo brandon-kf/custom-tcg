@@ -64,6 +64,7 @@ class TheStewmaker(Card):
                                     name="Cook two food items",
                                     accept_n=2,
                                     require_n=False,
+                                    auto_n=True,
                                     options=lambda context: [
                                         card
                                         for card in context.player.played
