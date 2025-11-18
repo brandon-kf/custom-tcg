@@ -83,6 +83,7 @@ class ThatPebbleGirl(Card):
                     held_type=PileOfRocks,
                     accept_n=1,
                     require_n=False,
+                    auto_n=True,
                     card=that_pebble_girl,
                     player=player,
                 ),

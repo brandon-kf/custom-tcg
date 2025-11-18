@@ -9,7 +9,7 @@ from custom_tcg.core.action import Action
 from custom_tcg.core.anon import Action as AnonymousAction
 from custom_tcg.core.card.select import Select
 from custom_tcg.core.dimension import ActionStateDef
-from custom_tcg.core.interface import IExecutionContext
+from custom_tcg.core.interface import IExecutionContext, INamed
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -30,6 +30,7 @@ class SelectByChoice(Select):
     """A selector that poses choices to a player."""
 
     accept_n: list[int]
+    auto_n: bool
     confirm_action: IAction
     cancel_action: IAction
     choice_actions: list[IAction]
@@ -42,6 +43,7 @@ class SelectByChoice(Select):
         options: list | Callable[[IExecutionContext], list],
         require_n: bool,  # noqa: FBT001
         accept_n: int | list[int],
+        auto_n: bool = False,  # noqa: FBT001, FBT002
         bind: Callable[[IAction, ICard, IPlayer], bool] | None = None,
     ) -> None:
         """Construct a choice selector."""
@@ -51,11 +53,12 @@ class SelectByChoice(Select):
             player=player,
             options=options,
             n=0,
+            require_n=require_n,
             bind=bind,
         )
 
         self.accept_n = [accept_n] if isinstance(accept_n, int) else accept_n
-        self.require_n = require_n
+        self.auto_n = auto_n
 
         self.confirm_action = AnonymousAction(
             name="Confirm",
@@ -87,7 +90,41 @@ class SelectByChoice(Select):
 
     @override
     def speculate(self: SelectByChoice) -> bool:
-        return len(self.options) >= min(self.accept_n)
+        """Speculate if selection can be satisfied."""
+        speculation_result: bool = len(self.options) >= min(self.accept_n)
+        auto_select: bool = False
+        option_1: INamed | None = next(iter(self.options), None)
+
+        # Auto-select if we have exactly the right number of options and auto_n
+        if (
+            self.auto_n
+            and len(self.accept_n) == 1
+            and len(self.options) == self.accept_n[0]
+        ):
+            auto_select = True
+
+        # Otherwise, auto-select only if all options are identical
+        elif (
+            self.auto_n
+            and len(self.accept_n) == 1
+            and speculation_result
+            and option_1 is not None
+        ):
+            auto_select = True
+
+            for option in self.options:
+                # TODO: Make this more advanced, to handle differences in  # noqa: E501, FIX002, TD002, TD003
+                # objects with the same names, but other different
+                # properties.
+                if option.name != option_1.name:
+                    auto_select = False
+                    break
+
+        if auto_select:
+            self.selected = self.options[: self.accept_n[0]]
+            self.state = ActionStateDef.completed
+
+        return speculation_result
 
     @override
     def enter(self: SelectByChoice, context: IExecutionContext) -> None:

@@ -62,6 +62,7 @@ class ApprenticeCarpenter(Card):
                         held_type=PileOfWood,
                         accept_n=2,
                         require_n=False,
+                        auto_n=True,
                         card=carp,
                         player=player,
                     ),

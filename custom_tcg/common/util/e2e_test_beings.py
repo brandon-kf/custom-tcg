@@ -12,11 +12,11 @@ from custom_tcg.common.item.pelt import Pelt
 from custom_tcg.common.item.stone import Stone
 from custom_tcg.common.item.stone_path import StonePath
 from custom_tcg.common.item.wood_structure import WoodStructure
+from custom_tcg.core.dimension import CardTypeDef
 from custom_tcg.core.game import Game
 from custom_tcg.core.interface import ICard
 from custom_tcg.core.util.e2e_test import (
     choose_by_name_contains,
-    choose_option_n_then_confirm,
     choose_option_then_confirm,
     step_until_available,
 )
@@ -151,15 +151,9 @@ def activate_early_architect(
     choose_by_name_contains(g, "Activate from card 'Early Architect'")
 
     if build_stone_path:
-        # Cost: select 2 Pile of Rocks held by the Early Architect
-        assert choose_option_n_then_confirm(
-            g,
-            "Select 'Pile of Rocks'",
-            2,
-            max_steps=40,
-        ), "Expected to select two 'Pile of Rocks' and confirm"
-
+        # Cost: 2 Pile of Rocks auto-selected (auto_n=True, exact match)
         # Verify Stone Path is created and not held (very heavy)
+        step_until_available(g, max_steps=60)
         stone_paths = [
             c for c in g.context.player.played if isinstance(c, StonePath)
         ]
@@ -169,8 +163,8 @@ def activate_early_architect(
             e for e in stone_paths[0].effects if hasattr(e, "card_held_by")
         ]
         assert not held_effects, "Stone Path should not be held after creation"
-
-    step_until_available(g, max_steps=60)
+    else:
+        step_until_available(g, max_steps=60)
 
 
 def activate_apprentice_carpenter(
@@ -189,19 +183,14 @@ def activate_apprentice_carpenter(
             "Select 'Wood Structure'",
             max_steps=60,
         ), "Expected to select 'Wood Structure' and confirm"
-        assert choose_option_n_then_confirm(
-            g,
-            "Select 'Pile of Wood'",
-            2,
-            max_steps=80,
-        ), "Expected to select two 'Pile of Wood' for discard and confirm"
-
+        # Cost: 2 Pile of Wood auto-selected (auto_n=True, exact match)
+        step_until_available(g, max_steps=80)
         structures = [
             c for c in g.context.player.played if isinstance(c, WoodStructure)
         ]
         assert structures, "Expected a Wood Structure to be created"
-
-    step_until_available(g, max_steps=60)
+    else:
+        step_until_available(g, max_steps=60)
 
 
 def activate_questionable_butcher(
@@ -209,13 +198,21 @@ def activate_questionable_butcher(
     chop_chop: type[ICard] | None = None,
 ) -> None:
     """Activate Questionable Butcher to butcher a Peasant and get items."""
+    # Count available beings BEFORE activating (excluding Butcher itself)
+    beings_before = [
+        c
+        for c in g.context.player.played
+        if CardTypeDef.being in c.types and c.name != "Questionable Butcher"
+    ]
+
     choose_by_name_contains(
         g,
         "Activate from card 'Questionable Butcher'",
     )
 
-    # Cost: select a being to butcher (choose Peasant)
-    if chop_chop is not None:
+    # Cost: If exactly 1 being available, auto-selected (auto_n=True, accept_n=1)
+    # Only manually select if multiple beings available
+    if chop_chop is not None and len(beings_before) > 1:
         assert choose_option_then_confirm(
             g,
             option_name=f"Select '{chop_chop.name}'",
@@ -262,13 +259,8 @@ def activate_apprentice_smith(
             "Select 'Metal'",
             max_steps=60,
         ), "Expected to select 'Metal' and confirm"
-        assert choose_option_n_then_confirm(
-            g,
-            "Select 'Pile of Rocks'",
-            2,
-            max_steps=80,
-        ), "Expected to select two 'Pile of Rocks' for discard and confirm"
-
+        # Cost: 2 Pile of Rocks auto-selected (auto_n=True, exact match)
+        step_until_available(g, max_steps=80)
         metals = [c for c in g.context.player.played if isinstance(c, Metal)]
         assert metals, "Expected a Metal to be created"
         held = next(
@@ -277,8 +269,8 @@ def activate_apprentice_smith(
         )
         assert held is not None
         assert held.card_holding.name == "Apprentice Smith"
-
-    step_until_available(g, max_steps=60)
+    else:
+        step_until_available(g, max_steps=60)
 
 
 def activate_seamstress(
@@ -296,13 +288,6 @@ def activate_seamstress(
             "Select 'Cord'",
             max_steps=60,
         ), "Expected to select 'Cord' and confirm"
-        # Discard Ball of Wool (cost)
-        assert choose_option_then_confirm(
-            g,
-            "Select 'Ball of Wool'",
-            max_steps=60,
-        ), "Expected to select Ball of Wool to discard"
-
         cords = [c for c in g.context.player.played if isinstance(c, Cord)]
         assert cords, "Expected a Cord to be created"
         held = next(
@@ -326,31 +311,6 @@ def activate_seamstress(
             "Select 'Cloth'",
             max_steps=60,
         ), "Expected to select 'Cloth' and confirm"
-        success = choose_option_n_then_confirm(
-            g,
-            "Select 'Cord'",
-            2,
-            max_steps=80,
-        )
-        if not success:
-            available = [c.name for c in g.context.choices]
-            cords_all = [
-                c for c in g.context.player.played if isinstance(c, Cord)
-            ]
-            held_cords = [
-                c
-                for c in cords_all
-                for e in c.effects
-                if isinstance(e, Holding)
-                and e.card_holding.name == "Seamstress"
-            ]
-            msg = (
-                "Expected to select two 'Cord' cards and confirm. "
-                f"Choices: {available}; "
-                f"cords_in_play={len(cords_all)}, "
-                f"held_by_seamstress={len(held_cords)}"
-            )
-            raise AssertionError(msg)
 
         cloths = [c for c in g.context.player.played if isinstance(c, Cloth)]
         assert cloths, "Expected a Cloth to be created"

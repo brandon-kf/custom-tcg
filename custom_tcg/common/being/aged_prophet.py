@@ -75,6 +75,17 @@ class AgedProphet(Card):
                         isinstance(effect, Activated) for effect in card.effects
                     )
                 ),
+                costs=[
+                    SelectByHeld(
+                        name=f"Verify a '{Pebble.name}' is held",
+                        held_type=Pebble,
+                        accept_n=1,
+                        require_n=False,
+                        auto_n=True,
+                        card=aged_prophet,
+                        player=player,
+                    ),
+                ],
             ),
         )
 

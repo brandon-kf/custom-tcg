@@ -120,6 +120,7 @@ class DesperateShepherd(Card):
                     held_type=BundleOfWool,
                     accept_n=1,
                     require_n=False,
+                    auto_n=True,
                     card=desperate_shepherd,
                     player=player,
                 ),

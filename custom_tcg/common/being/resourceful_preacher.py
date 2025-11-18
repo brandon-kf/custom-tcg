@@ -57,6 +57,7 @@ class ResourcefulPreacher(Card):
                                     name="Gift two holy symbols to a stranger?",
                                     accept_n=2,
                                     require_n=False,
+                                    auto_n=True,
                                     options=lambda _: [
                                         effect.card_held
                                         for effect in preacher.effects
@@ -82,8 +83,8 @@ class ResourcefulPreacher(Card):
                 card=preacher,
                 strength=2,
                 dexterity=2,
-                constitution=2,
-                intelligence=3,
+                constitution=3,
+                intelligence=2,
                 wisdom=2,
                 charisma=4,
             ),

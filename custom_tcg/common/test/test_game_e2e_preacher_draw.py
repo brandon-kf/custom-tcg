@@ -20,7 +20,6 @@ from custom_tcg.common.item.pebble import Pebble
 from custom_tcg.common.util.e2e_test_beings import activate_that_pebble_girl
 from custom_tcg.core.util.e2e_test import (
     choose_by_name_contains,
-    choose_option_n_then_confirm,
     end_current_process,
     play_card,
     step_until_available,
@@ -89,17 +88,11 @@ def test_preacher_draw(game: Game) -> None:
     )
 
     hand_before = len(g.context.player.hand)
-    # Activate Preacher and discard two Pebbles (held by Preacher)
+    # Activate Preacher - two Pebbles auto-selected (auto_n=True, exact match)
     choose_by_name_contains(g, "Activate from card 'Resourceful Preacher'")
-    assert choose_option_n_then_confirm(
-        g,
-        "Select 'Pebble'",
-        2,
-        max_steps=80,
-    ), "Expected to select two 'Pebble' to discard and confirm"
 
     # Verify a single card was drawn
-    step_until_available(g, max_steps=60)
+    step_until_available(g, max_steps=80)
     assert len(g.context.player.hand) == hand_before + 1, (
         "Expected hand size to increase by 1 from Preacher draw"
     )

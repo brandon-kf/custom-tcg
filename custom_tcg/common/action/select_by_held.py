@@ -24,6 +24,7 @@ class SelectByHeld(SelectByChoice):
         held_type: type[ICard],
         require_n: bool,  # noqa: FBT001
         accept_n: int | list[int],
+        auto_n: bool = False,  # noqa: FBT001, FBT002
         bind: Callable[[IAction, ICard, IPlayer], bool] | None = None,
     ) -> None:
         """Construct a choice selector."""
@@ -40,6 +41,7 @@ class SelectByHeld(SelectByChoice):
                 and effect.card_holding is self.card
             ],
             require_n=require_n,
+            auto_n=auto_n,
             accept_n=accept_n,
             bind=bind,
         )

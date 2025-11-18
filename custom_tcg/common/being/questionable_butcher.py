@@ -51,6 +51,8 @@ class QuestionableButcher(Card):
                         name="Chop chop",
                         finder=butcher,
                         cards_to_find=[ExtraRations, Pelt],
+                        card=butcher,
+                        player=player,
                         costs=[
                             Discard(
                                 name="Select a being to butcher",
@@ -58,6 +60,7 @@ class QuestionableButcher(Card):
                                     name="Select a being to butcher?",
                                     accept_n=1,
                                     require_n=False,
+                                    auto_n=True,
                                     options=lambda context: [
                                         card
                                         for card in context.player.played
@@ -71,10 +74,7 @@ class QuestionableButcher(Card):
                                 player=player,
                             ),
                         ],
-                        card=butcher,
-                        player=player,
                     ),
-                    # Allow delivering items the butcher holds to other beings
                     Deliver(card=butcher, player=player),
                 ],
                 card=butcher,

@@ -25,11 +25,9 @@ from custom_tcg.common.being.the_stewmaker import TheStewmaker
 from custom_tcg.common.effect.holding import Holding
 from custom_tcg.core.util.e2e_test import (
     choose_by_name_contains,
-    choose_option_n_then_confirm,
     choose_option_then_confirm,
     end_current_process,
     play_card,
-    step_until_available,
 )
 
 if TYPE_CHECKING:
@@ -149,15 +147,9 @@ def test_stew_recipe(game: Game) -> None:
         "Select 'Stew'",
         max_steps=60,
     ), "Expected to select 'Stew' and confirm"
-    assert choose_option_n_then_confirm(
-        g,
-        "Select 'Extra Rations'",
-        2,
-        max_steps=80,
-    ), "Expected to select two held 'Extra Rations' to discard and confirm"
+    # Cost: 2 Extra Rations auto-selected (auto_n=True, exact match)
 
     # Verify a Stew exists and is held by The Stewmaker.
-    step_until_available(g, max_steps=60)
     stew_cards = [c for c in g.context.player.played if c.name == "Stew"]
     assert stew_cards, "Expected a Stew to be created by The Stewmaker"
     held = next(
