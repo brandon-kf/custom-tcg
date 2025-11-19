@@ -182,4 +182,12 @@ export default class CardArea extends Object {
     height(): number {
         return 0
     }
+
+    /**
+     * Returns the depth of the card area.
+     * @return The depth of the card area.
+     */
+    depth(): number {
+        return 0
+    }
 }

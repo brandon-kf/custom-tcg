@@ -1,10 +1,12 @@
 import * as THREE from "three"
 
+import CardData from "../data/card"
 import type PlayerData from "../data/player"
 import Card from "./card"
 import CardArea from "./card-area"
 import CardAreaHorizontal from "./card-area-horizontal"
 import CardAreaOffset from "./card-area-offset"
+import CardAreaStack from "./card-area-stack"
 import ObjectBase from "./object"
 
 /**
@@ -14,6 +16,7 @@ export default class Player extends ObjectBase {
     static dimension: THREE.Vector3 = new THREE.Vector3(6000, 1000, 5000)
     static hand_spacing = 100
     static played_spacing = 300
+    static stack_spacing = 10
 
     playerData: PlayerData
 
@@ -38,18 +41,32 @@ export default class Player extends ObjectBase {
 
         this.playerData = playerData
 
-        this.deck = new CardArea()
+        this.deck = new CardAreaStack(Player.stack_spacing)
+            .translateX(Player.dimension.x / 2 - 1000)
+            .translateY(200)
+            .translateZ(Player.dimension.z / 2)
+            .rotateX(Math.PI / 2)
+
         this.hand = new CardAreaHorizontal(Player.hand_spacing)
             .translateY(1600)
             .translateZ(450)
             .rotateX(Math.PI / 4)
-        this.playedRow1 = new CardAreaHorizontal(Player.played_spacing).translateZ(2000)
-        this.playedRow2 = new CardAreaHorizontal(Player.played_spacing).translateZ(3000)
-        this.playedRow3 = new CardAreaHorizontal(Player.played_spacing).translateZ(4000)
-        this.discard = new CardArea()
-        ;[this.playedRow1, this.playedRow2, this.playedRow3].forEach((area) =>
-            area.translateY(200).rotateX(Math.PI / 2),
+
+        this.playedRow1 = new CardAreaHorizontal(Player.played_spacing)
+        this.playedRow2 = new CardAreaHorizontal(Player.played_spacing)
+        this.playedRow3 = new CardAreaHorizontal(Player.played_spacing)
+        ;[this.playedRow1, this.playedRow2, this.playedRow3].forEach((area, index) =>
+            area
+                .translateZ(1000 * index + 2000)
+                .translateY(200)
+                .rotateX(Math.PI / 2),
         )
+
+        this.discard = new CardAreaStack(Player.stack_spacing)
+            .translateX(-Player.dimension.x / 2 + 1000)
+            .translateY(200)
+            .translateZ(Player.dimension.z / 2)
+            .rotateX(Math.PI / 2)
 
         const blockGeometry = new THREE.BoxGeometry(500, 500, 500)
         const greyMaterial = new THREE.MeshBasicMaterial({ color: 0x555555 })
@@ -93,12 +110,46 @@ export default class Player extends ObjectBase {
     update() {
         super.update()
 
+        let didUpdate = this.updateAll
+        const deckObjectCount = this.deck.countCards()
+
+        if (this.updateAll || Math.abs(this.playerData.deck_size - deckObjectCount) > 0.1) {
+            didUpdate = true
+
+            console.log(
+                `Update cards in deck (${this.playerData.deck_size}) for player '${this.playerData.name}'`,
+            )
+
+            if (typeof this.playerData.deck === "undefined") {
+                this.playerData.deck = []
+            }
+
+            for (let i = deckObjectCount; i < this.playerData.deck_size; i++) {
+                console.log(`Adding card back ${i} to deck for player '${this.playerData.name}'`)
+                const cardBackData = new CardData()
+                cardBackData.session_object_id = `deck-back-${i}`
+                this.playerData.deck.push(cardBackData)
+            }
+
+            this.syncCardList(this.playerData.deck, this.deck)
+        }
+
+        if (
+            this.updateAll ||
+            Math.abs(this.playerData.discard.length - this.discard.countCards()) > 0.1
+        ) {
+            didUpdate = true
+            console.log(`Update cards in discard for player '${this.playerData.name}'`)
+            this.syncCardList(this.playerData.discard, this.discard)
+        }
+
         if (
             this.updateAll ||
             Math.abs(this.playerData.hand.length - this.hand.countCards()) > 0.1
         ) {
+            didUpdate = true
             console.log(`Update cards in hand for player '${this.playerData.name}'`)
-            this.syncHand()
+            this.syncCardList(this.playerData.hand, this.hand)
         }
 
         if (
@@ -110,40 +161,49 @@ export default class Player extends ObjectBase {
                     this.playedRow3.countCards(),
             ) > 0.1
         ) {
+            didUpdate = true
             console.log(`Update cards in play for player '${this.playerData.name}'`)
 
             this.syncPlayed()
             this.restructureRowsAccordingToOffsetRules()
         }
 
-        for (const area of [this.hand, this.playedRow1, this.playedRow2, this.playedRow3]) {
-            area.update()
+        if (didUpdate) {
+            for (const area of [
+                this.deck,
+                this.discard,
+                this.hand,
+                this.playedRow1,
+                this.playedRow2,
+                this.playedRow3,
+            ]) {
+                area.update()
+            }
+
+            this.deck.position.y = this.deck.depth()
         }
 
         this.updateAll = false
     }
 
-    /**
-     * Synchronizes the player's hand with the game data.
-     */
-    syncHand() {
-        const handIds: string[] = []
+    syncCardList(cardDataList: CardData[], cardArea: CardArea) {
+        const seenIds: string[] = []
 
-        for (const cardData of this.playerData.hand) {
-            const foundCard = this.hand.findCardOrArea(cardData.session_object_id)
+        for (const cardData of cardDataList) {
+            const foundCard = cardArea.findCardOrArea(cardData.session_object_id)
 
             if (!foundCard) {
                 const cardObject = new Card(cardData)
 
-                this.hand.addCardOrArea(cardObject)
+                cardArea.addCardOrArea(cardObject)
             }
 
-            handIds.push(cardData.session_object_id)
+            seenIds.push(cardData.session_object_id)
         }
 
-        for (const card of this.hand.findCards()) {
-            if (!handIds.includes(card.cardData.session_object_id)) {
-                this.hand.removeCardOrArea(card)
+        for (const card of cardArea.findCards()) {
+            if (!seenIds.includes(card.cardData.session_object_id)) {
+                cardArea.removeCardOrArea(card)
             }
         }
     }
