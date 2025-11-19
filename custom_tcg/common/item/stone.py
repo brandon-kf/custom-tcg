@@ -42,6 +42,4 @@ class Stone(Card):
             ),
         )
 
-        # TODO: This should also be smeltable into an ore.  # noqa: E501, FIX002, TD002, TD003
-
         return stone
