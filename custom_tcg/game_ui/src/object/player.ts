@@ -3,7 +3,7 @@ import * as THREE from "three"
 import CardData from "../data/card"
 import type PlayerData from "../data/player"
 import Card from "./card"
-import CardArea from "./card-area"
+import type CardArea from "./card-area"
 import CardAreaHorizontal from "./card-area-horizontal"
 import CardAreaOffset from "./card-area-offset"
 import CardAreaStack from "./card-area-stack"
@@ -16,7 +16,7 @@ export default class Player extends ObjectBase {
     static dimension: THREE.Vector3 = new THREE.Vector3(6000, 1000, 5000)
     static hand_spacing = 100
     static played_spacing = 300
-    static stack_spacing = 10
+    static stack_spacing = 5
 
     playerData: PlayerData
 
@@ -131,6 +131,8 @@ export default class Player extends ObjectBase {
                 this.playerData.deck.push(cardBackData)
             }
 
+            this.playerData.deck = this.playerData.deck.slice(0, this.playerData.deck_size)
+
             this.syncCardList(this.playerData.deck, this.deck)
         }
 
@@ -180,12 +182,18 @@ export default class Player extends ObjectBase {
                 area.update()
             }
 
-            this.deck.position.y = this.deck.depth()
+            this.deck.position.y = 200 + this.deck.depth()
+            console.log(this.deck.position.x, this.deck.position.y, this.deck.position.z)
         }
 
         this.updateAll = false
     }
 
+    /**
+     * Synchronizes a card list with a card area.
+     * @param cardDataList The list of card data to synchronize.
+     * @param cardArea The card area to synchronize with.
+     */
     syncCardList(cardDataList: CardData[], cardArea: CardArea) {
         const seenIds: string[] = []
 
@@ -196,6 +204,8 @@ export default class Player extends ObjectBase {
                 const cardObject = new Card(cardData)
 
                 cardArea.addCardOrArea(cardObject)
+            } else {
+                console.log(`Card ${cardData.session_object_id} already exists in area`)
             }
 
             seenIds.push(cardData.session_object_id)
@@ -203,6 +213,7 @@ export default class Player extends ObjectBase {
 
         for (const card of cardArea.findCards()) {
             if (!seenIds.includes(card.cardData.session_object_id)) {
+                console.log(`Removing card ${card.cardData.session_object_id} from area`)
                 cardArea.removeCardOrArea(card)
             }
         }
