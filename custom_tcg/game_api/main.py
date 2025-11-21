@@ -5,22 +5,41 @@ from __future__ import annotations
 import logging
 from asyncio import sleep
 from dataclasses import dataclass
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import socketio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from custom_tcg.common.player import p1, p2
+from custom_tcg.common.being.aged_prophet import AgedProphet
+from custom_tcg.common.being.aimless_wanderer import AimlessWanderer
+from custom_tcg.common.being.apprentice_carpenter import ApprenticeCarpenter
+from custom_tcg.common.being.apprentice_smith import ApprenticeSmith
+from custom_tcg.common.being.desperate_shepherd import DesperateShepherd
+from custom_tcg.common.being.destructive_darryl import DestructiveDarryl
+from custom_tcg.common.being.early_architect import EarlyArchitect
+from custom_tcg.common.being.peasant import Peasant
+from custom_tcg.common.being.questionable_butcher import QuestionableButcher
+from custom_tcg.common.being.resourceful_preacher import ResourcefulPreacher
+from custom_tcg.common.being.seamstress import Seamstress
+from custom_tcg.common.being.skilled_hunter import SkilledHunter
+from custom_tcg.common.being.that_pebble_girl import ThatPebbleGirl
+from custom_tcg.common.being.the_stewmaker import TheStewmaker
+from custom_tcg.core.anon import Deck as CoreDeck
+from custom_tcg.core.anon import Player as CorePlayer
 from custom_tcg.core.game import ActionStateDef
 from custom_tcg.core.game import Game as CoreGame
-from custom_tcg.core.interface import IAction, IActionContext, IPlayer
+from custom_tcg.core.process.lets_play import LetsPlay
+from custom_tcg.core.process.lets_rest import LetsRest
 from custom_tcg.game_api.response.action_context import ActionContext
 from custom_tcg.game_api.response.choice import Choice
 from custom_tcg.game_api.response.game import Game
 from custom_tcg.game_api.response.player import Player
 from custom_tcg.game_api.socket_action_queue import SocketActionQueue
 from custom_tcg.main import setup
+
+if TYPE_CHECKING:
+    from custom_tcg.core.interface import IAction, IActionContext, IPlayer
 
 setup()
 
@@ -75,7 +94,47 @@ async def host_connect(sid: str, player_id: str) -> None:
     """Player joins a created game."""
     logger.info("Player connected.")
 
-    player1: IPlayer = p1()  # Lookup from player_id.
+    # TODO: Lookup from player_id instead of creating from scratch.  # noqa: E501, FIX002, TD002, TD003
+    player1: CorePlayer = CorePlayer(
+        session_object_id="p1",
+        name="Person 1",
+        decks=[],
+        starting_cards=[],
+        main_cards=[],
+        processes=[],
+        hand=[],
+        played=[],
+        discard=[],
+    )
+
+    p1_deck = CoreDeck(
+        name="Deck 1",
+        player=player1,
+        starting=[
+            LetsPlay.create(player=player1),
+            LetsRest.create(player=player1),
+            Peasant.create(player=player1),
+        ],
+        main=[
+            *(AgedProphet.create(player=player1) for _ in range(1)),
+            *(AimlessWanderer.create(player=player1) for _ in range(5)),
+            *(ApprenticeCarpenter.create(player=player1) for _ in range(1)),
+            *(ApprenticeSmith.create(player=player1) for _ in range(1)),
+            *(DesperateShepherd.create(player=player1) for _ in range(5)),
+            *(DestructiveDarryl.create(player=player1) for _ in range(1)),
+            *(EarlyArchitect.create(player=player1) for _ in range(1)),
+            *(Peasant.create(player=player1) for _ in range(5)),
+            *(QuestionableButcher.create(player=player1) for _ in range(1)),
+            *(ResourcefulPreacher.create(player=player1) for _ in range(1)),
+            *(Seamstress.create(player=player1) for _ in range(1)),
+            *(SkilledHunter.create(player=player1) for _ in range(1)),
+            *(ThatPebbleGirl.create(player=player1) for _ in range(5)),
+            *(TheStewmaker.create(player=player1) for _ in range(1)),
+        ],
+    )
+    player1.decks.append(p1_deck)
+    player1.select_deck(deck=p1_deck)
+
     game: CoreGame = CoreGame(players=[player1])
     game.context.completed = SocketActionQueue(
         socket=sio,
@@ -111,7 +170,33 @@ async def client_connect(sid: str, session_id: str, player_id: str) -> None:
     logger.info("Player connected.")
     session_context: SessionContext = session_data[session_id]
 
-    player2: IPlayer = p2()  # Lookup from player_id.
+    player2: CorePlayer = CorePlayer(
+        session_object_id="p2",
+        name="Person 2",
+        decks=[],
+        starting_cards=[],
+        main_cards=[],
+        processes=[],
+        hand=[],
+        played=[],
+        discard=[],
+    )
+
+    p2_deck = CoreDeck(
+        name="Deck 2",
+        player=player2,
+        starting=[
+            LetsPlay.create(player=player2),
+            LetsRest.create(player=player2),
+            Peasant.create(player=player2),
+        ],
+        main=[
+            *(Peasant.create(player=player2) for i in range(2)),
+        ],
+    )
+    player2.decks.append(p2_deck)
+    player2.select_deck(deck=p2_deck)
+
     session_context.players.append(player2)
     session_context.game.add_player(player2)
 

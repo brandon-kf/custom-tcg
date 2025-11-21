@@ -52,9 +52,11 @@ class Discard(Action):
         for card in cards:
             if card in card.player.hand:
                 card.player.hand.remove(card)
+                card.player.discard.append(card)
 
             if card in card.player.played:
                 card.player.played.remove(card)
+                card.player.discard.append(card)
 
             for effect in card.effects:
                 effect.deactivate(context=context)

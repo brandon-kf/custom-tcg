@@ -1,27 +1,30 @@
-import * as THREE from "three";
-import type Action from "../data/action";
-import type Card from "../data/card";
-import type Choice from "../data/choice";
-import type Game from "../data/game";
-import type Player from "../data/player";
-import ActionExecutedEvent from "../event/def/action-executed";
-import ChoiceConfirmedEvent from "../event/def/choice-confirmed";
-import ChoiceRequestedEvent from "../event/def/choice-requested";
-import ConnectionEvent from "../event/def/connection";
-import GameStartEvent from "../event/def/game-start";
-import GameStartedEvent from "../event/def/game-started";
-import HostConnectEvent from "../event/def/host-connect";
-import HostConnectedEvent from "../event/def/host-connected";
-import PlayerConnectedEvent from "../event/def/player-connected";
-import type { Event } from "../event/event";
-import CardObject from "../object/card";
-import type ChoiceDialog from "../object/choice-dialog";
-import type ChoiceOption from "../object/choice-option";
-import PlayerObject from "../object/player";
-import Room from "../object/room";
-import Table from "../object/table";
-import Experience from "./experience";
+import * as THREE from "three"
+import type Action from "../data/action"
+import type Card from "../data/card"
+import type Choice from "../data/choice"
+import type Game from "../data/game"
+import type Player from "../data/player"
+import ActionExecutedEvent from "../event/def/action-executed"
+import ChoiceConfirmedEvent from "../event/def/choice-confirmed"
+import ChoiceRequestedEvent from "../event/def/choice-requested"
+import ConnectionEvent from "../event/def/connection"
+import GameStartEvent from "../event/def/game-start"
+import GameStartedEvent from "../event/def/game-started"
+import HostConnectEvent from "../event/def/host-connect"
+import HostConnectedEvent from "../event/def/host-connected"
+import PlayerConnectedEvent from "../event/def/player-connected"
+import type { Event } from "../event/event"
+import type CardObject from "../object/card"
+import type ChoiceDialog from "../object/choice-dialog"
+import type ChoiceOption from "../object/choice-option"
+import PlayerObject from "../object/player"
+import Room from "../object/room"
+import Table from "../object/table"
+import Experience from "./experience"
 
+/**
+ *
+ */
 export default class Match extends Experience {
     // Tools to run the experience.
     raycaster: THREE.Raycaster
@@ -44,6 +47,9 @@ export default class Match extends Experience {
     raycastCard?: CardObject
     raycastChoice?: ChoiceOption
 
+    /**
+     *
+     */
     constructor() {
         super()
 
@@ -59,14 +65,23 @@ export default class Match extends Experience {
         this.click = false
     }
 
-    hasInitiatedGame(): this is Match & { game: Game, self: string } {
+    /**
+     *
+     */
+    hasInitiatedGame(): this is Match & { game: Game; self: string } {
         return !!this.game
     }
 
-    hasStartedGame(): this is Match & { game: Game, self: string, activePlayer: string } {
+    /**
+     *
+     */
+    hasStartedGame(): this is Match & { game: Game; self: string; activePlayer: string } {
         return this.hasInitiatedGame() && !!this.game.prompt
     }
 
+    /**
+     *
+     */
     load() {
         super.load()
 
@@ -84,11 +99,14 @@ export default class Match extends Experience {
 
         window.addEventListener("keyup", this.listenToKeyEvents.bind(this))
         window.addEventListener("mousedown", this.listenToPointerClickEvents.bind(this))
-        window.addEventListener("pointermove", this.listenToPointerMoveEvents.bind(this));
+        window.addEventListener("pointermove", this.listenToPointerMoveEvents.bind(this))
 
         this.loaded = true
     }
 
+    /**
+     *
+     */
     checkEvents(): Event[] {
         if (!this.hasEngine())
             throw new Error("Cannot check event queue a reference to the engine.")
@@ -101,6 +119,9 @@ export default class Match extends Experience {
         return eventLog
     }
 
+    /**
+     *
+     */
     update() {
         super.update() // Check events gets called here.
 
@@ -136,6 +157,9 @@ export default class Match extends Experience {
         this.click = false
     }
 
+    /**
+     *
+     */
     checkConnectionEvents(eventLog: Event[]) {
         if (!this.hasEngine())
             throw new Error("Cannot check event queue a reference to the engine.")
@@ -162,7 +186,7 @@ export default class Match extends Experience {
         if (this.eventQueue.next(playerConnectedEvent, true)) {
             eventLog.push(playerConnectedEvent)
 
-            const newPlayer = playerConnectedEvent!.player!
+            const newPlayer = playerConnectedEvent.player!
             this.game!.players.push(newPlayer)
             this.playerOrder.push(newPlayer.session_object_id)
 
@@ -181,6 +205,9 @@ export default class Match extends Experience {
         }
     }
 
+    /**
+     *
+     */
     checkGameEvents(eventLog: Event[]) {
         if (!this.hasEngine())
             throw new Error("Cannot check event queue without a reference to the engine.")
@@ -192,7 +219,12 @@ export default class Match extends Experience {
             eventLog.push(actionExecuted)
 
             const actionData = actionExecuted.actionContext!.action
-            console.log(`Action '%s' of type '%s' from '%s' executed.`, actionData.name, actionData.type, actionData.card!.name)
+            console.log(
+                `Action '%s' of type '%s' from '%s' executed.`,
+                actionData.name,
+                actionData.type,
+                actionData.card!.name,
+            )
         }
 
         const choiceRequested = new ChoiceRequestedEvent()
@@ -201,8 +233,10 @@ export default class Match extends Experience {
             this.eventQueue.pop(choiceRequested)
             eventLog.push(choiceRequested)
 
-            const choiceData = choiceRequested!.choice!
-            console.log(`Choice requested, from options ${choiceData.actions.map((a) => a.name).join(", ")}`)
+            const choiceData = choiceRequested.choice!
+            console.log(
+                `Choice requested, from options ${choiceData.actions.map((a) => a.name).join(", ")}`,
+            )
 
             if (!this.game.prompt) {
                 this.game.prompt = choiceData.prompt
@@ -215,21 +249,28 @@ export default class Match extends Experience {
         }
     }
 
+    /**
+     *
+     */
     updatePlayer(playerData: Player, choiceData: Choice | undefined = undefined) {
-        if (!this.hasInitiatedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasInitiatedGame()) throw new Error("Game hasn't started yet.")
 
-        const gamePlayer = this.game.players.find((v) => v.session_object_id == playerData.session_object_id)!
+        const gamePlayer = this.game.players.find(
+            (v) => v.session_object_id == playerData.session_object_id,
+        )!
         let choiceMap: Record<string, Action[]> | undefined
 
         if (choiceData) {
-            choiceMap = choiceData.actions.reduce((r, i) => {
-                if (!r.hasOwnProperty(i.card!.session_object_id)) {
-                    r[i.card!.session_object_id] = []
-                }
-                r[i.card!.session_object_id].push(i)
-                return r
-            }, {} as Record<string, Action[]>)
+            choiceMap = choiceData.actions.reduce(
+                (r, i) => {
+                    if (!Object.prototype.hasOwnProperty.call(r, i.card!.session_object_id)) {
+                        r[i.card!.session_object_id] = []
+                    }
+                    r[i.card!.session_object_id].push(i)
+                    return r
+                },
+                {} as Record<string, Action[]>,
+            )
 
             const choiceCardIds = Object.keys(choiceMap)
 
@@ -238,16 +279,24 @@ export default class Match extends Experience {
             }
         }
 
+        gamePlayer.deck_size = playerData.deck_size
         this.updateCardList(gamePlayer.hand, playerData.hand, choiceMap)
         this.updateCardList(gamePlayer.played, playerData.played, choiceMap)
+        this.updateCardList(gamePlayer.discard, playerData.discard, choiceMap)
 
         this.activePlayer = gamePlayer.session_object_id
         this.setPlayerPerspective(this.activePlayer)
     }
 
-    updateCardList(gameCards: Card[], apiCards: Card[], choiceMap: Record<string, Action[]> | undefined) {
-        if (!this.hasInitiatedGame())
-            throw new Error("Game hasn't started yet.")
+    /**
+     *
+     */
+    updateCardList(
+        gameCards: Card[],
+        apiCards: Card[],
+        choiceMap: Record<string, Action[]> | undefined,
+    ) {
+        if (!this.hasInitiatedGame()) throw new Error("Game hasn't started yet.")
 
         const apiIds: string[] = []
 
@@ -256,15 +305,14 @@ export default class Match extends Experience {
 
             if (gameCard) {
                 gameCard.effects = [...card.effects]
-            }
-            else {
+            } else {
                 gameCard = card
                 gameCards.push(card)
             }
 
             apiIds.push(gameCard.session_object_id)
 
-            if (choiceMap && choiceMap.hasOwnProperty(gameCard.session_object_id)) {
+            if (choiceMap?.hasOwnProperty(gameCard.session_object_id)) {
                 gameCard.prompt = this.game.prompt
                 gameCard.choices = choiceMap[gameCard.session_object_id]
             }
@@ -278,12 +326,14 @@ export default class Match extends Experience {
         }
     }
 
+    /**
+     *
+     */
     createNewPlayers(): number {
         if (!this.hasEngine())
             throw new Error("Cannot create player objects without a reference to the engine.")
 
-        if (!this.hasInitiatedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasInitiatedGame()) throw new Error("Game hasn't started yet.")
 
         const registeredPlayers = Object.keys(this.players)
         let newPlayers = 0
@@ -300,19 +350,21 @@ export default class Match extends Experience {
         }
 
         if (this.playerOrder.length == 1) {
-            this.setPlayerPerspective(this.self!)
+            this.setPlayerPerspective(this.self)
         }
 
         if (this.playerOrder.length == 2 && newPlayers > 0) {
-            this.eventQueue.send(new GameStartEvent(this.game!.session_id))
+            this.eventQueue.send(new GameStartEvent(this.game.session_id))
         }
 
         return newPlayers
     }
 
+    /**
+     *
+     */
     seatPlayersAtTable() {
-        if (!this.hasInitiatedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasInitiatedGame()) throw new Error("Game hasn't started yet.")
 
         const nPlayers = this.playerOrder.length
 
@@ -324,41 +376,43 @@ export default class Match extends Experience {
             player.rotation.set(0, 0, 0)
 
             if (index == 0) {
-                player.translateZ(this.table.dimension.z / 2).rotateY(Math.PI);
-            }
-            else if (Math.abs(index - nPlayers / 2) < 0.01) {
-                directOpposingObserved = true;
+                player.translateZ(this.table.dimension.z / 2).rotateY(Math.PI)
+            } else if (Math.abs(index - nPlayers / 2) < 0.01) {
+                directOpposingObserved = true
                 player.translateZ(-this.table.dimension.z / 2)
-            }
-            else if (index < nPlayers / 2) {
-                const playerOffset = this.table.stretch + 1 - index;
+            } else if (index < nPlayers / 2) {
+                const playerOffset = this.table.stretch + 1 - index
                 player
                     .translateX(-this.table.dimension.x / 2)
                     .translateZ(
-                        (PlayerObject.dimension.x + 2 * PlayerObject.dimension.z) / 2
-                        + playerOffset * PlayerObject.dimension.x - this.table.dimension.z / 2
+                        (PlayerObject.dimension.x + 2 * PlayerObject.dimension.z) / 2 +
+                            playerOffset * PlayerObject.dimension.x -
+                            this.table.dimension.z / 2,
                     )
                     .rotateY(Math.PI / 2)
-            }
-            else if (index > nPlayers / 2) {
-                const playerOffset = index - this.table.stretch - 2 - (directOpposingObserved ? 1 : 0);
+            } else if (index > nPlayers / 2) {
+                const playerOffset =
+                    index - this.table.stretch - 2 - (directOpposingObserved ? 1 : 0)
                 player
                     .translateX(this.table.dimension.x / 2)
                     .translateZ(
-                        (PlayerObject.dimension.x + 2 * PlayerObject.dimension.z) / 2
-                        + playerOffset * PlayerObject.dimension.x - this.table.dimension.z / 2
+                        (PlayerObject.dimension.x + 2 * PlayerObject.dimension.z) / 2 +
+                            playerOffset * PlayerObject.dimension.x -
+                            this.table.dimension.z / 2,
                     )
                     .rotateY(-Math.PI / 2)
             }
         })
     }
 
+    /**
+     *
+     */
     raycast() {
         if (!this.hasEngine())
             throw new Error("Cannot cast rays to playable cards without engine-provided camera.")
 
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         const player = this.players[this.activePlayer]
         this.raycaster.setFromCamera(this.pointer, this.camera)
@@ -366,14 +420,13 @@ export default class Match extends Experience {
         const cardMeshes: THREE.Mesh[] = []
         const choiceMeshes: THREE.Mesh[] = []
 
-        Array.from(player.hand.findCards()).reduce(
-            (r, i) => { r.push(i.cardboard); return r; },
-            cardMeshes,
-        )
+        Array.from(player.hand.findCards()).reduce((r, i) => {
+            r.push(i.cardboard)
+            return r
+        }, cardMeshes)
 
         for (const card of player.playedRow1.findCards()) {
-            if (card.indicator.visible)
-                cardMeshes.push(card.cardboard)
+            if (card.indicator.visible) cardMeshes.push(card.cardboard)
 
             if (card.choiceDialog.choiceMeshes) {
                 choiceMeshes.push(...card.choiceDialog.choiceMeshes)
@@ -381,8 +434,7 @@ export default class Match extends Experience {
         }
 
         for (const card of player.playedRow2.findCards()) {
-            if (card.indicator.visible)
-                cardMeshes.push(card.cardboard)
+            if (card.indicator.visible) cardMeshes.push(card.cardboard)
 
             if (card.choiceDialog.choiceMeshes) {
                 choiceMeshes.push(...card.choiceDialog.choiceMeshes)
@@ -390,8 +442,7 @@ export default class Match extends Experience {
         }
 
         for (const card of player.playedRow3.findCards()) {
-            if (card.indicator.visible)
-                cardMeshes.push(card.cardboard)
+            if (card.indicator.visible) cardMeshes.push(card.cardboard)
 
             if (card.choiceDialog.choiceMeshes) {
                 choiceMeshes.push(...card.choiceDialog.choiceMeshes)
@@ -411,16 +462,23 @@ export default class Match extends Experience {
         }
     }
 
+    /**
+     *
+     */
     highlightPlayableCards() {
         if (!this.hasEngine())
             throw new Error("Cannot cast rays to playable cards without engine-provided camera.")
 
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         const player = this.players[this.activePlayer]
 
-        for (const cardArea of [player.hand, player.playedRow1, player.playedRow2, player.playedRow3]) {
+        for (const cardArea of [
+            player.hand,
+            player.playedRow1,
+            player.playedRow2,
+            player.playedRow3,
+        ]) {
             for (const card of cardArea.findCards()) {
                 card.cardboard.material.color.setHex(0x999999)
             }
@@ -431,16 +489,23 @@ export default class Match extends Experience {
         }
     }
 
+    /**
+     *
+     */
     highlightChoices() {
         if (!this.hasEngine())
             throw new Error("Cannot cast rays to playable cards without engine-provided camera.")
 
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         const player = this.players[this.activePlayer]
 
-        for (const cardArea of [player.hand, player.playedRow1, player.playedRow2, player.playedRow3]) {
+        for (const cardArea of [
+            player.hand,
+            player.playedRow1,
+            player.playedRow2,
+            player.playedRow3,
+        ]) {
             for (const card of cardArea.findCards()) {
                 if (card.choiceDialog.choiceMeshes) {
                     for (const choiceMesh of card.choiceDialog.choiceMeshes) {
@@ -455,16 +520,18 @@ export default class Match extends Experience {
         }
     }
 
+    /**
+     *
+     */
     chooseAction() {
         if (!this.hasEngine())
             throw new Error("Cannot cast rays to playable cards without engine-provided camera.")
 
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         let chosenAction: Action | undefined = undefined
 
-        if (this.raycastCard && this.raycastCard.cardData.choices && this.click) {
+        if (this.raycastCard?.cardData.choices && this.click) {
             chosenAction = this.raycastCard.cardData.choices[0]
         }
 
@@ -474,7 +541,9 @@ export default class Match extends Experience {
         }
 
         if (chosenAction) {
-            this.eventQueue.send(new ChoiceConfirmedEvent(this.game!.session_id, chosenAction.session_object_id))
+            this.eventQueue.send(
+                new ChoiceConfirmedEvent(this.game.session_id, chosenAction.session_object_id),
+            )
 
             this.game.prompt = undefined
 
@@ -489,18 +558,20 @@ export default class Match extends Experience {
         }
 
         if (this.raycastChoice && this.click) {
-            (this.raycastChoice.parent! as ChoiceDialog).update()
+            ;(this.raycastChoice.parent! as ChoiceDialog).update()
         }
     }
 
+    /**
+     *
+     */
     setPlayerPerspective(playerId: string) {
         if (!this.hasEngine())
             throw new Error(
-                "Cannot set player perspective to match camera without a reference to the engine."
+                "Cannot set player perspective to match camera without a reference to the engine.",
             )
 
-        if (!this.hasInitiatedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasInitiatedGame()) throw new Error("Game hasn't started yet.")
 
         const player = this.players[playerId]
 
@@ -511,54 +582,57 @@ export default class Match extends Experience {
 
         const cameraRotation = new THREE.Quaternion()
         player.getWorldQuaternion(cameraRotation)
-        const newTarget = (
-            new THREE.Vector3(0, -100, 100)
-                .applyQuaternion(cameraRotation)
-                .add(this.camera.position)
-        )
+        const newTarget = new THREE.Vector3(0, -100, 100)
+            .applyQuaternion(cameraRotation)
+            .add(this.camera.position)
         this.orbitControls.target.copy(newTarget)
 
         this.orbitControls.enableRotate = true
 
         this.orbitControls.update()
 
-        if (this.activePlayer)
-            this.players[this.activePlayer].positionBlock.visible = true
+        if (this.activePlayer) this.players[this.activePlayer].positionBlock.visible = true
         player.positionBlock.visible = false
 
         this.activePlayer = playerId
     }
 
+    /**
+     *
+     */
     moveLeft() {
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
-
-        const currentPlayerIndex = this.playerOrder.indexOf(
-            this.activePlayer
-        )
-        const nextPlayer = this.playerOrder[
-            this.mod(currentPlayerIndex + 1, this.playerOrder.length)
-        ]
-
-        this.setPlayerPerspective(nextPlayer)
-    }
-
-    moveRight() {
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         const currentPlayerIndex = this.playerOrder.indexOf(this.activePlayer)
-        const nextPlayer = this.playerOrder[this.mod(currentPlayerIndex - 1, this.playerOrder.length)]
+        const nextPlayer =
+            this.playerOrder[this.mod(currentPlayerIndex + 1, this.playerOrder.length)]
 
         this.setPlayerPerspective(nextPlayer)
     }
 
+    /**
+     *
+     */
+    moveRight() {
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
+
+        const currentPlayerIndex = this.playerOrder.indexOf(this.activePlayer)
+        const nextPlayer =
+            this.playerOrder[this.mod(currentPlayerIndex - 1, this.playerOrder.length)]
+
+        this.setPlayerPerspective(nextPlayer)
+    }
+
+    /**
+     *
+     */
     moveOver() {
         if (!this.hasEngine())
-            throw new Error("Cannot set player perspective to match camera without a reference to the engine.")
+            throw new Error(
+                "Cannot set player perspective to match camera without a reference to the engine.",
+            )
 
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         const player = this.players[this.activePlayer]
 
@@ -570,7 +644,9 @@ export default class Match extends Experience {
 
         const playerRotation = new THREE.Quaternion()
         player.getWorldQuaternion(playerRotation)
-        const newTarget = new THREE.Vector3(0, -200, 5).applyQuaternion(playerRotation).add(this.camera.position)
+        const newTarget = new THREE.Vector3(0, -200, 5)
+            .applyQuaternion(playerRotation)
+            .add(this.camera.position)
         this.orbitControls.target.copy(newTarget)
 
         this.orbitControls.enableRotate = false
@@ -578,28 +654,33 @@ export default class Match extends Experience {
         this.orbitControls.update()
     }
 
+    /**
+     *
+     */
     moveBack() {
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         this.setPlayerPerspective(this.activePlayer)
     }
 
+    /**
+     *
+     */
     moveToChoice() {
         if (!this.hasEngine())
-            throw new Error("Cannot set player perspective to match camera without a reference to the engine.")
+            throw new Error(
+                "Cannot set player perspective to match camera without a reference to the engine.",
+            )
 
-        if (!this.hasStartedGame())
-            throw new Error("Game hasn't started yet.")
+        if (!this.hasStartedGame()) throw new Error("Game hasn't started yet.")
 
         const player = this.players[this.activePlayer]
 
-        const choiceCard = (
-            player.hand.findCard(this.choiceCardId!)
-            || player.playedRow1.findCard(this.choiceCardId!)
-            || player.playedRow2.findCard(this.choiceCardId!)
-            || player.playedRow3.findCard(this.choiceCardId!)!
-        )
+        const choiceCard =
+            player.hand.findCard(this.choiceCardId!) ||
+            player.playedRow1.findCard(this.choiceCardId!) ||
+            player.playedRow2.findCard(this.choiceCardId!) ||
+            player.playedRow3.findCard(this.choiceCardId!)!
 
         this.orbitControls.reset()
 
@@ -612,7 +693,9 @@ export default class Match extends Experience {
         const backedAwayTranslation = new THREE.Vector3(800, 0, 200).applyQuaternion(cardRotation)
         const targetCameraPosition = cardWorldPosition.clone().add(backedAwayTranslation)
 
-        const newCameraTarget = new THREE.Vector3(-100, 0, 0).applyQuaternion(cardRotation).add(targetCameraPosition.clone())
+        const newCameraTarget = new THREE.Vector3(-100, 0, 0)
+            .applyQuaternion(cardRotation)
+            .add(targetCameraPosition.clone())
 
         this.camera.position.copy(targetCameraPosition.clone())
         this.orbitControls.target.copy(newCameraTarget.clone())
@@ -622,49 +705,58 @@ export default class Match extends Experience {
         this.orbitControls.update()
     }
 
+    /**
+     *
+     */
     setupLighting() {
         if (!this.hasEngine())
             throw new Error("Lighting depends on the instance provided by the engine.")
 
         this.spotLight.castShadow = true
-        this.spotLight.position.set(0, 10000, 0);
-        this.spotLight.target.position.set(0, 0, 0);
+        this.spotLight.position.set(0, 10000, 0)
+        this.spotLight.target.position.set(0, 0, 0)
     }
 
+    /**
+     *
+     */
     listenToPointerMoveEvents(event: MouseEvent) {
         this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1
         this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
     }
 
+    /**
+     *
+     */
     listenToPointerClickEvents(event: MouseEvent) {
         this.listenToPointerMoveEvents(event)
         this.click = true
     }
 
+    /**
+     *
+     */
     listenToKeyEvents(event: KeyboardEvent) {
-        let keyCode = event.code;
+        const keyCode = event.code
 
         if (keyCode == "ArrowLeft" || keyCode == "KeyA") {
             // Left
             this.moveLeft()
-        }
-
-        else if (keyCode == "ArrowRight" || keyCode == "KeyD") {
+        } else if (keyCode == "ArrowRight" || keyCode == "KeyD") {
             // Right
             this.moveRight()
-        }
-
-        else if (keyCode == "ArrowUp" || keyCode == "KeyW") {
+        } else if (keyCode == "ArrowUp" || keyCode == "KeyW") {
             this.moveOver()
-        }
-
-        else if (keyCode == "ArrowDown" || keyCode == "KeyS") {
+        } else if (keyCode == "ArrowDown" || keyCode == "KeyS") {
             this.moveBack()
         }
     }
 
+    /**
+     *
+     */
     mod(n: number, m: number): number {
         // This is needed since JS has a dumb implementation for negatives.
-        return ((n % m) + m) % m;
+        return ((n % m) + m) % m
     }
 }
