@@ -45,7 +45,8 @@ export default class Player extends ObjectBase {
             .translateX(Player.dimension.x / 2 - 1000)
             .translateY(200)
             .translateZ(Player.dimension.z / 2)
-            .rotateX(Math.PI / 2)
+            .rotateX(-Math.PI / 2)
+            .rotateZ(Math.PI)
 
         this.hand = new CardAreaHorizontal(Player.hand_spacing)
             .translateY(1600)
@@ -182,8 +183,7 @@ export default class Player extends ObjectBase {
                 area.update()
             }
 
-            this.deck.position.y = 200 + this.deck.depth()
-            console.log(this.deck.position.x, this.deck.position.y, this.deck.position.z)
+            this.discard.position.y = 200 + this.discard.depth()
         }
 
         this.updateAll = false
